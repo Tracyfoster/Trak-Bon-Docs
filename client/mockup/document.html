@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trak-Bon Docs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-green.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="../asset/dist/css/material-modal.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://cdn.quilljs.com/1.2.4/quill.snow.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Trak-Bon Docs</span>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="">Sign Out</a>
+          </nav>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="search-expandable">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="search-expandable" />
+              <label class="mdl-textfield__label" for="search-expandable">Search text</label>
+            </div>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">account_circle</i>
+         </button>
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <div class="page-content wellup">
+        <div class="content-grid mdl-grid mdl-grid--no-spacing wellup">
+          <div class="side-bar mdl-cell mdl-cell--1-col" style="background:teal-green;height:100%">
+          <br />
+            <div>
+              <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">home</i>
+              </button>
+              <span> Home </span>
+            </div>
+            <div>
+              <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">drafts</i>
+              </button>
+              <span> Drafts </span>
+            </div>
+            <div>
+              <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">folder</i>
+              </button>
+              <span> Folders </span>
+            </div>
+            <hr />
+            <div>
+              <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">help</i>
+              </button>
+              <span> Help </span>
+            </div>
+          </div>
+
+          <div class="mdl-cell mdl-cell--3-col">
+            <button class="mdl-button mdl-js-button mdl-button--icon">
+              <i class="material-icons">add_circle</i>
+            </button>
+            <hr />
+            <button class="mdl-button mdl-js-button mdl-button--icon">
+              <i class="material-icons">create_new_folder</i>
+            </button>
+            <hr />
+            <div>
+            <div>Folders</div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Personal Stuff</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Andela</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Famiz</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Jokes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--8-col">
+            <!-- Create the editor container -->
+            <table class="mdl-data-table" >
+              <thead>
+                <tr>
+                  <th>Manage Document</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <br />
+                    <div id="editor">
+                      <p>Hello World!</p>
+                      <p>Some initial <strong>bold</strong> text</p>
+                      <p><br></p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo">Title</div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+    </div>
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.2.4/quill.js"></script>
+    <!-- Initialize Quill editor -->
+    <script>
+      var quill = new Quill('#editor', {
+        theme: 'snow'
+      });
+    </script>
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+    <script src="../asset/dist/js/material-modal.min.js"></script>
+  </body>
+</html>
+
+<!--EDIT BUTTON
+<button class="mdl-button"><i class="material-icons">mode_edit</i></button>-->
+
