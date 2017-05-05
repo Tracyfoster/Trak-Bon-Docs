@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trak-Bon Docs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-green.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="../asset/dist/css/material-modal.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Trak-Bon Docs</span>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="">Sign Out</a>
+          </nav>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="search-expandable">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="search-expandable" />
+              <label class="mdl-textfield__label" for="search-expandable">Search text</label>
+            </div>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">account_circle</i>
+         </button>
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+        <div class="content-grid mdl-grid mdl-grid--no-spacing">
+          <div class="side-bar mdl-cell mdl-cell--1-col">
+            <aside class="mdl-components__nav mdl-shadow--4dp">
+              <div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                  <i class="material-icons">home</i>
+                </button>
+                <span> Home </span>
+              </div>
+              <div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                  <i class="material-icons">drafts</i>
+                </button>
+                <span> Drafts </span>
+              </div>
+              <div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                  <i class="material-icons">folder</i>
+                </button>
+                <span> Folders </span>
+              </div>
+              <hr />
+              <div>
+                <button class="mdl-button mdl-js-button mdl-button--icon">
+                  <i class="material-icons">help</i>
+                </button>
+                <span> Help </span>
+              </div>
+           </aside>
+          </div>
+
+          <div class="mdl-cell mdl-cell--3-col" style="background:#eee;height:100%">
+            <button class="mdl-button mdl-js-button mdl-button--icon">
+              <i class="material-icons">add_circle</i>
+            </button>
+            <hr />
+            <button class="mdl-button mdl-js-button mdl-button--icon">
+              <i class="material-icons">create_new_folder</i>
+            </button>
+            <hr />
+            <div>
+            <div>Folders</div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Personal Stuff</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Andela</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Famiz</span>
+                </button>
+              </div>
+              <div>
+                <button type="button" class="mdl-chip">
+                  <span class="mdl-chip__text">Jokes</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--8-col" style="height:100%">
+             <div class="mdl-grid mdl-">
+              <div class="mdl-cell mdl-cell--6-col">
+                <div class="dash-card mdl-card mdl-shadow--2dp">
+                  <div class="mdl-card__title mdl-card--expand">
+                    <h4>No of Users</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="mdl-cell mdl-cell--6-col">
+                <div class="dash-card mdl-card mdl-shadow--2dp">
+                  <div class="mdl-card__title mdl-card--expand">
+                    <h4># of Documents</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3> Hi User </h3>
+            <p> Welcome to the place of awesomeness</p>
+
+            <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+              <caption> Recently created documents </caption>
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Name of User</th>
+                  <th class="mdl-data-table__cell--non-numeric">Document title</th>
+                  <th class="mdl-data-table__cell--non-numeric">Access level</th>
+                  <th class="mdl-data-table__cell--non-numeric">Created Date</th>
+                  <th class="mdl-data-table__cell--non-numeric">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">John Lennon</td>
+                  <td class="mdl-data-table__cell--non-numeric">Living Ahead</td>
+                  <td class="mdl-data-table__cell--non-numeric">Role</td>
+                  <td class="mdl-data-table__cell--non-numeric">05-05-2017</td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                    <a href="#"> Read </a> |
+                    <a href="#"> Review </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Paul McCartney</td>
+                  <td class="mdl-data-table__cell--non-numeric">Getting started</td>
+                  <td class="mdl-data-table__cell--non-numeric">Public</td>
+                  <td class="mdl-data-table__cell--non-numeric">05-05-2017</td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                    <a href="#"> Read </a> |
+                    <a href="#"> Review </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">George Harrison</td>
+                  <td class="mdl-data-table__cell--non-numeric">Combo jacking</td>
+                  <td class="mdl-data-table__cell--non-numeric">Role</td>
+                  <td class="mdl-data-table__cell--non-numeric">03-05-2017</td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                    <a href="#"> Read </a> |
+                    <a href="#"> Review </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Ringo Starr</td>
+                  <td class="mdl-data-table__cell--non-numeric">Why I refused to use Redux</td>
+                  <td class="mdl-data-table__cell--non-numeric">Public</td>
+                  <td class="mdl-data-table__cell--non-numeric">02-0502017</td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                    <a href="#"> Read </a> |
+                    <a href="#"> Review </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo">Title</div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+    </div>
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+    <script src="../asset/dist/js/material-modal.min.js"></script>
+  </body>
+</html>
+
+<!--EDIT BUTTON
+<button class="mdl-button"><i class="material-icons">mode_edit</i></button>-->
+
