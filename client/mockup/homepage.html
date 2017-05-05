@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trak-Bon Docs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-green.min.css" />
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="../asset/dist/css/material-modal.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Trak-Bon Docs</span>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a id="show-dialog" class="mdl-navigation__link">Sign In</a>
+          </nav>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="search-expandable">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="search-expandable" />
+              <label class="mdl-textfield__label" for="search-expandable">Search text</label>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="mdl-layout__content">
+        <div class="page-content">
+        <div class="content-grid mdl-grid mdl-grid--no-spacing">
+          <div class="mdl-cell mdl-cell--8-col">
+            <img src="/Users/andeladeveloper/Downloads/doc-management/client/components/home/images/docman.jpg">
+          </div>
+
+          <div class="mdl-cell mdl-cell--4-col">
+            <div class="signup">
+              <div>
+                <span class="flow-text center-align">Create an Account</span>
+                  <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="firstname"/>
+                      <label class="mdl-textfield__label" for="firstname">Firstname</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="lastname"/>
+                      <label class="mdl-textfield__label" for="lastname">Lastname</label>
+                    </div>
+                    <br>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="email" id="email"/>
+                      <label class="mdl-textfield__label" for="email">Email</label>
+                    </div>
+                    <br>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="password" id="password1"/>
+                      <label class="mdl-textfield__label" for="password1">Password</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="password" id="password2"/>
+                      <label class="mdl-textfield__label" for="password2">Confirm Password</label>
+                    </div>
+                    <div>
+                      <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored rightside">
+                        <i class="material-icons">send</i>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="mdl-textfield">
+                      Already have an account?
+                    <span> <a href="#">
+                      Sign In
+                    </a></span>
+                  </div>
+              </div>
+            </div>
+         </div>
+        <div class="modal1">
+          <dialog class="mdl-dialog">
+            <h4 class="mdl-dialog__title">SIGN IN </h4>
+            <div class="mdl-dialog__content">
+              <form action="#">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="email" id="email"/>
+                  <label class="mdl-textfield__label" for="email">Email</label>
+                </div>
+                <br>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="password" id="password"/>
+                  <label class="mdl-textfield__label" for="password">Password</label>
+                </div>
+              </form>
+            </div>
+            <div class="mdl-dialog__actions">
+              <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored close">
+                <i class="material-icons">send</i>
+              </button>
+            </div>
+          </dialog>
+        </div>
+        <script>
+          var dialog = document.querySelector('dialog');
+          var showDialogButton = document.querySelector('#show-dialog');
+          if (! dialog.showModal) {
+            dialogPolyfill.registerDialog(dialog);
+          }
+          showDialogButton.addEventListener('click', function() {
+            dialog.showModal();
+          });
+          dialog.querySelector('.close').addEventListener('click', function() {
+            dialog.close();
+          });
+        </script>
+        </div>
+      </main>
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo">Title</div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+    <script src="../asset/dist/js/material-modal.min.js"></script>
+  </body>
+</html>
+
+<!--EDIT BUTTON
+<button class="mdl-button"><i class="material-icons">mode_edit</i></button>-->
+
+<!--SEND ICON-->
+<!--<button class="mdl-button mdl-js-button mdl-js-ripple-effect">Save</button>-->
