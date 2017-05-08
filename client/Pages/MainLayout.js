@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import NavBar from '../components/NavBar';
-import HomePage from './HomePage';
 import { Layout, Content, } from 'react-mdl';
-
+import NavBar from '../components/NavBar';
+import FootBar from '../components/FootBar';
 
 
 class MainLayout extends Component {
@@ -12,9 +11,10 @@ class MainLayout extends Component {
         <NavBar />
         <Content>
           <div className="page-content">
-            <HomePage />
+            {this.props.children}
           </div>
         </Content>
+        <FootBar />
       </Layout>
     );
   }
