@@ -1,35 +1,79 @@
-const rolesController = require('../controllers').roles;
-const folderController = require('../controllers').folder;
-const documentController = require('../controllers').documents;
-const userController = require('../controllers').users;
+import { role, users, folder, documents, search } from '../controllers';
+import auth from '../middlewares';
 
-module.exports = (app) => {
-  app.get('/api', (req, res) => res.status(200).send({
+const verify = auth.verifyToken;
+const adminAccess = auth.adminAccess;
+
+const Routes = (app) => {
+
+  app.get('/', (req, res) => res.status(200).send({
     message: 'Welcome to the Trakbon Docs!',
   }));
 
-  app.post('/roles', rolesController.create);
-  app.get('/roles', rolesController.list);
-  app.get('/roles/:id', rolesController.retrieve);
-  app.put('/roles/:id', rolesController.update);
-  app.delete('/roles/:id', rolesController.destroy);
+  /**
+   * crud api for role model
+   */
+  app
+    .route('/roles')
+    .post(verify, adminAccess, role.create)
+    .get(verify, adminAccess, role.list);
+  app
+    .route('/roles/:id')
+    .get(verify, adminAccess, role.retrieve)
+    .put(verify, adminAccess, role.update)
+    .delete(verify, adminAccess, role.destroy);
 
-  app.post('/folders', folderController.create);
-  app.get('/folders', folderController.list);
-  app.get('/folders/:id', folderController.retrieve);
-  app.put('/folders/:id', folderController.update);
-  app.delete('/folders/:id', folderController.destroy);
+  /**
+   * crud api for folder model
+   */
+  app
+    .route('/folders')
+    .post(verify, adminAccess, folder.create)
+    .get(verify, adminAccess, folder.list);
+  app
+    .route('/folders/:id')
+    .get(verify, adminAccess, folder.retrieve)
+    .put(verify, adminAccess, folder.update)
+    .delete(verify, adminAccess, folder.destroy);
 
-  app.post('/documents', documentController.create);
-  app.get('/documents', documentController.list);
-  app.get('/documents/:id', documentController.retrieve);
-  app.put('/documents/:id', documentController.update);
-  app.delete('/documents/:id', documentController.destroy);
+  /**
+   * crud api for document model
+   */
+  app
+    .route('/documents')
+    .post(verify, documents.create)
+    .get(verify, adminAccess, documents.list);
+  app
+    .route('/documents/:id')
+    .get(verify, documents.retrieve)
+    .put(verify, documents.update)
+    .delete(verify, documents.destroy);
 
-  app.post('/users', userController.create);
-  app.get('/users', userController.list);
-  app.get('/users/:id', userController.retrieve);
-  app.put('/users/:id', userController.update);
-  app.delete('/users/:id', userController.destroy);
-  app.get('/users/:id/documents', userController.findUserDocuments);
+  /**
+   * crud api for user model
+   */
+  app
+    .route('/users')
+    .post(verify, users.create)
+    .get(verify, adminAccess, users.list);
+  app
+    .route('/users/:id')
+    .get(verify, users.retrieve)
+    .put(verify, users.update)
+    .delete(verify, users.destroy);
+  app
+    .route('/users/:id/documents')
+    .get(verify, users.findUserDocuments);
+
+  /**
+   * Api for search
+   */
+  app
+    .route('/search/users/')
+    .get(verify, adminAccess, search.userSearch);
+  app
+    .route('/search/documents/')
+    .get(verify, adminAccess, search.documentSearch);
 };
+
+export default Routes;
