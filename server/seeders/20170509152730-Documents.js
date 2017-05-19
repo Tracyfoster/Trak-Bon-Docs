@@ -8,26 +8,22 @@ username: admin
 password: alpine
 Please login and change the default root password.`,
       access: 'public',
-      ownerId: 1,
-      ownerRoleId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
       title: 'A Song of Ice and Fire III',
-      content: `The day was grey and bitter cold, and the dogs would not 
-take the scent. The big black bitch had taken one sniff at the bear tracks, 
-backed off, and skulked back to the pack with her tail between her legs.The 
+      content: `The day was grey and bitter cold, and the dogs would not
+take the scent. The big black bitch had taken one sniff at the bear tracks,
+backed off, and skulked back to the pack with her tail between her legs.The
 dogs huddled together miserably on the riverbank as the wind snapped at them.
 Chett felt it too, biting through his layers of black wool and boiled leather.
 It was too bloody cold for man or beast, but here they were. His mouth twisted,
-and he could almost feel the boils that covered his cheeks and neck growing red 
-and angry. I should be safe back at the Wall, tending the bloody ravens and 
+and he could almost feel the boils that covered his cheeks and neck growing red
+and angry. I should be safe back at the Wall, tending the bloody ravens and
 making fires for old Maester Aemon. It was the bastard Jon Snow who had taken
 that from him, him and his fat friend Sam Tarly. It was their fault he was here,
 freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       access: 'public',
-      ownerId: 2,
-      ownerRoleId: 2,
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -38,8 +34,6 @@ freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       Malviner
       Can this be it?`,
       access: 'public',
-      ownerId: 1,
-      ownerRoleId: 1,
       createdAt: new Date(),
       updatedAt: new Date()
     }], {}),

@@ -54,10 +54,6 @@ module.exports = {
           as: 'folderId',
         },
       },
-      onwerRoleId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      }
     }),
   down: queryInterface =>
     queryInterface.dropTable('Documents')

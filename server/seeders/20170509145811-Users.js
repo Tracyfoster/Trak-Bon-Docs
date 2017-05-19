@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
-  up: (queryInterface, Sequelize) => 
+  up: (queryInterface, Sequelize) =>
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -13,26 +13,26 @@ module.exports = {
       }], {});
     */
      queryInterface.bulkInsert('Users', [{
-       name: 'T-Admin',
+       firstName: 'T-Admin',
+       lastName: 'A',
        email: 'admin@admin.com',
        password: bcrypt.hashSync('PWDis123', bcrypt.genSaltSync(10)),
-       roleId: 1,
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       name: 'Mercy J',
+       firstName: 'Mercy',
+       lastName: 'J',
        email: 'mercy@mercy.com',
        password: bcrypt.hashSync('mercy123', bcrypt.genSaltSync(10)),
-       roleId: 2,
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       name: 'John O',
+       firstName: 'John',
+       lastName: 'O',
        email: 'john@john.com',
        password: bcrypt.hashSync('johny123', bcrypt.genSaltSync(10)),
-       roleId: 3,
        createdAt: new Date(),
        updatedAt: new Date()
      },

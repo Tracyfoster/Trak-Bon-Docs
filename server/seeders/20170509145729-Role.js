@@ -1,7 +1,7 @@
 
 
 module.exports = {
-  up: (queryInterface, Sequelize) => 
+  up: (queryInterface, Sequelize) =>
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -12,18 +12,18 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-     queryInterface.bulkInsert('Role', [{
-       title: 'admin',
+     queryInterface.bulkInsert('Roles', [{
+       roleName: 'admin',
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       title: 'writers',
+       roleName: 'reviewers',
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       title: 'reviewers',
+       roleName: 'writers',
        createdAt: new Date(),
        updatedAt: new Date()
      },

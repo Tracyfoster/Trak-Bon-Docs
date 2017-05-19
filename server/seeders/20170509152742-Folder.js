@@ -11,23 +11,23 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('Folder', [{
-      title: 'Personal Stuff',
+    return queryInterface.bulkInsert('Folders', [{
+      folderName: 'Personal Stuff',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      title: 'Famiz',
+      folderName: 'Famiz',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      title: 'Andela',
+      folderName: 'Andela',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
-      title: 'Jokes',
+      folderName: 'Jokes',
       createdAt: new Date(),
       updatedAt: new Date()
     },
