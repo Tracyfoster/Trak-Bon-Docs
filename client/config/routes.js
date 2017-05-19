@@ -16,7 +16,7 @@ import SearchPage from '../components/search/SearchPage';
 
 export default (
   <Route path="/" component={MainLayout}>
-    <IndexRoute handler={HomePage} />
+    <IndexRoute component={HomePage} />
     <Route path="login" component={HomePage} />
     <Route path="documents" component={DocumentEditor} />
     <Route path="documentlist" component={DocumentPage} />
