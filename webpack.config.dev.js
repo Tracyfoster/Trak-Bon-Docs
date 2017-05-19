@@ -22,8 +22,11 @@ export default {
   module: {
     rules: [
       { test: /\.js$/,
-        loaders: ['babel-loader'],
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'server')],
+        loaders: ['babel-loader']
       },
       { test: /\.css$/,
         loaders: ['css-loader'],
