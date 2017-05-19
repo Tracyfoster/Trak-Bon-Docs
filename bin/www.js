@@ -1,8 +1,48 @@
-const http = require('http');
-const app = require('../app');
+import express from 'express';
+import webpack from 'webpack';
+import path from 'path';
+import open from 'open';
+import config from '../webpack.config.dev';
+import Routes from '../server/routes';
+// import authentication from '../server/middlewares';
 
-const port = parseInt(process.env.PORT, 10) || 3000;
-app.set('port', port);
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
-const server = http.createServer(app);
-server.listen(port);
+/* eslint-disable no-console */
+
+const port = 4050;
+const app = express();
+const compiler = webpack(config);
+const router = express.Router();
+Routes(router);
+
+app.use(logger('dev'));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(authentication.verifyToken);
+
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+
+
+app.use('/api', router);
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join( __dirname, '../client/index.html'));
+});
+
+app.listen(port, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    open(`http://localhost:${port}`);
+  }
+});
+
+export default app;
