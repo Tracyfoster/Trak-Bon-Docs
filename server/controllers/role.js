@@ -1,7 +1,9 @@
-const Role = require('../models').Role;
-const Users = require('../models').Users;
+import model from '../models/';
 
-module.exports = {
+const Role = model.Role;
+const Users = model.Users;
+
+export default {
   create(req, res) {
     return Role
       .create({
@@ -13,7 +15,7 @@ module.exports = {
       }))
       .catch(error => res.status(400).send({
         error,
-        message: 'Error creating new role'
+        message: error.parent.detail
       }));
   },
 
@@ -30,7 +32,7 @@ module.exports = {
       })
       .catch(error => res.status(400).send({
         error,
-        message: 'Error retrieving all roles'
+        message: error.parent.detail
       }));
   },
 

@@ -1,11 +1,16 @@
-const jwt = require('jsonwebtoken');
-const Users = require('../models').Users;
-const Role = require('../models').Role;
-const Documents = require('../models').Documents;
+import jwt from 'jsonwebtoken';
+import util from 'util';
+import model from '../models/';
+import Helpers from '../helper/Helpers';
+
+const Users = model.Users;
+const Documents = model.Documents;
+const Role = model.Role;
+const Folder = model.Folder;
 
 const secret = process.env.SECRET || 'thisisademosecret';
 
-module.exports = {
+export default {
   isAuthenticated(req, res, next) {
     const usertoken = req.headers['x-access-token'];
     jwt.verify(usertoken, process.env.SECRETKEY, (error, decoded) => {
@@ -39,7 +44,7 @@ module.exports = {
           lastName: req.body.lastName,
           email: req.body.email,
           password: req.body.password,
-          roleId: req.params.roleId
+          roleId: req.body.roleId
         })
         .then((newUser) => {
           const token = jwt.sign({
@@ -52,10 +57,12 @@ module.exports = {
             token
           });
         })
-        .catch(error => res.status(400).send({
-          error,
-          message: 'Error creating new user'
-        }));
+        .catch((error) => {
+          return res.status(400).send({
+            error,
+            message: 'Error creating new user'
+          });
+        });
       });
   },
 
@@ -121,16 +128,14 @@ module.exports = {
       .findById(req.params.id, {
         include: [{
           model: Documents,
-          as: 'userDocuments'
+          as: 'userDocuments',
         }],
       })
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User Not Found' });
         }
-        return res
-          .status(200)
-          .send({ user });
+        return res.status(200).send({ user });
       })
       .catch(error => res.status(400).send({
         error,
@@ -194,18 +199,38 @@ module.exports = {
   findUserDocuments(req, res) {
     return Users
       .findById(req.params.id, {
-        include: [
-          {
-            model: Documents,
-            as: 'userDocuments'
-          }
-        ] })
+        include: [{
+          model: Documents,
+          as: 'userDocuments'
+        }]
+      })
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User Not Found' });
         }
         return res.status(200).send({ doc: user.userDocuments, status: true });
-        
+      })
+      .catch(error => res.status(400).send({
+        error, message: 'Error occurred while retrieving user document' }));
+  },
+
+  findUserFolders(req, res) {
+    return Users
+      .findById(req.params.id, {
+        include: [{
+          model: Folder,
+          as: 'userFolders',
+          include: [{
+            model: Documents,
+            as: 'folderDocuments'
+          }]
+        }]
+      })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({ message: 'User Not Found' });
+        }
+        return res.status(200).send({ doc: user.userFolders, status: true });
       })
       .catch(error => res.status(400).send({
         error, message: 'Error occurred while retrieving user document' }));

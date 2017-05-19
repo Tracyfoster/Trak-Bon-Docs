@@ -1,7 +1,11 @@
-const Documents = require('../models').Documents;
-const Users = require('../models').Users;
+import model from '../models/';
+import Helpers from '../helper/Helpers';
 
-module.exports = {
+const Documents = model.Documents;
+const Users = model.Users;
+const Role = model.Role;
+
+export default {
   create(req, res) {
     return Documents
       .create({
@@ -23,13 +27,12 @@ module.exports = {
 
   list(req, res) {
     return Documents
-      .findAll()
-    //       {
-    //     offset: req.query.offset || 0,
-    //     limit: req.query.limit || 20,
-    //     include: [User],
-    //     order: [['updatedAt', 'DESC']]
-    //   })
+      .findAll({
+        offset: req.query.offset || 0,
+        limit: req.query.limit || 20,
+        include: [Users],
+        order: [['updatedAt', 'DESC']]
+      })
       .then(document => res.status(200).send(document))
       .catch(error => res.status(400).send({
         error,
@@ -57,9 +60,8 @@ module.exports = {
   },
 
   update(req, res) {
-    // Roles.findById(req.decoded.data.roleId)
-    // .then(() => {
-    return Documents
+    Role.findById(req.decoded.data.roleId)
+    .then(() => Documents
         .find({ where: {
           id: req.params.id } })
           .then((document) => {
@@ -68,23 +70,22 @@ module.exports = {
                 message: 'Document Not Found',
               });
             }
-            // if (Helpers.isAdmin(req, res)
-            // || Helpers.isOwner(req, res, document)) {
-            return document
+            if (Helpers.isAdmin(req, res)
+            || Helpers.isOwner(req, res, document)) {
+              return document
               .update(req.body)
               .then(updatedDoc => res.status(200).send({
                 updatedDoc,
                 message: 'Document updated successfully'
-              }))
-            // }
-        //     return (res.status(403)
-        //        .send({ message: 'Unauthorized Access' }));
-        //   })
+              }));
+            }
+            return (res.status(403)
+               .send({ message: 'Unauthorized Access' }));
+          })
           .catch(error => res.status(400).send({
             error,
             message: 'Error updating document'
-          }));
-          });
+          })));
   },
 
   destroy(req, res) {

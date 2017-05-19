@@ -1,7 +1,10 @@
-const Folder = require('../models').Folder;
-const Documents = require('../models').Documents;
+import model from '../models/';
 
-module.exports = {
+const Folder = model.Folder;
+const User = model.User;
+const Documents = model.Documents;
+
+export default {
   create(req, res) {
     return Folder
       .create({
@@ -34,10 +37,12 @@ module.exports = {
         }
         return res.status(200).send({ folder });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error retrieving all folders'
-      }));
+      .catch((error) => {
+        return res.status(400).send({
+          error,
+          message: error.parent.detail
+        });
+      });
   },
 
   retrieve(req, res) {
