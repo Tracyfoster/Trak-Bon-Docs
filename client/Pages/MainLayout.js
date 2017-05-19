@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Layout, Content, } from 'react-mdl';
-import NavBar from '../components/NavBar';
-import FootBar from '../components/FootBar';
+import { Layout, Content, Grid, Cell } from 'react-mdl';
+
+import NavBar from '../components/common/NavBar';
+import FootBar from '../components/common/FootBar';
+import DrawerBar from '../components/common/DrawerBar';
 
 
 class MainLayout extends Component {
@@ -9,15 +11,15 @@ class MainLayout extends Component {
     return (
       <Layout>
         <NavBar />
-        <Content>
-          <div className="page-content">
-            {this.props.children}
-          </div>
-        </Content>
+        <DrawerBar />
+          <Grid>
+              {this.props.children}
+          </Grid>
         <FootBar />
       </Layout>
     );
   }
 }
+
 
 export default MainLayout;
