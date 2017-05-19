@@ -1,10 +1,12 @@
 /** jsx */
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
+import { userLogin } from '../../actions/userActions';
 
-class RegisterForm extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,8 +27,8 @@ class RegisterForm extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.registerUser(this.state.user)
-    .then(() => this.context.router.push('/manageusers'))
+    this.props.dispatch(userLogin(this.state.user))
+    .then(() => this.context.router.push('/dashboard'))
     .catch(() => console.log('Getting better'));
   }
 
@@ -70,8 +72,13 @@ class RegisterForm extends Component {
   }
 }
 
-RegisterForm.propTypes = {
-  registerUser: PropTypes.func.isRequired
+LoginForm.contextTypes = {
+  router: PropTypes.object
 };
 
-export default RegisterForm;
+LoginForm.PropTypes = {
+  dispatch: PropTypes.func.isRquired,
+};
+
+export default connect()(LoginForm);
+
