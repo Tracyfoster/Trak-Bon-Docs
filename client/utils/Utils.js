@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-export default function setAuthorizationToken(token) {
-  console.log('token', token);
+export const setAuthorizationToken = (token) => {
   if (token) {
     axios.defaults.headers.common.Authorization = token;
   } else {
@@ -9,7 +8,7 @@ export default function setAuthorizationToken(token) {
   }
 }
 
-const eventAction = (type, payload) => ({
+export const eventAction = (type, payload) => ({
   type,
   payload
 });
