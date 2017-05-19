@@ -1,8 +1,6 @@
 /** jsx */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
 
@@ -88,11 +86,6 @@ class RegisterForm extends Component {
               Sign Up</Button>
           </div>
         </form>
-        <div>
-          <p> Already have an account?
-          <span><a href="#"> Sign In </a></span>
-           </p>
-        </div>
       </div>
     );
   }
