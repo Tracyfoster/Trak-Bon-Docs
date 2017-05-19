@@ -21,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [['public', 'private', 'writers', 'reviewers']]
       }
     },
-    onwerRoleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    }
   }, {
     classMethods: {
       // Associations defined here

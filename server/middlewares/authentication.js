@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { Role } from '../models/';
+import models from '../models/';
+
+const Role = models.Role;
 
 const secret = process.env.SECRET || 'thisisademosecret';
 

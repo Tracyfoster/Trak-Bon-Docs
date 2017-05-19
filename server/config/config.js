@@ -3,11 +3,7 @@ require('dotenv').config();
 module.exports = {
 
   development: {
-    username: 'andeladeveloper',
-    password: null,
-    database: 'trakbon',
-    host: 'localhost',
-    dialect: 'postgres'
+    url: process.env.DB_URL,
   },
   test: {
     url: process.env.TEST_URL,
