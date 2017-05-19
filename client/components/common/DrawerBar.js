@@ -33,9 +33,13 @@ class DrawerBar extends Component {
                 <IconButton colored name="settings" />
                 <span> Settings </span>
               </a>
-              <a to>
+              <a>
                 <IconButton colored name="help" />
                 <span> Help </span>
+              </a>
+              <a>
+                <IconButton colored name="signout" />
+                <span> Sign Out </span>
               </a>
           </Navigation>
       </Drawer>
