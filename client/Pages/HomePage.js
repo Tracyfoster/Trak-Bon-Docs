@@ -1,13 +1,37 @@
 import React, { Component } from 'react';
-import { Grid, Cell } from 'react-mdl';
+import { Grid, Cell, Tabs, Tab } from 'react-mdl';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import docimage from '../images/docman.jpg';
 import RegisterForm from '../components/auth/RegisterForm';
+import LoginForm from '../components/auth/LoginForm';
 import * as userActions from '../actions/userActions';
 
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeTab: 0,
+      user: true
+    };
+    this.setActiveTab = this.setActiveTab.bind(this);
+  }
+
+  setActiveTab(tabId) {
+    if (tabId === 1) {
+      this.setState({
+        activeTab: 1,
+        user: false
+      });
+    } else {
+      this.setState({
+        activeTab: 0,
+        user: true
+      });
+    }
+  }
+
   render() {
     return (
         <Grid>
@@ -17,7 +41,30 @@ class HomePage extends Component {
           </div>
         </Cell>
         <Cell col={4}>
-          <RegisterForm registerUser={this.props.actions.registerUser} />
+          <div>
+            <Tabs
+              ripple
+              activeTab={this.state.activeTab}
+              onChange={this.setActiveTab}>
+              <Tab>
+                Sign In</Tab>
+              <Tab>
+                Sign Up</Tab>
+            </Tabs>
+            {this.state.user ?
+            <section>
+              <div className="content">
+                <LoginForm userLogin={this.props.actions.userLogin} />
+              </div>
+            </section>
+            :
+            <section>
+              <div className="content">
+                <RegisterForm />
+              </div>
+            </section>
+            }
+          </div>
         </Cell>
       </Grid>
     );
@@ -28,17 +75,13 @@ HomePage.propTypes = {
   actions: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  };
-}
+const mapStateToProps = (state) => ({
+  user: state.user
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(userActions, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(userActions, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
