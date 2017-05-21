@@ -1,70 +1,76 @@
 /** jsx */
 import React, { Component } from 'react';
-import { Grid, Cell, Card, CardTitle } from 'react-mdl';
+import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
+import DocumentList from '../../components/documentComponents/DocumentList';
 
-export default function Dashboard({ dashboard }) {
-  console.log(dashboard);
+export default function Dashboard({ userDocuments, auth }) {
+  const documents = userDocuments.data;
+  const publicCount = userDocuments.public.length;
+  const privateCount = userDocuments.private.length;
+  const roleCount = userDocuments.role.length;
   return (
-    <Grid>
-      <Cell col={4}>
-        <Card
-          shadow={0}
-          style={{
-            width: '200px',
-            minHeight: '70px',
-            maxHeight: '100px',
-            background: '#3E4EB8' }}>
-          <CardTitle
-            expand
-            style={{
-              alignItems: 'flex-start',
-              color: '#fff' }}>
-              <h4 style={{ marginTop: '0' }}># Public
-              <br /> {dashboard[0]} </h4>
-          </CardTitle>
-        </Card>
-      </Cell>
-      <Cell col={4}>
-        <Card
-          shadow={0}
-          style={{
-            width: '200px',
-            minHeight: '70px',
-            maxHeight: '100px',
-            background: '#3E4EB8' }}>
-          <CardTitle
-            expand
-            style={{
-              alignItems: 'flex-start',
-              color: '#fff' }}>
-              <h4 style={{ marginTop: '0' }}># Private
-              <br /> {dashboard[1]} </h4>
-          </CardTitle>
-        </Card>
-      </Cell>
-      <Cell col={4}>
-        <Card
-          shadow={0}
-          style={{
-            width: '200px',
-            minHeight: '70px',
-            maxHeight: '100px',
-            background: '#3E4EB8' }}>
-          <CardTitle
-            expand
-            style={{
-              alignItems: 'flex-start',
-              color: '#fff' }}>
-              <h4 style={{ marginTop: '0' }}># Role
-              <br /> {dashboard[2]} </h4>
-          </CardTitle>
-        </Card>
-      </Cell>
-    </Grid>
+      <div>
+        <div>
+          <span>
+              <Button
+                raised
+                colored
+                style={{
+                  textAlign: 'center',
+                  width: '150px',
+                  color: '#fff' }}>
+                  # Public
+                  <span /> {publicCount}
+              </Button>
+          <span />
+          <span />
+              <Button
+                raised
+                colored
+                style={{
+                  textAlign: 'center',
+                  width: '150px',
+                  color: '#fff' }}>
+                  # Private
+                  <span /> {privateCount}
+              </Button>
+          <span />
+          <span />
+              <Button
+                raised
+                colored
+                style={{
+                  textAlign: 'center',
+                  width: '150px',
+                  color: '#fff' }}>
+                  # Role
+                  <span /> {roleCount}
+              </Button>
+          </span>
+        </div>
+        <h3> Hi User </h3>
+        <p> Welcome to the place of awesomeness</p>
+        <div>
+          <div>
+          <h4>Documents List</h4>
+          <Button
+              ripple raised colored
+              type="submit">
+              View All</Button>
+          </div>
+          { documents ?
+          <DocumentList
+            documents={documents}
+          />
+          : <span/>
+          }
+        </div>
+      </div>
   );
 }
 
 Dashboard.propTypes = {
-  dashboard: PropTypes.array.isRequired,
+  userDocuments: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
