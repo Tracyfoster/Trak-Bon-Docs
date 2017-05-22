@@ -61,14 +61,12 @@ class SearchPage extends Component {
         {this.state.user ?
         <section>
           <div className="content">
-            Content for the tab for u:
             <UserSearch userResults={this.props.userResults}/>
           </div>
         </section>
         :
         <section>
           <div className="content">
-            Content for the tab
             <DocumentSearch documentResults={this.props.documentResults}/>
           </div>
         </section>
