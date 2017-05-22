@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Tab } from 'react-mdl';
+import { Tabs, Tab, Textfield } from 'react-mdl';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
@@ -25,8 +25,13 @@ class SearchPage extends Component {
   setActiveTab(tabId) {
     if (tabId === 1) {
       this.setState({
-        activeTab: 1,
+        activeTab: tabId,
         user: false
+      });
+    } else {
+      this.setState({
+        activeTab: tabId,
+        user: true
       });
     }
   }
@@ -35,6 +40,15 @@ class SearchPage extends Component {
   render() {
     return (
       <div>
+        <div>
+          <Textfield
+          value=""
+          onChange={() => {}}
+          label="Search"
+          expandableIcon="search"
+          style={{ width: '200px' }}
+          />
+        </div>
         <Tabs
           ripple
           activeTab={this.state.activeTab}
@@ -48,14 +62,14 @@ class SearchPage extends Component {
         <section>
           <div className="content">
             Content for the tab for u:
-            {/*<UserSearch userResults={this.props.userResults}/>*/}
+            <UserSearch userResults={this.props.userResults}/>
           </div>
         </section>
         :
         <section>
           <div className="content">
             Content for the tab
-            {/*<DocumentSearch documentResults={this.props.documentResults}/>*/}
+            <DocumentSearch documentResults={this.props.documentResults}/>
           </div>
         </section>
         }
@@ -69,24 +83,14 @@ SearchPage.propTypes = {
   documentResults: PropTypes.array.isRequired,
   searchUsers: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
-  // auth: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const userResults = state.search.users.users || [];
-  const documentResults = state.search.documents.documents || [];
-  let DocumentCount;
-  if (userResults) {
-    DocumentCount = (userResults
-    .filter(user => userResults.userDocuments));
-  }
-
-  console.log('docpage', state);
-  console.log('ctvbhj', DocumentCount);
+const mapStateToProps = (state) => {
   return {
-    userResults,
-    documentResults,
-    DocumentCount
+    userResults: state.search.users.users || [],
+    documentResults: state.search.documents.documents || [],
+    auth: state.auth
   };
 }
 
