@@ -49,7 +49,8 @@ export default {
     const searchTerm = req.query.q;
     return Documents
       .findAll({
-        where: { title: { $iLike: `%${searchTerm}%` } }
+        where: { title: { $iLike: `%${searchTerm}%` } },
+        include: { model: Users }
       })
       .then((documents) => {
         if (!documents) {

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Table, TableHeader } from 'react-mdl';
 import PropTypes from 'prop-types';
 
-
 export default function DocumentSearch({ documentResults }) {
   const rowData = documentResults.map((result) => {
     return {
@@ -18,6 +17,7 @@ export default function DocumentSearch({ documentResults }) {
   return (
       <Table
       sortable
+      rowKeyColumn="id"
       shadow={0}
       rows={rowData}
   >
@@ -46,12 +46,6 @@ export default function DocumentSearch({ documentResults }) {
           tooltip="Document createion date"
       >
           Created Date
-      </TableHeader>
-      <TableHeader
-          name="action"
-          tooltip="Actions you can take"
-      >
-          Action
       </TableHeader>
   </Table>
   );

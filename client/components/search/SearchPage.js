@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, Tab } from 'react-mdl';
-import { connect } from 'react-redux';
+import { Tabs, Tab, Grid, Cell } from 'react-mdl';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
 import UserSearch from './UserSearch';
 import DocumentSearch from './DocumentSearch';
@@ -17,49 +17,45 @@ class SearchPage extends Component {
     this.setActiveTab = this.setActiveTab.bind(this);
   }
 
-  componentWillMount() {
-    this.props.searchUsers();
-    this.props.searchDocuments();
-  }
-
   setActiveTab(tabId) {
-    if (tabId === 1) {
-      this.setState({
-        activeTab: 1,
-        user: false
-      });
-    }
+    this.setState({
+      activeTab: tabId,
+      user: tabId !== 1
+    });
   }
 
 
   render() {
     return (
-      <div>
-        <Tabs
-          ripple
-          activeTab={this.state.activeTab}
-          onChange={this.setActiveTab}>
-          <Tab>
-            User Search</Tab>
-          <Tab>
-            Document Search</Tab>
-        </Tabs>
-        {this.state.user ?
-        <section>
-          <div className="content">
-            Content for the tab for u:
-            {/*<UserSearch userResults={this.props.userResults}/>*/}
-          </div>
-        </section>
-        :
-        <section>
-          <div className="content">
-            Content for the tab
-            {/*<DocumentSearch documentResults={this.props.documentResults}/>*/}
-          </div>
-        </section>
-        }
-      </div>
+      <Grid>
+        <Cell col={1}>
+          <span />
+        </Cell>
+        <Cell col={11}>
+          <Tabs
+            ripple
+            activeTab={this.state.activeTab}
+            onChange={this.setActiveTab}>
+            <Tab>
+              Document Search</Tab>
+            <Tab>
+              User Search</Tab>
+          </Tabs>
+          {this.state.user ?
+          <section>
+            <div className="content">
+              <DocumentSearch documentResults={this.props.documentResults}/>
+            </div>
+          </section>
+          :
+          <section>
+            <div className="content">
+              <UserSearch userResults={this.props.userResults}/>
+            </div>
+          </section>
+          }
+        </Cell>
+      </Grid>
     );
   }
 }
@@ -69,24 +65,14 @@ SearchPage.propTypes = {
   documentResults: PropTypes.array.isRequired,
   searchUsers: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
-  // auth: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const userResults = state.search.users.users || [];
-  const documentResults = state.search.documents.documents || [];
-  let DocumentCount;
-  if (userResults) {
-    DocumentCount = (userResults
-    .filter(user => userResults.userDocuments));
-  }
-
-  console.log('docpage', state);
-  console.log('ctvbhj', DocumentCount);
+const mapStateToProps = (state) => {
   return {
-    userResults,
-    documentResults,
-    DocumentCount
+    userResults: state.search.users.users || [],
+    documentResults: state.search.documents.documents || [],
+    auth: state.auth
   };
 }
 
