@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, Tab, Textfield } from 'react-mdl';
-import { connect } from 'react-redux';
+import { Tabs, Tab, Grid, Cell } from 'react-mdl';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
 import UserSearch from './UserSearch';
 import DocumentSearch from './DocumentSearch';
@@ -17,61 +17,45 @@ class SearchPage extends Component {
     this.setActiveTab = this.setActiveTab.bind(this);
   }
 
-  componentWillMount() {
-    this.props.searchUsers();
-    this.props.searchDocuments();
-  }
-
   setActiveTab(tabId) {
-    if (tabId === 1) {
-      this.setState({
-        activeTab: tabId,
-        user: false
-      });
-    } else {
-      this.setState({
-        activeTab: tabId,
-        user: true
-      });
-    }
+    this.setState({
+      activeTab: tabId,
+      user: tabId !== 1
+    });
   }
 
 
   render() {
     return (
-      <div>
-        <div>
-          <Textfield
-          value=""
-          onChange={() => {}}
-          label="Search"
-          expandableIcon="search"
-          style={{ width: '200px' }}
-          />
-        </div>
-        <Tabs
-          ripple
-          activeTab={this.state.activeTab}
-          onChange={this.setActiveTab}>
-          <Tab>
-            User Search</Tab>
-          <Tab>
-            Document Search</Tab>
-        </Tabs>
-        {this.state.user ?
-        <section>
-          <div className="content">
-            <UserSearch userResults={this.props.userResults}/>
-          </div>
-        </section>
-        :
-        <section>
-          <div className="content">
-            <DocumentSearch documentResults={this.props.documentResults}/>
-          </div>
-        </section>
-        }
-      </div>
+      <Grid>
+        <Cell col={1}>
+          <span />
+        </Cell>
+        <Cell col={11}>
+          <Tabs
+            ripple
+            activeTab={this.state.activeTab}
+            onChange={this.setActiveTab}>
+            <Tab>
+              Document Search</Tab>
+            <Tab>
+              User Search</Tab>
+          </Tabs>
+          {this.state.user ?
+          <section>
+            <div className="content">
+              <DocumentSearch documentResults={this.props.documentResults}/>
+            </div>
+          </section>
+          :
+          <section>
+            <div className="content">
+              <UserSearch userResults={this.props.userResults}/>
+            </div>
+          </section>
+          }
+        </Cell>
+      </Grid>
     );
   }
 }

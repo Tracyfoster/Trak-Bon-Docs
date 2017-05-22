@@ -9,7 +9,7 @@ const eventAction = (type, payload) => ({
 export function searchDocuments(searchTerm) {
   return (dispatch) => {
     return axios.get(
-        `/api/search/documents/?q=test`)
+        `/api/search/documents/?q=${searchTerm}`)
        .then((response) => {
          dispatch(eventAction(types.DOCUMENT_SEARCH_RESULTS, response.data));
        })
@@ -22,7 +22,7 @@ export function searchDocuments(searchTerm) {
 export function searchUsers(searchTerm) {
   return (dispatch) => {
     return axios.get(
-        `/api/search/users/?q=test`)
+        `/api/search/users/?q=${searchTerm}`)
       .then((response) => {
         dispatch(eventAction(types.USER_SEARCH_RESULTS, response.data));
       })
