@@ -42,21 +42,6 @@ export function fetchDocument(id) {
   };
 }
 
-export function fetchUserDocuments() {
-  return (dispatch) => {
-    return axios.get('/api/findUserDocuments')
-      .then(res => res.data)
-      .then((userDocuments) => {
-        const payload = {};
-        payload.data = userDocuments;
-        payload.public = (userDocuments.filter(document => document.access === 'public')).length;
-        payload.private = (userDocuments.filter(document => document.access === 'private')).length;
-        payload.role = (userDocuments.filter(document => document.access === 'role')).length;
-        return dispatch(eventAction(types.SET_USER_DOCUMENTS, payload));
-      });
-  };
-}
-
 export function updateDocument(data) {
   return (dispatch) => {
     return axios.put(`/api/documents/${data.id}`, data)

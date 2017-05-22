@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
-import DocumentList from '../../components/documentComponents/DocumentList';
+import UsersList from '../../components/userComponents/UsersList';
 
-export default function Dashboard({ userDocuments, auth }) {
-  const documents = userDocuments.data;
-  const publicCount = userDocuments.public.length;
-  const privateCount = userDocuments.private.length;
-  const roleCount = userDocuments.role.length;
+export default function AdminDashboard({ users, auth }) {
+  console.log('userDocuments', users)
+  const allUsers = users.data;
+  const adminCount = users.adminCount.length;
+  const reviewersCount = users.reviewersCount.length;
+  const writersCount = users.writersCount.length;
   return (
       <div>
         <div>
@@ -20,8 +21,8 @@ export default function Dashboard({ userDocuments, auth }) {
                   textAlign: 'center',
                   width: '150px',
                   color: '#fff' }}>
-                  # Public
-                  <span /> {publicCount}
+                  # Admin
+                  <span /> {adminCount}
               </Button>
           <span />
           <span />
@@ -32,8 +33,8 @@ export default function Dashboard({ userDocuments, auth }) {
                   textAlign: 'center',
                   width: '150px',
                   color: '#fff' }}>
-                  # Private
-                  <span /> {privateCount}
+                  # Reviwers
+                  <span /> {reviewersCount}
               </Button>
           <span />
           <span />
@@ -44,24 +45,26 @@ export default function Dashboard({ userDocuments, auth }) {
                   textAlign: 'center',
                   width: '150px',
                   color: '#fff' }}>
-                  # Role
-                  <span /> {roleCount}
+                  # Writers
+                  <span /> {writersCount}
               </Button>
           </span>
         </div>
-        <h3> Hi User </h3>
-        <p> Welcome to the place of awesomeness</p>
+        <div>
+          <span />
+        </div>
         <div>
           <div>
-          <h4>Documents List</h4>
+          <h4>Recently added Users </h4>
           <Button
               ripple raised colored
               type="submit">
               View All</Button>
           </div>
-          { documents ?
-          <DocumentList
-            documents={documents}
+          { allUsers ?
+          <UsersList
+            allUsers={allUsers}
+            auth={auth}
           />
           : <span/>
           }
@@ -70,7 +73,7 @@ export default function Dashboard({ userDocuments, auth }) {
   );
 }
 
-Dashboard.propTypes = {
-  userDocuments: PropTypes.object.isRequired,
+AdminDashboard.propTypes = {
   auth: PropTypes.object.isRequired,
+  users: PropTypes.object.isRequired,
 };
