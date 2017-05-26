@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { eventAction, setAuthorizationToken } from '../utils/Utils';
+import { eventAction, setAuthorizationToken, isAdmin } from '../utils/Utils';
 import * as types from './types';
 
 export const registerUser = user => (dispatch) => {
@@ -17,6 +17,16 @@ export const registerUser = user => (dispatch) => {
     });
 };
 
+export const createUser = user => (dispatch) => {
+  return axios.post('/api/users', user)
+    .then((res) => {
+      dispatch(eventAction(types.NEW_USER));
+    })
+    .catch((error) => {
+      throw (error);
+    });
+};
+
 export const userLogin = user => (dispatch) => {
   dispatch(eventAction(types.USER_LOGIN_REQUEST));
   return axios.post('/api/users/login', user)
@@ -25,6 +35,7 @@ export const userLogin = user => (dispatch) => {
       dispatch(eventAction(types.USER_LOGIN_SUCCESS));
       localStorage.setItem('jwtToken', token);
       setAuthorizationToken(token);
+      isAdmin(res.data.user.roleId);
       dispatch(eventAction(types.SET_CURRENT_USER, res.data.user));
     })
     .catch((error) => {

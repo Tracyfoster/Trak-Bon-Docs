@@ -1,6 +1,7 @@
 import * as types from '../actions/types';
+import InitialState from './InitialState';
 
-export default function documents(state = [], action = {}) {
+export default function documents(state = InitialState.documents, action = {}) {
   switch (action.type) {
   case types.ADD_DOCUMENT:
     return [
@@ -24,8 +25,9 @@ export default function documents(state = [], action = {}) {
   case types.SET_DOCUMENTS:
     return action.payload;
   case types.SET_USER_DOCUMENTS:
-    return action.payload;
-
+    return Object.assign({}, state, {
+      userDocuments: action.payload
+    });
   default: return state;
   }
 }
