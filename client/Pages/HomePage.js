@@ -19,17 +19,10 @@ class HomePage extends Component {
   }
 
   setActiveTab(tabId) {
-    if (tabId === 1) {
-      this.setState({
-        activeTab: 1,
-        user: false
-      });
-    } else {
-      this.setState({
-        activeTab: 0,
-        user: true
-      });
-    }
+    this.setState({
+      activeTab: tabId,
+      user: tabId !== 1
+    });
   }
 
   render() {
