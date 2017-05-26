@@ -4,6 +4,7 @@ import admin from './admin';
 import documents from './documents';
 import folders from './folders';
 import users from './users';
+import roles from './roles';
 import search from './search';
 
 export default combineReducers({
@@ -12,5 +13,6 @@ export default combineReducers({
   documents,
   folders,
   users,
+  roles,
   search
 });

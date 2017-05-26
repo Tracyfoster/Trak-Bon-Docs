@@ -1,6 +1,7 @@
 import * as types from '../actions/types';
+import InitialState from './InitialState';
 
-export default function folders(state = [], action = {}) {
+export default function folders(state = InitialState.folders, action = {}) {
   switch (action.type) {
   case types.ADD_FOLDER:
     return [

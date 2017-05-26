@@ -104,18 +104,18 @@ export default {
 
   list(req, res) {
     return Users
-      .findAll({
-        include: [{
-          model: Documents,
-          as: 'userDocuments',
-        }],
+      .findAndCountAll({
+        subQuery: false,
+        order: [['createdAt', 'DESC']],
+        offset: req.query.offset || 0,
+        limit: req.query.limit || 5,
       })
-      .then((user) => {
-        if (!user) {
+      .then((users) => {
+        if (!users) {
           return res.status(404).send({
             message: 'No User Found' });
         }
-        return res.status(200).send(user);
+        return res.status(200).send(users);
       })
       .catch(error => res.status(400).send({
         error,
@@ -144,30 +144,30 @@ export default {
   },
 
   update(req, res) {
-    Role.findById(req.decoded.data.roleId)
-    .then(() => {
-      if (Helpers.isAdmin(req, res)) {
-        return Users
-          .find({ where: {
-            id: req.params.id } })
-            .then((user) => {
-              if (!user) {
-                return res.status(404).send({ message: 'User Not Found' });
-              }
-              return user
-              .update(req.body)
-                .then(updatedUser => res
-                  .status(200).send({ updatedUser,
-                    message: 'User updated successfully',
-
-                  }));
-            }).catch(error => res.status(400).send({
-              error, message: 'Error updating user' }));
-      }
-      return (res.status(403)
-         .send({ message: 'Unauthorized Access' }));
-    });
+    // Role.findById(req.decoded.data.roleId)
+    // .then(() => {
+    //   if (Helpers.isAdmin(req, res)) {
+    return Users
+      .find({ where: { id: req.params.id } })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({ message: 'User Not Found' });
+        }
+        return user
+        .update(req.body)
+          .then(updatedUser => res
+            .status(200).send({ updatedUser,
+              message: 'User updated successfully',
+            }));
+      }).catch(error => res.status(400).send({
+        error,
+        message: 'Error updating user'
+      }));
   },
+      // return (res.status(403)
+      //    .send({ message: 'Unauthorized Access' }));
+  //   });
+  // },
 
   destroy(req, res) {
     // Roles.findById(req.decoded.data.roleId)
@@ -186,6 +186,7 @@ export default {
             return user
               .destroy()
               .then(() => res.status(200).send({
+                userId: req.params.id,
                 message: `${user.name} deleted successfully` }));
           })
           .catch(error => res.status(400).send({

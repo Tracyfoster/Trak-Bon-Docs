@@ -1,31 +1,27 @@
 import * as types from '../actions/types';
+import InitialState from './InitialState';
 
-const initialState = {
-  users: {},
-  userDocuments: {},
-}
-
-export default function users(state = initialState, action = {}) {
+export default function users(state = InitialState.admin, action = {}) {
   switch (action.type) {
+  case types.FETCH_USERS_SUCCESS:
+    return Object.assign({}, state, {
+      users: action.payload.rows,
+      totalUsers: action.payload.count
+    });
   case types.USER_FETCHED:
     return [
-      ...state.filter(user => user.id !== action.user.id),
+      ...state.users.filter(user => user.id !== action.payload.id),
       Object.assign({}, action.payload),
     ];
   case types.USER_UPDATED:
-    return [
-      ...state.filter(user => user.id !== action.user.id),
-      Object.assign({}, action.payload),
-    ];
-  case types.USER_DELETED:
-    return state.filter(item => item.id !== action.userId);
-  case types.SET_USERS:
     return Object.assign({}, state, {
-      users: action.payload
+      users: [...state.users
+      .filter(user => user.id !== action.payload.id), action.payload]
     });
-  case types.SET_USER_DOCUMENTS:
+  case types.USER_DELETED:
     return Object.assign({}, state, {
-      userDocuments: action.payload
+      users: state.users.filter(user => user.id !== action.payload.id),
+      totalUsers: state.totalUsers - 1
     });
   default: return state;
   }

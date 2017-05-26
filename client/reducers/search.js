@@ -1,9 +1,5 @@
 import * as types from '../actions/types';
-
-const initialState = {
-  documents: {},
-  users: {}
-};
+import InitialState from './InitialState';
 
 /**
  * search reducer
@@ -11,7 +7,7 @@ const initialState = {
  * @param  {object} action                           [description]
  * @return {object}                                  [description]
  */
-export default function documents(state = initialState, action = {}) {
+export default function documents(state = InitialState.search, action = {}) {
   switch (action.type) {
   case types.DOCUMENT_SEARCH_RESULTS:
     return Object.assign({}, state, {
