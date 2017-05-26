@@ -98,8 +98,8 @@ RegisterForm.contextTypes = {
   router: PropTypes.object
 };
 
-RegisterForm.PropTypes = {
-  dispatch: PropTypes.func.isRquired,
+RegisterForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(RegisterForm);

@@ -50,7 +50,7 @@ NavBar.contextTypes = {
   router: PropTypes.object
 };
 
-NavBar.PropTypes = {
+NavBar.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 

@@ -30,7 +30,7 @@ export default {
       .findAll({
         offset: req.query.offset || 0,
         limit: req.query.limit || 20,
-        include: [Users],
+        include: { model: Users },
         order: [['updatedAt', 'DESC']]
       })
       .then(document => res.status(200).send(document))
@@ -43,7 +43,7 @@ export default {
   retrieve(req, res) {
     return Documents
       .findById(req.params.id, {
-        include: [Users],
+        include: { model: Users }
       })
       .then((document) => {
         if (!document) {

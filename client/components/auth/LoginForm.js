@@ -76,8 +76,8 @@ LoginForm.contextTypes = {
   router: PropTypes.object
 };
 
-LoginForm.PropTypes = {
-  dispatch: PropTypes.func.isRquired,
+LoginForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect()(LoginForm);
