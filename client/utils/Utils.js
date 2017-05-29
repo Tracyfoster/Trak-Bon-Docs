@@ -6,9 +6,15 @@ export const setAuthorizationToken = (token) => {
   } else {
     delete axios.defaults.headers.common.Authorization;
   }
-}
+};
 
 export const eventAction = (type, payload) => ({
   type,
   payload
 });
+
+export const isAdmin = (roleId) => {
+  if (roleId === 1) {
+    return true;
+  }
+};

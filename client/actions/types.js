@@ -7,11 +7,11 @@ export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const NEW_USER = 'NEW_USER';
 
 export const USER_LOGOUT = 'USER_LOGOUT';
 
-export const SET_USERS = 'SET_USERS';
-export const ADD_USER = 'ADD_USER';
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const USER_FETCHED = 'USER_FETCHED';
 export const USER_UPDATED = 'USER_UPDATED';
 export const USER_DELETED = 'USER_DELETED';
@@ -28,6 +28,12 @@ export const ADD_FOLDER = 'ADD_FOLDER';
 export const FOLDER_FETCHED = 'FOLDER_FETCHED';
 export const FOLDER_UPDATED = 'FOLDER_UPDATED';
 export const FOLDER_DELETED = 'FOLDER_DELETED';
+
+export const SET_ROLES = 'SET_ROLES';
+export const ADD_ROLE = 'ADD_ROLE';
+export const ROLE_FETCHED = 'ROLE_FETCHED';
+export const ROLE_UPDATED = 'ROLE_UPDATED';
+export const ROLE_DELETED = 'ROLE_DELETED';
 
 export const USER_SEARCH_RESULTS = 'USER_SEARCH_RESULTS';
 export const DOCUMENT_SEARCH_RESULTS = 'DOCUMENT_SEARCH_RESULTS';

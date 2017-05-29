@@ -1,8 +1,15 @@
 import React from 'react';
-import { Table, TableHeader } from 'react-mdl';
+import { Table, TableHeader, IconButton } from 'react-mdl';
 import PropTypes from 'prop-types';
+import UserUpdate from './UserUpdate';
 
-export default function UsersList({ users, deleteUser, updateUser, auth }) {
+export default function UsersList({ allUsers, deleteUser, auth, context }) {
+  console.log('allUsers', allUsers);
+  const users = allUsers;
+  const userUpdate = (id) => {
+    context.push(`/manageusers/${id}`);
+  };
+
   const rowData = users.map(user => ({
     id: user.id,
     firstName: user.firstName,
@@ -12,7 +19,10 @@ export default function UsersList({ users, deleteUser, updateUser, auth }) {
     createdAt: user.createdAt.substr(0, 10),
     updatedAt: user.updatedAt.substr(0, 10),
     action:
-        <a href="" onClick={() => deleteUser(user.id)}>Delete</a>
+      <span>
+        <IconButton colored name= "delete" onClick={() => deleteUser(user.id)} /> |
+        <UserUpdate user={user} />
+      </span>
   }));
   return (
     <Table
@@ -49,7 +59,8 @@ export default function UsersList({ users, deleteUser, updateUser, auth }) {
 }
 
 UsersList.propTypes = {
-  users: PropTypes.array.isRequired,
-  deleteUser: PropTypes.func.isRequired,
+  allUsers: PropTypes.array.isRequired,
   auth: PropTypes.object.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  context: PropTypes.object.isRequired
 };

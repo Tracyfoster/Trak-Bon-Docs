@@ -48,7 +48,12 @@ export default {
         })
         .then((newUser) => {
           const token = jwt.sign({
-            id: newUser.id
+            id: newUser.id,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            email: newUser.email,
+            password: newUser.password,
+            roleId: newUser.roleId
           }, secret, {
             expiresIn: 60 * 60 * 24 });
           return res.status(201).send({
@@ -81,7 +86,12 @@ export default {
           });
         }
         const token = jwt.sign({
-          id: user.id
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          password: user.password,
+          roleId: user.roleId
         }, secret, {
           expiresIn: 60 * 60 * 24 });
         return res.status(200).send({
@@ -199,20 +209,29 @@ export default {
 
   findUserDocuments(req, res) {
     return Users
-      .findById(req.params.id, {
+      .findAndCountAll({
+        where: { id: req.params.id },
+        subQuery: false,
         include: [{
           model: Documents,
-          as: 'userDocuments'
-        }]
+          as: 'userDocuments',
+        }],
+        order: [['createdAt', 'DESC']],
+        offset: req.query.offset || 0,
+        limit: req.query.limit || 5,
       })
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User Not Found' });
         }
-        return res.status(200).send({ doc: user.userDocuments, status: true });
+        return res.status(200).send({ user, status: true });
       })
-      .catch(error => res.status(400).send({
-        error, message: 'Error occurred while retrieving user document' }));
+      .catch((error) => {
+        console.log(error)
+        return res.status(400).send({
+        error, message: 'Error occurred while retrieving user document'
+      })
+    });
   },
 
   findUserFolders(req, res) {
