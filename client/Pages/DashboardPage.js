@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { Grid, Cell } from 'react-mdl';
+import { Grid, Cell, FABButton, Icon } from 'react-mdl';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { fetchUserDocuments, fetchUsers } from '../actions/adminActions';
+import * as documentActions from '../actions/documentActions'
 import Dashboard from '../components/documentComponents/Dashboard';
 import AdminDashboard from '../components/documentComponents/AdminDashboard';
+import { isAdmin } from '../utils/Utils';
 
 class DashboardPage extends Component {
   componentWillMount() {
     const userId = this.props.auth.user.id;
-    this.props.dispatch(fetchUserDocuments(userId));
-    this.props.dispatch(fetchUsers());
+    this.props.actions.fetchUserDocuments(userId);
+    this.props.actions.fetchDocuments();
   }
 
   render() {
     return (
       <div>
         <Grid>
-          <Cell col={3}>
+          <Cell col={2}>
             <span />
           </Cell>
           <Cell col={9}>
@@ -26,6 +29,7 @@ class DashboardPage extends Component {
               <Dashboard
               userDocuments={this.props.userDocuments}
               auth={this.props.auth}
+              actions={this.props.actions}
               />
               : <span/>
               }
@@ -34,15 +38,26 @@ class DashboardPage extends Component {
               <span />
               <br />
             </div>
+            {/*{isAdmin ?*/}
             <div>
-               { this.props.users ?
+               { this.props.allDocuments ?
               <AdminDashboard
-              users={this.props.users}
+              allDocuments={this.props.allDocuments}
               auth={this.props.auth}
+              actions={this.props.actions}
               />
               : <span/>
               }
             </div>
+            {/*: <span/>
+            }*/}
+          </Cell>
+          <Cell col={1}>
+            <Link to="/editor">
+              <FABButton colored ripple>
+                <Icon name="add" />
+              </FABButton>
+            </Link>
           </Cell>
         </Grid>
       </div>
@@ -51,19 +66,25 @@ class DashboardPage extends Component {
 }
 
 DashboardPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   userDocuments: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired,
+  allDocuments: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  console.log('docpage', state.admin);
+  console.log('state', state);
   return {
     auth: state.auth,
-    userDocuments: state.admin.userDocuments.userDocuments,
-    users: state.admin.users.users,
+    userDocuments: state.documents.userDocuments,
+    allDocuments: state.documents,
   };
 };
 
-export default connect(mapStateToProps)(DashboardPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(documentActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

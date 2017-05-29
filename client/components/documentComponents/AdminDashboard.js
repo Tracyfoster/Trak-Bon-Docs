@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
-import UsersList from '../../components/userComponents/UsersList';
+import DocumentList from '../../components/documentComponents/DocumentList';
 
-export default function AdminDashboard({ users, auth }) {
-  console.log('userDocuments', users)
-  const allUsers = users.data;
-  const adminCount = users.adminCount.length;
-  const reviewersCount = users.reviewersCount.length;
-  const writersCount = users.writersCount.length;
+export default function AdminDashboard({ allDocuments, auth, actions }) {
+  const documents = allDocuments.data;
+  // totalItems
+  const publicCount = (documents.filter(document => document.access === 'public')).length;
+  const privateCount = (documents.filter(document => document.access === 'private')).length;
+  const roleCount = (documents.filter(document => document.access === 'role')).length;
   return (
       <div>
         <div>
@@ -18,11 +18,10 @@ export default function AdminDashboard({ users, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
                   width: '150px',
-                  color: '#fff' }}>
-                  # Admin
-                  <span /> {adminCount}
+                  marginRight: '10px' }}>
+                  # Public
+                  <span /> {publicCount}
               </Button>
           <span />
           <span />
@@ -30,11 +29,10 @@ export default function AdminDashboard({ users, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
                   width: '150px',
-                  color: '#fff' }}>
-                  # Reviwers
-                  <span /> {reviewersCount}
+                  marginRight: '10px' }}>
+                  # Private
+                  <span /> {privateCount}
               </Button>
           <span />
           <span />
@@ -42,29 +40,26 @@ export default function AdminDashboard({ users, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
-                  width: '150px',
-                  color: '#fff' }}>
-                  # Writers
-                  <span /> {writersCount}
+                 width: '150px',
+                 marginRight: '10px' }}>
+                  # Role
+                  <span /> {roleCount}
               </Button>
           </span>
         </div>
-        <div>
-          <span />
-        </div>
+        <p />
         <div>
           <div>
-          <h4>Recently added Users </h4>
+          <h4>All Documents</h4>
           <Button
               ripple raised colored
+              style={{marginBottom: '5px'}}
               type="submit">
               View All</Button>
           </div>
-          { allUsers ?
-          <UsersList
-            allUsers={allUsers}
-            auth={auth}
+          { documents ?
+          <DocumentList
+            documents={documents}
           />
           : <span/>
           }
@@ -74,6 +69,7 @@ export default function AdminDashboard({ users, auth }) {
 }
 
 AdminDashboard.propTypes = {
+  allDocuments: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
 };
