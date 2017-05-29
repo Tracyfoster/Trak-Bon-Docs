@@ -1,43 +1,57 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import { IconButton, Navigation, Textfield, Drawer } from 'react-mdl';
+import { logoutUser } from '../../actions/userActions';
 
 class DrawerBar extends Component {
+  constructor(props) {
+    super(props);
+    this.signout = this.signout.bind(this);
+  }
+
+  signout(event) {
+    event.preventDefault();
+    this.props.dispatch(logoutUser());
+    this.context.router.push('/');
+  }
+
   render () {
     return (
       <Drawer title="Trak-Bon Docs">
           <Navigation>
-              <a>
+              <Link to="/dashboard">
                 <IconButton colored name="home" />
                 <span> Home </span>
-              </a>
-              <a>
+              </Link>
+              <Link to="/editor">
                 <IconButton colored name="documents" />
                 <span> Create Document </span>
-              </a>
-              <a>
+              </Link>
+              <Link to="/folders">
                 <IconButton colored name="folder" />
                 <span> Folder </span>
-              </a>
+              </Link>
               <hr />
-              <a>
+              <Link to="/manageusers">
                 <IconButton colored name="supervisor_account" />
                 <span> Users </span>
-              </a>
-              <a>
+              </Link>
+              <Link to="/manageroles">
                 <IconButton colored name="control_point_duplicate" />
                 <span> Roles </span>
-              </a>
+              </Link>
               <hr />
-              <a>
+              <Link to="/settings">
                 <IconButton colored name="settings" />
                 <span> Settings </span>
-              </a>
-              <a>
+              </Link>
+              <Link to="/help">
                 <IconButton colored name="help" />
                 <span> Help </span>
-              </a>
-              <a>
+              </Link>
+              <a id="signout" href="#" onClick={this.signout}>
                 <IconButton colored name="signout" />
                 <span> Sign Out </span>
               </a>
@@ -47,4 +61,12 @@ class DrawerBar extends Component {
   }
 }
 
-export default DrawerBar;
+DrawerBar.contextTypes = {
+  router: PropTypes.object
+};
+
+DrawerBar.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(DrawerBar);
