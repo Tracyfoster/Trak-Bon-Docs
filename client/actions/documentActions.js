@@ -22,14 +22,7 @@ export function fetchDocuments() {
   return (dispatch) => {
     return axios.get('/api/documents')
       .then(res => res.data)
-      .then((documents) => {
-        const payload = {};
-        payload.data = documents;
-        payload.public = (documents.filter(document => document.access === 'public')).length;
-        payload.private = (documents.filter(document => document.access === 'private')).length;
-        payload.role = (documents.filter(document => document.access === 'role')).length;
-        return dispatch(eventAction(types.SET_DOCUMENTS, payload));
-      });
+      .then(documents => dispatch(eventAction(types.SET_DOCUMENTS, documents)));
   };
 }
 
@@ -58,3 +51,7 @@ export function deleteDocument(id) {
   };
 }
 
+export const fetchUserDocuments = id => dispatch =>
+    axios.get(`/api/users/${id}/documents`)
+      .then(res =>
+        dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data)));

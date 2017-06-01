@@ -12,26 +12,30 @@ export default {
         title: req.body.title,
         content: req.body.content,
         access: req.body.access,
-        folderId: req.params.folderId,
-        userId: req.params.userId
+        userId: req.body.userId
       })
       .then(document => res.status(201).send({
         document,
         message: 'Document created succesfully'
       }))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'An error occured while creating document'
-      }));
+      .catch(error =>
+        {
+          console.log('error', error);
+          res.status(400).send({
+          error,
+          message: 'An error occured while creating document'
+      })
+    });
   },
 
   list(req, res) {
     return Documents
-      .findAll({
-        offset: req.query.offset || 0,
-        limit: req.query.limit || 20,
+      .findAndCountAll({
+        subQuery: false,
+        order: [['createdAt', 'DESC']],
         include: { model: Users },
-        order: [['updatedAt', 'DESC']]
+        offset: req.query.offset || 0,
+        limit: req.query.limit || 5,
       })
       .then(document => res.status(200).send(document))
       .catch(error => res.status(400).send({

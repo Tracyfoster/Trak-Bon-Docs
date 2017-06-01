@@ -4,11 +4,16 @@ import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
 import DocumentList from '../../components/documentComponents/DocumentList';
 
-export default function Dashboard({ userDocuments, auth }) {
+export default function Dashboard({ userDocuments, auth, actions }) {
+  console.log('userDocuments', userDocuments)
   const documents = userDocuments.data;
-  const publicCount = userDocuments.public.length;
-  const privateCount = userDocuments.private.length;
-  const roleCount = userDocuments.role.length;
+  const publicCount = (documents.filter(document => document.access === 'public')).length;
+  const privateCount = (documents.filter(document => document.access === 'private')).length;
+  const roleCount = (documents.filter(document => document.access === 'role')).length;
+
+  const onClick = () => {
+    console.log('yeeeee!')
+  }
   return (
       <div>
         <div>
@@ -17,9 +22,8 @@ export default function Dashboard({ userDocuments, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
                   width: '150px',
-                  color: '#fff' }}>
+                  marginRight: '10px' }}>
                   # Public
                   <span /> {publicCount}
               </Button>
@@ -29,9 +33,8 @@ export default function Dashboard({ userDocuments, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
                   width: '150px',
-                  color: '#fff' }}>
+                  marginRight: '10px' }}>
                   # Private
                   <span /> {privateCount}
               </Button>
@@ -41,22 +44,22 @@ export default function Dashboard({ userDocuments, auth }) {
                 raised
                 colored
                 style={{
-                  textAlign: 'center',
                   width: '150px',
-                  color: '#fff' }}>
+                  marginRight: '10px' }}>
                   # Role
                   <span /> {roleCount}
               </Button>
           </span>
         </div>
-        <h3> Hi User </h3>
-        <p> Welcome to the place of awesomeness</p>
+
         <div>
           <div>
-          <h4>Documents List</h4>
+          <h4>My Documents</h4>
           <Button
               ripple raised colored
-              type="submit">
+              style={{marginBottom: '5px'}}
+              type="submit"
+              onClick={onClick}>
               View All</Button>
           </div>
           { documents ?
@@ -73,4 +76,5 @@ export default function Dashboard({ userDocuments, auth }) {
 Dashboard.propTypes = {
   userDocuments: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
 };
