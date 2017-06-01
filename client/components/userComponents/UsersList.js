@@ -4,12 +4,7 @@ import PropTypes from 'prop-types';
 import UserUpdate from './UserUpdate';
 
 export default function UsersList({ allUsers, deleteUser, auth, context }) {
-  console.log('allUsers', allUsers);
   const users = allUsers;
-  const userUpdate = (id) => {
-    context.push(`/manageusers/${id}`);
-  };
-
   const rowData = users.map(user => ({
     id: user.id,
     firstName: user.firstName,

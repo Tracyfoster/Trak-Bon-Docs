@@ -139,10 +139,6 @@ class UserUpdate extends Component {
   }
  }
 
-UserUpdate.contextTypes = {
-  router: PropTypes.object
-};
-
 UserUpdate.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
