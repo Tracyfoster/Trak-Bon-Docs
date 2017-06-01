@@ -15,8 +15,7 @@ export default function roles(state = InitialState.roles, action = {}) {
     ];
   case types.ROLE_UPDATED:
     return [
-      ...state.filter(role => role.id !== action.payload.id),
-      Object.assign({}, action.payload),
+      ...state.filter(role => role.id !== action.payload.id), action.payload
     ];
   case types.ROLE_DELETED:
     return [
