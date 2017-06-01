@@ -15,13 +15,18 @@ export default {
       }))
       .catch(error => res.status(400).send({
         error,
-        message: error.parent.detail
+        message: 'Error occured while retrieving role'
       }));
   },
 
   list(req, res) {
     return Role
-      .findAll()
+      .findAll({
+        include: {
+          model: Users,
+          as: 'Users'
+        }
+      })
       .then((role) => {
         if (!role) {
           return res.status(404).send({
@@ -30,10 +35,12 @@ export default {
         }
         return res.status(200).send({ role });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: error.parent.detail
-      }));
+      .catch((error) => {
+        res.status(400).send({
+          error,
+          message: 'Error occured while retrieving role'
+        });
+      });
   },
 
   retrieve(req, res) {
