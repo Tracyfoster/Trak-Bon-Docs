@@ -64,7 +64,7 @@ class LoginForm extends Component {
             <Button
               ripple raised colored
               type="submit">
-              Sign Up</Button>
+              Sign In</Button>
           </div>
         </form>
       </div>

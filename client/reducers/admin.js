@@ -9,10 +9,10 @@ export default function users(state = InitialState.admin, action = {}) {
       totalUsers: action.payload.count
     });
   case types.USER_FETCHED:
-    return [
-      ...state.users.filter(user => user.id !== action.payload.id),
-      Object.assign({}, action.payload),
-    ];
+    return  Object.assign({}, state, {
+      users: [...state.users
+      .filter(user => user.id !== action.payload.id), action.payload]
+    });
   case types.USER_UPDATED:
     return Object.assign({}, state, {
       users: [...state.users
