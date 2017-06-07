@@ -9,7 +9,7 @@
     "start": "npm-run-all start:server",
     "babel": "babel",
     "webpack": "webpack",
-    "mocha:test": "NODE_ENV=test mocha \"./**/server/tests/**/*.spec.js\" --compilers js:babel-register --timeout 10000",
+    "mocha:test": "NODE_ENV=test mocha \"./**/server/tests/**/*.spec.js\" --compilers js:babel-register --timeout 60000",
     "mocha:test:now": "NODE_ENV=test mocha --timeout 60000 --compilers js:babel-register server/tests/**/*.spec.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
     "db:migrate": "sequelize db:migrate",

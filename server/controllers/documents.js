@@ -16,16 +16,12 @@ export default {
       })
       .then(document => res.status(201).send({
         document,
-        message: 'Document created succesfully'
+        message: 'Document created successfully'
       }))
-      .catch(error =>
-        {
-          console.log('error', error);
-          res.status(400).send({
+      .catch(error =>res.status(400).send({
           error,
           message: 'An error occured while creating document'
-      })
-    });
+      }));
   },
 
   list(req, res) {
@@ -64,32 +60,31 @@ export default {
   },
 
   update(req, res) {
-    Role.findById(req.decoded.data.roleId)
+    Role.findById(req.decoded.roleId)
     .then(() => Documents
-        .find({ where: {
-          id: req.params.id } })
-          .then((document) => {
-            if (!document) {
-              return res.status(404).send({
-                message: 'Document Not Found',
-              });
-            }
-            if (Helpers.isAdmin(req, res)
-            || Helpers.isOwner(req, res, document)) {
-              return document
-              .update(req.body)
-              .then(updatedDoc => res.status(200).send({
-                updatedDoc,
-                message: 'Document updated successfully'
-              }));
-            }
-            return (res.status(403)
-               .send({ message: 'Unauthorized Access' }));
-          })
-          .catch(error => res.status(400).send({
-            error,
-            message: 'Error updating document'
-          })));
+      .find({ where: {
+        id: req.params.id } })
+        .then((document) => {
+          if (!document) {
+            return res.status(404).send({
+              message: 'Document Not Found',
+            });
+          }
+          if (Helpers.isOwner(req, res, document)) {
+            return document
+            .update(req.body, { fields: Object.keys(req.body) })
+            .then(updatedDoc => res.status(200).send({
+              updatedDoc,
+              message: 'Document updated successfully'
+            }));
+          }
+          return (res.status(403)
+            .send({ message: 'Unauthorized Access' }));
+        })
+        .catch(error => res.status(400).send({
+          error,
+          message: 'Error updating document'
+        })));
   },
 
   destroy(req, res) {
@@ -101,12 +96,15 @@ export default {
             message: 'Document Not Found',
           });
         }
-
+        if (Helpers.isOwner(req, res, document)) {
         return document
           .destroy()
           .then(() => res.status(200).send({
             message: `${document.title}, was successfully deleted`
           }));
+          }
+          return (res.status(403)
+            .send({ message: 'Unauthorized Access' }));
       })
       .catch(error => res.status(400).send({
         error,

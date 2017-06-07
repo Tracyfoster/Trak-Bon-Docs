@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DocumentList from './DocumentList';
 import Dashboard from './Dashboard';
-import DocumentCard from './DocumentCard';
 import { fetchDocuments, fetchUserDocuments, deleteDocument } from '../../actions/documentActions';
 
 class DocumentPage extends Component {
