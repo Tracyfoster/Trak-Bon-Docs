@@ -6,17 +6,27 @@ const Users = model.Users;
 export default {
   create(req, res) {
     return Role
-      .create({
-        roleName: req.body.roleName,
+     .findOne({
+        where: {
+          roleName: req.body.roleName
+        }
       })
-      .then(role => res.status(201).send({
-        role,
-        message: 'Role created succesfully'
-      }))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occured while retrieving role'
-      }));
+      .then((role) => {
+        if (role) {
+          return res.status(409).send({ message: 'Role Already Exists' });
+        }
+        Role.create({
+          roleName: req.body.roleName,
+        })
+        .then(role => res.status(201).send({
+          role,
+          message: 'Role created succesfully'
+        }))
+        .catch(error => res.status(400).send({
+          error,
+          message: 'Error occured while retrieving role'
+        }));
+      });
   },
 
   list(req, res) {

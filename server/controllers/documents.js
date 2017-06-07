@@ -31,7 +31,7 @@ export default {
         order: [['createdAt', 'DESC']],
         include: { model: Users },
         offset: req.query.offset || 0,
-        limit: req.query.limit || 5,
+        limit: req.query.limit || 10,
       })
       .then(document => res.status(200).send(document))
       .catch(error => res.status(400).send({
