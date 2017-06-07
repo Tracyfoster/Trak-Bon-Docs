@@ -1,10 +1,6 @@
 import axios from 'axios';
 import * as types from './types';
-
-const eventAction = (type, payload) => ({
-  type,
-  payload
-});
+import { eventAction } from '../utils/Utils';
 
 export function saveDocument(data) {
   return (dispatch) => {
@@ -39,7 +35,7 @@ export function updateDocument(data) {
   return (dispatch) => {
     return axios.put(`/api/documents/${data.id}`, data)
       .then((res) => {
-        eventAction(types.DOCUMENT_UPDATED);
+        dispatch(eventAction(types.DOCUMENT_UPDATED, res.data.updatedDoc));
       });
   };
 }
@@ -47,11 +43,26 @@ export function deleteDocument(id) {
   return (dispatch) => {
     return axios.delete(`/api/documents/${id}`)
       .then(res => res.data)
-      .then(data => dispatch(eventAction(types.DOCUMENT_DELETED, id)));
+      .then(data => dispatch(eventAction(types.DOCUMENT_DELETED, { id })));
   };
 }
 
 export const fetchUserDocuments = id => dispatch =>
     axios.get(`/api/users/${id}/documents`)
-      .then(res =>
-        dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data)));
+      .then(res => {
+        console.log('res', res.data)
+        dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data))
+      });
+
+export function searchDocuments(searchTerm) {
+  return (dispatch) => {
+    return axios.get(
+        `/api/search/documents/?q=${searchTerm}`)
+       .then((response) => {
+         dispatch(eventAction(types.DOCUMENT_SEARCH_RESULTS, response.data));
+       })
+      .catch((error) => {
+        throw (error);
+      });
+  };
+}

@@ -8,13 +8,15 @@ class DocumentList extends Component {
 
   render() {
     const rowData = this.props.documents.map((document) => {
+      let username;
+      {document.User ? username = `${document.User.firstName} ${document.User.lastName}` : username = 'Me' }
       return {
         id: document.id,
         title: <a href="#"> {document.title} </a>,
         access: document.access,
+        username,
         createdAt: document.createdAt.substr(0, 10),
         action: <DocumentView document={document}/>
-
       };
     });
 
@@ -38,10 +40,16 @@ class DocumentList extends Component {
             Access level
         </TableHeader>
         <TableHeader
+            name="username"
+            tooltip="Document creation user"
+        >
+            Created By
+        </TableHeader>
+        <TableHeader
             name="createdAt"
             tooltip="Document creation date"
         >
-            Created Date
+            Published Date
         </TableHeader>
         <TableHeader
             name="action"

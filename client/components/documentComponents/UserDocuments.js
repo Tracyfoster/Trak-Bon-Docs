@@ -4,12 +4,13 @@ import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
 import DocumentList from '../../components/documentComponents/DocumentList';
 
-export default function Dashboard({ allDocuments, auth, actions }) {
-  const documents = allDocuments.data;
-  // totalItems
+export default function Dashboard({ userDocuments, auth, actions }) {
+  console.log('userDocuments', userDocuments)
+  const documents = userDocuments.data;
   const publicCount = (documents.filter(document => document.access === 'public')).length;
   const privateCount = (documents.filter(document => document.access === 'private')).length;
   const roleCount = (documents.filter(document => document.access === 'role')).length;
+
   return (
       <div>
         <div>
@@ -40,17 +41,22 @@ export default function Dashboard({ allDocuments, auth, actions }) {
                 raised
                 colored
                 style={{
-                 width: '150px',
-                 marginRight: '10px' }}>
+                  width: '150px',
+                  marginRight: '10px' }}>
                   # Role
                   <span /> {roleCount}
               </Button>
           </span>
         </div>
-        <p />
+
         <div>
           <div>
-          <h4>All Documents</h4>
+          <h4>My Documents</h4>
+          <Button
+              ripple raised colored
+              style={{marginBottom: '5px'}}
+              type="submit">
+              View All</Button>
           </div>
           { documents ?
           <DocumentList
@@ -64,7 +70,7 @@ export default function Dashboard({ allDocuments, auth, actions }) {
 }
 
 Dashboard.propTypes = {
-  allDocuments: PropTypes.object.isRequired,
+  userDocuments: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };

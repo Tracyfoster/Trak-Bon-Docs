@@ -7,12 +7,10 @@ class DocumentEditor extends Component {
     return (
       <div>
         <Grid>
-          <Cell col={4}>
-            <span />
-          </Cell>
-          <Cell col={8}>
+          <Cell col={12}>
             <Editor placeholder={'Write something...'}
             style={{ height: '200px' }}
+            params={this.props.params}
               />
           </Cell>
         </Grid>

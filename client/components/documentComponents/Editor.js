@@ -3,16 +3,15 @@ import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
 import { Textfield, Button, RadioGroup, Radio } from 'react-mdl';
 import PropTypes from 'prop-types';
-import { saveDocument } from '../../actions/documentActions';
+import { saveDocument, updateDocument } from '../../actions/documentActions';
 
 
 class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      content: '',
-      access: ''
+        title: '',
+        access: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -20,34 +19,54 @@ class Editor extends Component {
   }
 
   handleChange(html) {
-    this.setState({ content: html, });
+    this.setState({ content: html });
   }
 
   onChange(event) {
+    const name = event.target.name;
     const value = event.target.value;
-    const field = event.target.name;
-    this.setState({ [field]: value });
+    this.setState({
+      [name]: value
+    });
+  }
+
+  componentWillMount() {
+    if (this.props.params.id) {
+      const docId = parseInt(this.props.params.id);
+      const userDoc = this.props.documents.data.filter(document => document.id === docId)[0]
+      this.setState({
+        title: userDoc.title,
+        content: userDoc.content,
+        access: userDoc.access,
+        userId: userDoc.userId
+      });
+    }
   }
 
   onSubmit(event) {
     event.preventDefault();
-    const { title, content, access } = this.state;
-    const userId = this.props.auth.id
-    const data = {
-      title,
-      content,
-      access,
-      userId
-    };
-    console.log('datatosave', data)
-    this.props.dispatch(saveDocument(data))
-    .then(() => this.context.router.push('/dashboard'))
-    .catch(error => console.log('Getting better', error));
+    if (this.state.userId) {
+      this.props.dispatch(updateDocument(this.state))
+      .then(() => this.context.router.push('/documents'))
+    } else {
+      const { title, content, access } = this.state;
+      const userId = this.props.auth.id
+      const data = {
+        title,
+        content,
+        access,
+        userId
+      };
+      this.props.dispatch(saveDocument(data))
+      .then(() => this.context.router.push('/documents'))
+      .catch(error => console.log('Getting better', error));
+    }
   }
 
   render() {
     return (
       <div>
+        <form onSubmit={this.onSubmit}>
         <table>
           <tbody>
             <tr>
@@ -65,18 +84,17 @@ class Editor extends Component {
                 <span />
               </td>
               <td>
-                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
                     style={{ width: '250px' }} >
-                <select className="mdl-textfield__input" id="role" name="access"
-                  onChange={this.onChange} value={this.state.access}>
-                  <option />
+                <select className="mdl-textfield__input" id="access" name="access"
+                  value={this.state.access} onChange={this.onChange} >
                   <option value="public">Public</option>
                   <option value="private">Private</option>
                   <option value="reviewers">Reviewers</option>
                   <option value="writers">Writers</option>
                 </select>
                 <label className="mdl-textfield__label"
-                       htmlFor="access">Role</label>
+                       htmlFor="access">Document Access</label>
               </div>
               </td>
             </tr>
@@ -85,16 +103,15 @@ class Editor extends Component {
         <div>
         <ReactQuill
           theme={'snow'}
-          onChange={this.handleChange}
           value={this.state.content}
+          onChange={this.handleChange}
           modules={Editor.modules}
           formats={Editor.formats}
           placeholder={this.props.placeholder}
         />
       </div>
-       <Button raised colored
-       style={{marginBottom: '5px'}}
-       onClick={this.onSubmit}>Save</Button>
+       <Button raised colored>Save</Button>
+      </form>
     </div>
     );
   }
@@ -140,11 +157,14 @@ Editor.contextTypes = {
 
 Editor.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  params: PropTypes.object,
+  documents: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth.user
+    auth: state.auth.user,
+    documents: state.documents.userDocuments
   }
 }
 export default connect(mapStateToProps)(Editor);
