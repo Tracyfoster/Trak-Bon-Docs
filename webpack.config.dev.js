@@ -9,7 +9,7 @@ export default {
   target: 'web',
   output: {
     // These files are only output by the production build task `npm run build`.
-    path: `${__dirname}/dist`,
+    path: `${__dirname}/dist/client`,
     publicPath: '/',
     filename: 'bundle.js'
   },
