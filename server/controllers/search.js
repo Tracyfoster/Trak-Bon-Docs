@@ -48,7 +48,7 @@ export default {
 
     const searchTerm = req.query.q;
     return Documents
-      .findAll({
+      .findAndCountAll({
         where: { title: { $iLike: `%${searchTerm}%` } },
         include: { model: Users }
       })

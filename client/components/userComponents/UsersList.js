@@ -6,7 +6,6 @@ import UserUpdate from './UserUpdate';
 export default function UsersList({ allUsers, deleteUser, auth, context }) {
   const users = allUsers;
   const rowData = users.map(user => ({
-    id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -25,9 +24,6 @@ export default function UsersList({ allUsers, deleteUser, auth, context }) {
         shadow={0}
         rows={rowData}
     >
-        <TableHeader name="id">
-          Id
-        </TableHeader>
         <TableHeader name="firstName" >
           First Name
         </TableHeader>

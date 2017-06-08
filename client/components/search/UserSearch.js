@@ -9,7 +9,6 @@ export default function UserSearch({ userResults }) {
     lastName: user.lastName,
     email: user.email,
     count: user.userDocuments.length,
-    action: <a href="">Delete </a>
   }));
   return (
     <Table
@@ -29,9 +28,6 @@ export default function UserSearch({ userResults }) {
         </TableHeader>
         <TableHeader numeric name="count" >
           # Documents Created
-        </TableHeader>
-        <TableHeader name="action">
-          Action
         </TableHeader>
     </Table>
   );

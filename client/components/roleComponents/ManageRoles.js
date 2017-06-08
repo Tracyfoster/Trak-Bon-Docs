@@ -17,11 +17,8 @@ class RolePage extends Component {
   render() {
     return (
       <Grid>
-        <Cell col={1}>
-          <span />
-        </Cell>
         {/*{isAdmin ?*/}
-        <Cell col={11}>
+        <Cell col={12}>
           <RoleModal />
           <p />
           <RoleList roles={this.props.roles}
