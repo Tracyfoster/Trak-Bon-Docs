@@ -26,18 +26,20 @@ export default {
   },
 
   adminAccess(req, res, next) {
-    Role.findById(req.decoded.data.roleId)
+    Role.findById(req.decoded.roleId)
       .then((foundRole) => {
-        if (foundRole.title.toLowerCase() === 'administrator') {
+        if (foundRole.roleName.toLowerCase() === 'admin') {
           next();
         } else {
           return res.status(403)
             .send({ message: 'User is unauthorized for this request.' });
         }
       })
-      .catch(error => res.status(400).send({
+      .catch(error => {
+        res.status(400).send({
         err: error,
         message: 'Error authenticating'
-      }));
+      })
+    });
   },
 };

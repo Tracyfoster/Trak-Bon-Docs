@@ -8,7 +8,7 @@ const verify = auth.verifyToken;
 const adminAccess = auth.adminAccess;
 
 const Routes = (router) => {
-  router.get('/lol', (req, res) => res.status(200).send({
+  router.get('/', (req, res) => res.status(200).send({
     message: 'Welcome to the Trakbon Docs!',
   }));
 
@@ -30,26 +30,26 @@ const Routes = (router) => {
    */
   router
     .route('/folders')
-    .post(folder.create)
-    .get(folder.list);
+    .post(verify, folder.create)
+    .get(verify, folder.list);
   router
     .route('/folders/:id')
-    .get(folder.retrieve)
-    .put(folder.update)
-    .delete(folder.destroy);
+    .get(verify, folder.retrieve)
+    .put(verify, folder.update)
+    .delete(verify, folder.destroy);
 
   /**
    * crud api for document model
    */
   router
     .route('/documents')
-    .post(documents.create)
-    .get(documents.list);
+    .post(verify, documents.create)
+    .get(verify, documents.list);
   router
     .route('/documents/:id')
-    .get(documents.retrieve)
-    .put(documents.update)
-    .delete(documents.destroy);
+    .get(verify, documents.retrieve)
+    .put(verify, documents.update)
+    .delete(verify, documents.destroy);
 
   /**
    * crud api for user model
@@ -57,12 +57,12 @@ const Routes = (router) => {
   router
     .route('/users')
     .post(users.create)
-    .get(users.list);
+    .get(verify, adminAccess, users.list);
   router
     .route('/users/:id')
     .get(users.retrieve)
-    .put(users.update)
-    .delete(users.destroy);
+    .put(verify, users.update)
+    .delete(verify, adminAccess, users.destroy);
   router
     .route('/users/:id/documents')
     .get(users.findUserDocuments);

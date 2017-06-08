@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { deleteDocument } from '../../actions/documentActions';
+import Editor from './Editor';
 
 class DocumentView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      placeholder: document.content,
+      content: document.content,
       title: document.title
     };
     this.onChange = this.onChange.bind(this);
@@ -26,7 +27,7 @@ class DocumentView extends Component {
   }
 
   onUpdate() {
-    this.context.router.push('/manageusers');
+    this.context.router.push(`/editor/${this.props.document.id}`);
   }
 
   onDelete() {
@@ -47,6 +48,10 @@ class DocumentView extends Component {
     });
   }
 
+  getContent() {
+    return {__html: this.props.document.content}
+  }
+
   render() {
     return (
       <div>
@@ -62,7 +67,7 @@ class DocumentView extends Component {
             style={{ fontSize: '25px' }} >
             {this.props.document.title}</DialogTitle>
           <DialogContent>
-            <p>{this.props.document.content}</p>
+            <p dangerouslySetInnerHTML = {this.getContent()} />
           </DialogContent>
           <DialogActions>
             <Button

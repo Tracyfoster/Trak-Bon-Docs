@@ -4,7 +4,6 @@ import InitialState from './InitialState';
 export default function documents(state = InitialState.documents, action = {}) {
   switch (action.type) {
   case types.ADD_DOCUMENT:
-    console.log('action', action.payload)
     return Object.assign({}, state, {
       userDocuments: {
         data: [ ...state, action.payload.document],
@@ -26,14 +25,14 @@ export default function documents(state = InitialState.documents, action = {}) {
   case types.DOCUMENT_FETCHED:
     return Object.assign({}, state, {
       userDocuments: {
-        data: [...state.users
+        data: [...state.userDocuments.data
           .filter(user => user.id !== action.payload.id), action.payload]
       }
     });
   case types.DOCUMENT_UPDATED:
     return Object.assign({}, state, {
       userDocuments: {
-        data: [...state.users
+        data: [...state.userDocuments.data
           .filter(user => user.id !== action.payload.id), action.payload]
       }
     });

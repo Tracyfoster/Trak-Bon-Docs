@@ -28,15 +28,16 @@ export default {
           path.join(__dirname, 'server')],
         loaders: ['babel-loader']
       },
-      { test: /\.css$/,
-        loaders: ['css-loader'],
+      {
+        test: /\.(css|scss)?$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       { test: /\.(png|jpg)$/,
         loader: 'url-loader?limit=8192' },
     ]
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],

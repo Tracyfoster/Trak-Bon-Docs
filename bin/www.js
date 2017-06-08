@@ -4,7 +4,6 @@ import path from 'path';
 import open from 'open';
 import config from '../webpack.config.dev';
 import Routes from '../server/routes';
-// import authentication from '../server/middlewares';
 
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -21,7 +20,6 @@ app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(authentication.verifyToken);
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,

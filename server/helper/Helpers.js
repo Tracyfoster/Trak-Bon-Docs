@@ -9,7 +9,7 @@ const Helpers = {
    * @returns {Boolean} returns true or false
    */
   isAdmin(req) {
-    return req.decoded.data.roleId === 1;
+    return req.decoded.roleId === 1;
   },
 
   /**
@@ -20,8 +20,9 @@ const Helpers = {
    * @returns {Boolean} returns true or false
    */
   isOwner(req, res, document) {
+    console.log('document', document)
     const itemToCheck = document ? String(document.userId) : req.params.id;
-    return String(req.decoded.data.id) === itemToCheck;
+    return String(req.decoded.id) === itemToCheck;
   },
 
   /**

@@ -4,16 +4,12 @@ import { Grid, Cell, Card, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
 import DocumentList from '../../components/documentComponents/DocumentList';
 
-export default function Dashboard({ userDocuments, auth, actions }) {
-  console.log('userDocuments', userDocuments)
-  const documents = userDocuments.data;
+export default function Dashboard({ allDocuments, auth, actions }) {
+  const documents = allDocuments.data;
+  // totalItems
   const publicCount = (documents.filter(document => document.access === 'public')).length;
   const privateCount = (documents.filter(document => document.access === 'private')).length;
   const roleCount = (documents.filter(document => document.access === 'role')).length;
-
-  const onClick = () => {
-    console.log('yeeeee!')
-  }
   return (
       <div>
         <div>
@@ -44,23 +40,17 @@ export default function Dashboard({ userDocuments, auth, actions }) {
                 raised
                 colored
                 style={{
-                  width: '150px',
-                  marginRight: '10px' }}>
+                 width: '150px',
+                 marginRight: '10px' }}>
                   # Role
                   <span /> {roleCount}
               </Button>
           </span>
         </div>
-
+        <p />
         <div>
           <div>
-          <h4>My Documents</h4>
-          <Button
-              ripple raised colored
-              style={{marginBottom: '5px'}}
-              type="submit"
-              onClick={onClick}>
-              View All</Button>
+          <h4>All Documents</h4>
           </div>
           { documents ?
           <DocumentList
@@ -74,7 +64,7 @@ export default function Dashboard({ userDocuments, auth, actions }) {
 }
 
 Dashboard.propTypes = {
-  userDocuments: PropTypes.object.isRequired,
+  allDocuments: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 };

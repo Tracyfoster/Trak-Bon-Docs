@@ -34,41 +34,41 @@ export default {
         email: req.body.email
       }
     })
-      .then((user) => {
-        if (user) {
-          return res.status(409).send({ message: 'User Already Exists' });
-        }
-        Users
-        .create({
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-          password: req.body.password,
-          roleId: req.body.roleId
-        })
-        .then((newUser) => {
-          const token = jwt.sign({
-            id: newUser.id,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            email: newUser.email,
-            password: newUser.password,
-            roleId: newUser.roleId
-          }, secret, {
-            expiresIn: 60 * 60 * 24 });
-          return res.status(201).send({
-            newUser,
-            message: 'User created succesfully',
-            token
-          });
-        })
-        .catch((error) => {
-          return res.status(400).send({
-            error,
-            message: 'Error creating new user'
-          });
+    .then((user) => {
+      if (user) {
+        return res.status(409).send({ message: 'User Already Exists' });
+      }
+      Users
+      .create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: req.body.password,
+        roleId: req.body.roleId
+      })
+      .then((newUser) => {
+        const token = jwt.sign({
+          id: newUser.id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+          password: newUser.password,
+          roleId: newUser.roleId
+        }, secret, {
+          expiresIn: 60 * 60 * 24 });
+        return res.status(201).send({
+          newUser,
+          message: 'User created successfully',
+          token
+        });
+      })
+      .catch((error) => {
+        return res.status(400).send({
+          error,
+          message: `Error creating ${req.body.firstName}`
         });
       });
+    });
   },
 
   login(req, res) {
@@ -154,57 +154,49 @@ export default {
   },
 
   update(req, res) {
-    // Role.findById(req.decoded.data.roleId)
-    // .then(() => {
-    //   if (Helpers.isAdmin(req, res)) {
-    return Users
-      .find({ where: { id: req.params.id } })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send({ message: 'User Not Found' });
-        }
-        return user
-        .update(req.body)
-          .then(updatedUser => res
-            .status(200).send({ updatedUser,
-              message: 'User updated successfully',
-            }));
-      }).catch(error => res.status(400).send({
-        error,
-        message: 'Error updating user'
-      }));
-  },
-      // return (res.status(403)
-      //    .send({ message: 'Unauthorized Access' }));
-  //   });
-  // },
-
-  destroy(req, res) {
-    // Roles.findById(req.decoded.data.roleId)
-    // .then(() => {
-    //   if (Helpers.isAdmin(req, res) || Helpers.isOwner(req, res)) {
-    return Users
-          .find({
-            where: {
-              id: req.params.id
-            }
-          })
+    Role.findById(req.decoded.roleId)
+    .then(() => {
+      if (Helpers.isAdmin(req, res)
+        || Helpers.isOwner(req, res)) {
+        return Users
+          .find({ where: { id: req.params.id } })
           .then((user) => {
             if (!user) {
               return res.status(404).send({ message: 'User Not Found' });
             }
             return user
-              .destroy()
-              .then(() => res.status(200).send({
-                userId: req.params.id,
-                message: `${user.name} deleted successfully` }));
-          })
-          .catch(error => res.status(400).send({
-            error, message: 'Error deleting user' }));
-    //   }
-    //   return (res.status(403)
-    //      .send({ message: 'Unauthorized Access' }));
-    // });
+            .update(req.body, { fields: Object.keys(req.body) })
+              .then(updatedUser => res
+                .status(200).send({ updatedUser,
+                  message: 'User updated successfully',
+                }));
+          }).catch(error => res.status(400).send({
+            error, message: 'Error updating user' }));
+      }
+      return (res.status(403)
+         .send({ message: 'Unauthorized Access' }));
+    });
+  },
+
+  destroy(req, res) {
+    return Users
+      .find({
+        where: {
+          id: req.params.id
+        }
+      })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({ message: 'User Not Found' });
+        }
+        return user
+          .destroy()
+          .then(() => res.status(200).send({
+            userId: req.params.id,
+            message: `${user.firstName} deleted successfully` }));
+      })
+      .catch(error => res.status(400).send({
+        error, message: 'Error deleting user' }));
   },
 
   findUserDocuments(req, res) {
@@ -218,16 +210,15 @@ export default {
         }],
         order: [['createdAt', 'DESC']],
         offset: req.query.offset || 0,
-        limit: req.query.limit || 5,
+        limit: req.query.limit || 10,
       })
       .then((user) => {
-        if (!user) {
+        if (!user || user.count < 1) {
           return res.status(404).send({ message: 'User Not Found' });
         }
         return res.status(200).send({ user, status: true });
       })
       .catch((error) => {
-        console.log(error)
         return res.status(400).send({
         error, message: 'Error occurred while retrieving user document'
       })
