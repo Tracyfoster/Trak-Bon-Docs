@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 
 /* eslint-disable no-console */
 
-const port = 4050;
+const port = process.env.PORT || 4050;
 const app = express();
 const compiler = webpack(config);
 const router = express.Router();
