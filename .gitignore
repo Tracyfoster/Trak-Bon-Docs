@@ -4,3 +4,4 @@ commitbox
 settings.json
 coverage
 .nyc_output
+dist

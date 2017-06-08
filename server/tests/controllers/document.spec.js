@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../bin/www';
-import models from '../models';
-import testData from './testData';
+import server from '../../../bin/www';
+import models from '../../models';
+import testData from './../testData';
 
 const { admin, writer, reviewer, publicDocument} = testData;
 let adminData, writerData, reviewerData, documentDetails, updatedDocument;

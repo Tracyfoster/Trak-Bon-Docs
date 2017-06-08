@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../bin/www';
-import models from '../models';
-import testData from './testData';
+import server from '../../../bin/www';
+import models from '../../models';
+import testData from './../testData';
 
 const { admin, regularUser, roleOne } = testData;
 let regularToken, adminToken;
