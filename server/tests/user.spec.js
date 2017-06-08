@@ -4,16 +4,19 @@ import server from '../../bin/www';
 import models from '../models';
 import testData from './testData';
 
-const { newAdmin, userOne, regularUser } = testData;
+const { admin, newAdmin, regularUser } = testData;
 let regularToken, userData, adminToken;
 
 const expect = chai.expect;
 chai.use(chaiHttp);
 describe('User API', () => {
+  beforeEach(() => {
+    setTimeout(() => {}, 3000);
+  });
   before((done) => {
     chai.request(server)
       .post('/api/users/login')
-      .send(newAdmin)
+      .send(admin)
       .end((err, res) => {
         adminToken = res.body.token;
         done();
@@ -33,7 +36,7 @@ describe('User API', () => {
     it('should create new user', (done) => {
       chai.request(server)
         .post('/api/users')
-        .send(userOne)
+        .send(newAdmin)
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.keys(
@@ -77,27 +80,7 @@ describe('User API', () => {
           done();
         });
     });
-//********** */
-    // it('should return user when limit and offset are set', (done) => {
-    //   chai.request(server)
-    //     .get('/api/users/?limit=10&offset=1')
-    //     .set('x-access-token', userData.token)
-    //     .end((err, res) => {
-    //       expect(res.status).to.equal(200);
-    //       done();
-    //     });
-    // });
 
-    // it('should return user when limit and offset are not set', (done) => {
-    //   chai.request(server)
-    //     .get('/api/users/')
-    //     .set('x-access-token', userData.token)
-    //     .end((err, res) => {
-    //       expect(res.status).to.equal(200);
-    //       done();
-    //     });
-    // });
-//***************
     it('should return user with specified id', (done) => {
       chai.request(server)
         .get(`/api/users/${userData.newUser.id}`)
@@ -184,7 +167,7 @@ describe('User API', () => {
 
     it('should not update user data with invalid data', (done) => {
       chai.request(server)
-        .put('/api/users/8')
+        .put('/api/users/2')
         .set('x-access-token', adminToken)
         .send({ email: 10 })
         .end((err, res) => {
@@ -210,7 +193,6 @@ describe('User API', () => {
 
   describe('/DELETE user data', () => {
     it('should allow admin delete user data ', (done) => {
-      console.log('userData.newUser.id', userData.newUser)
       chai.request(server)
         .delete(`/api/users/${userData.newUser.id}`)
         .set('x-access-token', adminToken)

@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         // associations defined here
         Users.belongsTo(models.Role, {
           foreignKey: 'roleId',
-          onDelete: 'CASCADE',
+          onDelete: 'SET NULL',
         });
         Users.hasMany(models.Folder, {
           foreignKey: 'userId',

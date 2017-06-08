@@ -19,7 +19,6 @@ export default {
         return res.status(401)
           .send({ message: 'Invalid Token' });
       }
-
       req.decoded = decoded;
       next();
     });

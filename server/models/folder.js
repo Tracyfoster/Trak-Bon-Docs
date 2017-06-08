@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         Folder.belongsTo(models.Users, {
           foreignKey: 'userId',
-          onDelete: 'CASCADE',
+          onDelete: 'SET NULL',
         });
         Folder.hasMany(models.Documents, {
           foreignKey: 'folderId',
