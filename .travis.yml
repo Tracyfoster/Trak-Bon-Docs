@@ -2,10 +2,9 @@ sudo: required
 dist: trusty
 language:
   - node_js
-  - 7.9.0
 
 node_js:
-  - node
+  - 7.9.0
 
 services:
   - postgresql
