@@ -1,9 +1,14 @@
 sudo: required
 dist: trusty
-language: node_js
+language:
+  - node_js
+  - 7.9.0
 
 node_js:
-  - 7
+  - node
+
+services:
+  - postgresql
 
 script:
   - npm test
