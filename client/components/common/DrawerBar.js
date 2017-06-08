@@ -26,8 +26,12 @@ class DrawerBar extends Component {
                 <span> Home </span>
               </Link>
               <Link to="/editor">
-                <IconButton colored name="documents" />
+                <IconButton colored name="note_add" />
                 <span> Create Document </span>
+              </Link>
+              <Link to="/documents">
+                <IconButton colored name="list" />
+                <span> My documents </span>
               </Link>
               <Link to="/folders">
                 <IconButton colored name="folder" />
@@ -52,7 +56,7 @@ class DrawerBar extends Component {
                 <span> Help </span>
               </Link>
               <a id="signout" href="#" onClick={this.signout}>
-                <IconButton colored name="signout" />
+                <IconButton colored name="verified_user" />
                 <span> Sign Out </span>
               </a>
           </Navigation>
