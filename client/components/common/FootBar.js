@@ -7,10 +7,10 @@ class FootBar extends Component {
   render() {
     return (
       <Footer size="mini">
-        <FooterSection type="left" logo="Title">
+        <FooterSection type="left" logo="Trak-Bon Docs">
           <FooterLinkList>
             <a href="#">Help</a>
-            <a href="#">Privacy & Terms</a>
+            <a href="#">API Docs</a>
           </FooterLinkList>
         </FooterSection>
       </Footer>

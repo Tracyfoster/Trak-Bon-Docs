@@ -1,40 +1,31 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Users', {
+    queryInterface.createTable('Documents', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
           notEmpty: true
         }
       },
-      lastName: {
-        type: Sequelize.STRING,
+      content: {
+        type: Sequelize.TEXT,
         allowNull: false,
         validate: {
           notEmpty: true
         }
       },
-      email: {
-        type: Sequelize.STRING,
-        unique: true,
-        validate: {
-          isEmail: true
-        }
-      },
-      password: {
+      access: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          len: {
-            args: [7],
-          }
+          isIn: [['public', 'private', 'writers', 'reviewers']],
         }
       },
       createdAt: {
@@ -45,15 +36,25 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      roleId: {
+      userId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
-          model: 'Roles',
+          model: 'Users',
           key: 'id',
-          as: 'roleId',
+          as: 'userId',
+        },
+      },
+      folderId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Folders',
+          key: 'id',
+          as: 'folderId',
         },
       },
     }),
-  down: queryInterface => queryInterface.dropTable('Users')
+  down: queryInterface =>
+    queryInterface.dropTable('Documents')
 };

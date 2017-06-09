@@ -12,9 +12,10 @@ class MainLayout extends Component {
       <Layout>
         <NavBar />
         <DrawerBar />
-          <Grid>
-              {this.props.children}
-          </Grid>
+        <div className="content">
+            {this.props.children}
+            <div style={{clear:"both", height:"50px"}} />
+        </div>
         <FootBar />
       </Layout>
     );

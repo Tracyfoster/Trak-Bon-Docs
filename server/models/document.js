@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         Documents.belongsTo(models.Users, {
           foreignKey: 'userId',
-          onDelete: 'CASCADE',
+          onDelete: 'SET NULL',
         });
         Documents.belongsTo(models.Folder, {
           foreignKey: 'folderId',
-          onDelete: 'CASCADE',
+          onDelete: 'SET NULL',
         });
       }
     }

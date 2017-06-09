@@ -42,12 +42,10 @@ class RoleModal extends Component {
   onSubmit(event) {
     event.preventDefault();
     if (this.state.role.id) {
-      console.log('roletoupdate', this.state.role);
       this.props.dispatch(updateRole(this.state.role))
       .then(() => this.handleCloseDialog())
       .catch(error => console.log('Getting better', error));
     } else {
-      console.log('Getting', this.state.role)
       this.props.dispatch(createRole(this.state.role))
       .then(() => this.handleCloseDialog())
       .catch(error => console.log('Getting better', error));

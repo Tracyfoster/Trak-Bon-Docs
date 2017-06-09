@@ -39,15 +39,15 @@ export function updateFolder(data) {
   return (dispatch) => {
     return axios.put(`/api/folders/${data.id}`, data)
       .then((res) => {
-        eventAction(types.FOLDER_UPDATED);
+        dispatch(eventAction(types.FOLDER_UPDATED, res.data.folder));
       });
   };
 }
 export function deleteFolder(id) {
   return (dispatch) => {
-    return axios.delete(`/api/documents/${id}`)
+    return axios.delete(`/api/folders/${id}`)
       .then(res => res.data)
-      .then(data => dispatch(eventAction(types.DOCUMENT_DELETED, id)));
+      .then(data => dispatch(eventAction(types.FOLDER_DELETED, { id })));
   };
 }
 

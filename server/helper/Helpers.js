@@ -20,7 +20,6 @@ const Helpers = {
    * @returns {Boolean} returns true or false
    */
   isOwner(req, res, document) {
-    console.log('document', document)
     const itemToCheck = document ? String(document.userId) : req.params.id;
     return String(req.decoded.id) === itemToCheck;
   },

@@ -28,7 +28,7 @@ class LoginForm extends Component {
   onSubmit(event) {
     event.preventDefault();
     this.props.dispatch(userLogin(this.state.user))
-    .then(() => this.context.router.push('/dashboard'))
+    .then(() => this.context.router.push('/documents'))
     .catch(() => console.log('Getting better'));
   }
 

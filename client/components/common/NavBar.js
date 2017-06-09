@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Header, HeaderRow, Navigation, Textfield } from 'react-mdl';
+import { Link } from 'react-router';
+import { Header, HeaderRow, Navigation, Textfield, IconButton } from 'react-mdl';
 import { connect } from 'react-redux';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
+import UserUpdate from '../userComponents/UserUpdate'
 
 class NavBar extends Component {
   constructor(props) {
@@ -24,22 +26,16 @@ class NavBar extends Component {
     const term = this.state.searchTerm;
     this.props.dispatch(searchUsers(term));
     this.props.dispatch(searchDocuments(term));
-    this.context.router.push(`/search/${this.state.searchTerm}`);
+    this.context.router.push(`/search/${term}`);
   }
 
   render () {
     return (
-      <Header>
+      <Header transparent>
         <HeaderRow title="Trak-Bon Docs">
-          <form method="post" onSubmit={this.onSubmit}>
-            <Textfield
-                value={this.state.searchTerm}
-                onChange={this.onChange}
-                label="Search"
-                expandable
-                expandableIcon="search"
-            />
-          </form>
+          <Navigation>
+            <a href="#"> API Docs </a>
+          </Navigation>
         </HeaderRow>
       </Header>
     );
@@ -51,7 +47,14 @@ NavBar.contextTypes = {
 };
 
 NavBar.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-export default connect()(NavBar);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
+
+export default connect(mapStateToProps)(NavBar);

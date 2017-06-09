@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../bin/www';
-import models from '../models';
-import testData from './testData';
+import server from '../../../bin/www';
+import models from '../../models';
+import testData from './../testData';
 
 const { admin, writer, reviewer, publicDocument} = testData;
 let adminData, writerData, reviewerData, documentDetails, updatedDocument;
@@ -10,6 +10,9 @@ let adminData, writerData, reviewerData, documentDetails, updatedDocument;
 const expect = chai.expect;
 chai.use(chaiHttp);
 describe('Document API', () => {
+  beforeEach(() => {
+    setTimeout(() => {}, 3000);
+  });
   before((done) => {
     chai.request(server)
       .post('/api/users/login')
@@ -214,7 +217,7 @@ describe('Document API', () => {
 
     it('should return Unauthorized Access ', (done) => {
       chai.request(server)
-        .put('/api/documents/6')
+        .put('/api/documents/3')
         .set('x-access-token', adminData.token)
         .send({ title: 'Newly Updated Document' })
         .end((err, res) => {

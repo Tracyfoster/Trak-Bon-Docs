@@ -1,12 +1,16 @@
 sudo: required
 dist: trusty
-language: node_js
+language:
+  - node_js
 
 node_js:
-  - 7
+  - 7.9.0
+
+services:
+  - postgresql
 
 script:
   - npm test
 
-after_script:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+after_success:
+- npm run coveralls

@@ -11,7 +11,7 @@ export default function RoleList({ roles, actions, auth }) {
   const rowData = roles.map((role) => ({
       id: role.id,
       roleName: role.roleName,
-      count: role.Users.length,
+      count: role.Users ? role.Users.length : 0,
       createdAt: role.createdAt.substr(0, 10),
       action:
         <span>
