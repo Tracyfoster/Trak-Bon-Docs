@@ -18,10 +18,7 @@ export default {
         document,
         message: 'Document created successfully'
       }))
-      .catch(error =>res.status(400).send({
-          error,
-          message: 'An error occured while creating document'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   list(req, res) {
@@ -34,10 +31,7 @@ export default {
         limit: req.query.limit || 10,
       })
       .then(document => res.status(200).send(document))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error retrieving documents'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   retrieve(req, res) {
@@ -53,10 +47,7 @@ export default {
         }
         return res.status(200).send(document);
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occurred while retrieving documents'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   update(req, res) {
@@ -81,10 +72,9 @@ export default {
           return (res.status(403)
             .send({ message: 'Unauthorized Access' }));
         })
-        .catch(error => res.status(400).send({
-          error,
-          message: 'Error updating document'
-        })));
+        .catch(error => Helpers.handleError(error, res))
+    )
+    .catch(error => Helpers.handleError(error, res));
   },
 
   destroy(req, res) {
@@ -106,9 +96,6 @@ export default {
           return (res.status(403)
             .send({ message: 'Unauthorized Access' }));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error deleting document'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 };

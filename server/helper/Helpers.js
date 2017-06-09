@@ -33,6 +33,19 @@ const Helpers = {
    */
   getPaginatedItems(items, offset, limit) {
     return items.slice(offset, offset + limit);
+  },
+
+  /**
+   * Handle promise errors
+   *
+   * @param {Object} error error object
+   * @param {Function} res server response function
+   * @returns {Function} function that displays an error message
+   */
+  handleError(error, res) {
+    return error.errors ?
+      res.status(400).send({ message: error.errors[0].message }) :
+      res.status(400).send({ message: error.message });
   }
 };
 

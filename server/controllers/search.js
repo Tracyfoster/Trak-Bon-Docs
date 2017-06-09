@@ -7,7 +7,6 @@ const Documents = model.Documents;
 
 export default {
   userSearch(req, res) {
-    console.log('query', req.query.q);
     const searchTerm = req.query.q;
     Users.findAll({
       where: {
@@ -33,19 +32,10 @@ export default {
         message: 'Search Successful'
       });
     })
-      .catch((error) => {
-        console.log('errovf', error);
-        res.status(400)
-        .send({
-          error,
-          message: 'Error occurred while searching documents'
-        });
-      });
+    .catch(error => Helpers.handleError(error, res));
   },
 
   documentSearch(req, res) {
-    console.log('query', req.query);
-
     const searchTerm = req.query.q;
     return Documents
       .findAndCountAll({
@@ -63,12 +53,6 @@ export default {
           message: 'Search Successful'
         });
       })
-      .catch((error) => {
-        res.status(400)
-        .send({
-          error,
-          message: 'Error occurred while searching documents'
-        });
-      });
+      .catch(error => Helpers.handleError(error, res));
   }
 };

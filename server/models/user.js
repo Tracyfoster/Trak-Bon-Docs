@@ -6,22 +6,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: { args: true, msg: 'Firstname cannot be empty' }
       }
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: { args: true, msg: 'Lastname cannot be empty' }
       }
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
+      allowNull: false,
+      unique: { args: true, msg: 'Email already exist' },
+      validate: { isEmail: { args: true, msg: 'Use a valid email' } }
     },
     password: {
       type: DataTypes.STRING,
@@ -33,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        // associations defined here
         Users.belongsTo(models.Role, {
           foreignKey: 'roleId',
           onDelete: 'SET NULL',

@@ -24,9 +24,7 @@ module.exports = {
       access: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-          isIn: [['public', 'private', 'writers', 'reviewers']],
-        }
+        defaultValue: 'public',
       },
       createdAt: {
         allowNull: false,
@@ -38,7 +36,7 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         references: {
           model: 'Users',
           key: 'id',
@@ -47,7 +45,7 @@ module.exports = {
       },
       folderId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         references: {
           model: 'Folders',
           key: 'id',
