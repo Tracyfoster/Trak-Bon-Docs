@@ -77,6 +77,7 @@ class UserUpdate extends Component {
                 floatingLabel
                 name="firstName"
                 value={this.state.user.firstName}
+                required
                 style={{ width: '200px' }}
               />
               <div />
@@ -87,6 +88,7 @@ class UserUpdate extends Component {
                 name="lastName"
                 floatingLabel
                 value={this.state.user.lastName}
+                required
                 style={{ width: '200px' }}
               />
               <div />
@@ -98,6 +100,7 @@ class UserUpdate extends Component {
                 name="email"
                 floatingLabel
                 value={this.state.user.email}
+                required
                 style={{ width: '200px' }}
               />
               <div />
@@ -109,12 +112,13 @@ class UserUpdate extends Component {
                 label="Put your Password to update"
                 floatingLabel
                 value={this.state.user.password}
+                required
                 style={{ width: '200px' }}
               />
               <div />
               <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
                     style={{ width: '250px' }} >
-                <select className="mdl-textfield__input" id="roleId" name="roleId"
+                <select className="mdl-textfield__input" id="roleId" name="roleId" required
                   onChange={this.onChange}
                   value={this.state.user.roleId || ''}>
                   <option value="1">Admin</option>

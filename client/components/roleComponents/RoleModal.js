@@ -93,6 +93,7 @@ class RoleModal extends Component {
                 floatingLabel
                 name="roleName"
                 value={this.state.role.roleName}
+                required
                 style={{ width: '200px' }}
               />
               <div />

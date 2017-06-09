@@ -64,6 +64,7 @@ class UserModal extends Component {
                 floatingLabel
                 name="firstName"
                 value={this.state.user.firstname}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -71,7 +72,8 @@ class UserModal extends Component {
                 label="Lastname"
                 name="lastName"
                 floatingLabel
-                value={this.state.lasttname}
+                value={this.state.user.lasttname}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -80,7 +82,8 @@ class UserModal extends Component {
                 label="Email"
                 name="email"
                 floatingLabel
-                value={this.state.email}
+                value={this.state.user.email}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -89,12 +92,15 @@ class UserModal extends Component {
                 name="password"
                 label="Password"
                 floatingLabel
-                value={this.state.password}
+                value={this.state.user.password}
+                required
                 style={{ width: '250px' }}
               />
               <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
                     style={{ width: '250px' }} >
-                <select className="mdl-textfield__input" id="roleId" name="roleId">
+                <select className="mdl-textfield__input" id="roleId" name="roleId" required
+                  onChange={this.onChange}
+                  value={this.state.user.roleId}>
                   <option value="1">Admin</option>
                   <option value="2">Reviewers</option>
                   <option value="3">Writers</option>

@@ -76,7 +76,7 @@ class Editor extends Component {
                   name="title"
                   value={this.state.title}
                   onChange={this.onChange}
-                  floatingLabel
+                  floatingLabel required
                   style={{ width: '250px' }}
                 />
               </td>
@@ -86,7 +86,7 @@ class Editor extends Component {
               <td>
                 <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder"
                     style={{ width: '250px' }} >
-                <select className="mdl-textfield__input" id="access" name="access"
+                <select className="mdl-textfield__input" id="access" name="access" required
                   value={this.state.access} onChange={this.onChange} >
                   <option value="public">Public</option>
                   <option value="private">Private</option>

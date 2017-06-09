@@ -48,6 +48,7 @@ class LoginForm extends Component {
             name="email"
             floatingLabel
             value={this.state.email}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -57,6 +58,7 @@ class LoginForm extends Component {
             label="Password"
             floatingLabel
             value={this.state.password}
+            required
             style={{ width: '200px' }}
           />
 
