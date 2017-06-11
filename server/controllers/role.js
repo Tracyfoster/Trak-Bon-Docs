@@ -1,4 +1,5 @@
 import model from '../models/';
+import Helpers from '../helper/Helpers';
 
 const Role = model.Role;
 const Users = model.Users;

@@ -1,11 +1,9 @@
 import controllers from '../controllers';
-import middleware from '../middlewares';
+import authentication from '../helper/authentication';
 
 const { roles, users, folder, documents, search } = controllers;
-const auth = middleware.authentication;
-
-const verify = auth.verifyToken;
-const adminAccess = auth.adminAccess;
+const verify = authentication.verifyToken;
+const adminAccess = authentication.adminAccess;
 
 const Routes = (router) => {
   router.get('/', (req, res) => res.status(200).send({
