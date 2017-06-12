@@ -6,7 +6,6 @@ import DocumentList from '../../components/documentComponents/DocumentList';
 
 export default function Dashboard({ allDocuments, auth, actions }) {
   const documents = allDocuments.data;
-  // totalItems
   const publicCount = (documents.filter(document => document.access === 'public')).length;
   const privateCount = (documents.filter(document => document.access === 'private')).length;
   const roleCount = (documents.filter(document => document.access === 'role')).length;

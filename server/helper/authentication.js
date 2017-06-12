@@ -7,9 +7,8 @@ const secret = process.env.SECRET || 'thisisademosecret';
 
 const authentication = {
   verifyToken(req, res, next) {
-    const token = req.body.token ||
-      req.headers.authorization ||
-      req.headers['x-access-token'];
+    const token = req.headers.authorization ||
+      req.headers['x-access-token'] || req.body.token;
     if (!token) {
       return res.status(401)
         .send({ message: 'Not Authorized' });

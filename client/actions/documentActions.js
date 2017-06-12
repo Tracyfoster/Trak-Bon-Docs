@@ -2,32 +2,26 @@ import axios from 'axios';
 import * as types from './types';
 import { eventAction } from '../utils/Utils';
 
-export function saveDocument(data) {
-  return (dispatch) => {
-    return axios.post('/api/documents', data)
-       .then((response) => {
-         dispatch(eventAction(types.ADD_DOCUMENT, response.data));
-       })
-      .catch((error) => {
-        throw (error);
-      });
-  };
+export const saveDocument = (data) => dispatch => {
+    axios.post('/api/documents', data)
+    .then(res =>
+      dispatch(eventAction(types.ADD_DOCUMENT, res.data)))
+    .catch(error => {throw error});
 }
 
-export function fetchDocuments() {
-  return (dispatch) => {
-    return axios.get('/api/documents')
-      .then(res => res.data)
-      .then(documents => dispatch(eventAction(types.SET_DOCUMENTS, documents)));
-  };
+export const fetchDocuments = () => dispatch => {
+    axios.get('/api/documents')
+      .then(res =>
+        dispatch(eventAction(types.SET_DOCUMENTS, res.data)))
+      .catch(error => {throw error});
 }
 
 export function fetchDocument(id) {
   return (dispatch) => {
     return axios.get(`/api/documents/${id}`)
-      .then(res => res.data)
-      .then(data =>
-        dispatch(eventAction(types.DOCUMENT_FETCHED, data.document)));
+      .then(res =>
+        dispatch(eventAction(types.DOCUMENT_FETCHED, res.data.document)))
+      .catch(error => {throw error});
   };
 }
 
@@ -36,23 +30,24 @@ export function updateDocument(data) {
     return axios.put(`/api/documents/${data.id}`, data)
       .then((res) => {
         dispatch(eventAction(types.DOCUMENT_UPDATED, res.data.updatedDoc));
-      });
+      })
+      .catch(error => {throw error});
   };
 }
 export function deleteDocument(id) {
   return (dispatch) => {
     return axios.delete(`/api/documents/${id}`)
-      .then(res => res.data)
-      .then(data => dispatch(eventAction(types.DOCUMENT_DELETED, { id })));
+      .then(res => dispatch(eventAction(types.DOCUMENT_DELETED, { id })))
+      .catch(error => {throw error});
   };
 }
 
 export const fetchUserDocuments = id => dispatch =>
     axios.get(`/api/users/${id}/documents`)
       .then(res => {
-        console.log('res', res.data)
         dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data))
-      });
+      })
+      .catch(error => {throw error});
 
 export function searchDocuments(searchTerm) {
   return (dispatch) => {
@@ -61,8 +56,6 @@ export function searchDocuments(searchTerm) {
        .then((response) => {
          dispatch(eventAction(types.DOCUMENT_SEARCH_RESULTS, response.data));
        })
-      .catch((error) => {
-        throw (error);
-      });
+      .catch(error => {throw error});
   };
 }

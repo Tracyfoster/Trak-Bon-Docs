@@ -41,7 +41,7 @@ export default {
     if (req.query.q) {
       searchTerm = `%${req.query.q}%`;
     }
-
+    console.log('searchTerm', searchTerm)
     let queryOptions = { access: 'public', title: { $iLike: searchTerm } };
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     const decoded = authentication.verifyToken(token);
@@ -70,7 +70,7 @@ export default {
         order: [['createdAt', 'DESC']]
       })
       .then((documents) => {
-
+        console.log('documents',documents)
         if (documents.row.length < 0) {
           return res.status(404).send({
             message: 'No document found',
@@ -80,7 +80,6 @@ export default {
         documents.rows.filter(
           doc => !(doc.access === 'role' && doc.User.roleId !== decoded.roleId)
         );
-
         return res.status(200).send({
           searchDocuments,
           message: 'Search Successful'

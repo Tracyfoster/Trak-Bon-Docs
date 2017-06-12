@@ -48,6 +48,9 @@ const Routes = (router) => {
     .get(verify, documents.retrieve)
     .put(verify, documents.update)
     .delete(verify, documents.destroy);
+  router
+    .route('/search/documents/')
+    .get(documents.documentSearch);
 
   /**
    * crud api for user model
@@ -65,6 +68,9 @@ const Routes = (router) => {
     .route('/users/:id/documents')
     .get(users.findUserDocuments);
   router
+    .route('/search/users/')
+    .get(search.userSearch);
+  router
     .route('/users/:id/folders')
     .get(users.findUserFolders);
   router
@@ -73,15 +79,6 @@ const Routes = (router) => {
   router
     .route('/users/logout')
     .post(users.logout);
-  /**
-   * Api for search
-   */
-  router
-    .route('/search/users/')
-    .get(search.userSearch);
-  router
-    .route('/search/documents/')
-    .get(search.documentSearch);
 };
 
 export default Routes;

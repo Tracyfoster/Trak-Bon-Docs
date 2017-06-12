@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { List, ListItem, ListItemContent } from 'react-mdl';
 import { fetchFolders, deleteFolder } from '../../actions/folderActions';
 
 class FolderPage extends Component {
   componentDidMount() {
-    this.props.fetchFolders();
+    this.props.fetchFolders()
+    .then(() => toastr.success('Successful'))
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {

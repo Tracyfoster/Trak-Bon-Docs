@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
 import { Textfield, Button, RadioGroup, Radio } from 'react-mdl';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { saveDocument, updateDocument } from '../../actions/documentActions';
 
 
@@ -48,6 +49,9 @@ class Editor extends Component {
     if (this.state.userId) {
       this.props.dispatch(updateDocument(this.state))
       .then(() => this.context.router.push('/documents'))
+      .catch(error => {
+        toastr.error(error);
+      });
     } else {
       const { title, content, access } = this.state;
       const userId = this.props.auth.id
@@ -59,7 +63,9 @@ class Editor extends Component {
       };
       this.props.dispatch(saveDocument(data))
       .then(() => this.context.router.push('/documents'))
-      .catch(error => console.log('Getting better', error));
+      .catch(error => {
+        toastr.error(error);
+      });
     }
   }
 
@@ -110,6 +116,7 @@ class Editor extends Component {
           placeholder={this.props.placeholder}
         />
       </div>
+      <span />
        <Button raised colored>Save</Button>
       </form>
     </div>

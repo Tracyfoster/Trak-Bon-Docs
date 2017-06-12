@@ -1,5 +1,6 @@
 import model from '../models/';
 import Helpers from '../helper/Helpers';
+import authentication from '../helper/authentication';
 
 const Documents = model.Documents;
 const Users = model.Users;
@@ -98,4 +99,33 @@ export default {
       })
       .catch(error => Helpers.handleError(error, res));
   },
+
+  documentSearch(req, res) {
+    console.log('query', req.query);
+
+    const searchTerm = req.query.q;
+    return Documents
+      .findAndCountAll({
+        where: { title: { $iLike: `%${searchTerm}%` } },
+        include: { model: Users }
+      })
+      .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({
+            message: 'No document found',
+          });
+        }
+        return res.status(200).send({
+          documents,
+          message: 'Search Successful'
+        });
+      })
+      .catch((error) => {
+        res.status(400)
+        .send({
+          error,
+          message: 'Error occurred while searching documents'
+        });
+      });
+  }
 };

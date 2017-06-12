@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
+import toastr from 'toastr';
 import { registerUser } from '../../actions/userActions';
 
 
@@ -30,7 +31,9 @@ class RegisterForm extends Component {
     event.preventDefault();
     this.props.dispatch(registerUser(this.state.user))
     .then(() => this.context.router.push('/dashboard'))
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {

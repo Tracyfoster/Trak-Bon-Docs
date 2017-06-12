@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
+import toastr from 'toastr';
 import { userLogin } from '../../actions/userActions';
 
 class LoginForm extends Component {
@@ -29,7 +30,9 @@ class LoginForm extends Component {
     event.preventDefault();
     this.props.dispatch(userLogin(this.state.user))
     .then(() => this.context.router.push('/documents'))
-    .catch(() => console.log('Getting better'));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {

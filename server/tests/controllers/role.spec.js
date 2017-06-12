@@ -140,7 +140,7 @@ describe('Role', () => {
         expect(res.status).to.equal(400);
         expect(res.body).to.be.a('object');
         expect(res.body.message).to.eql(
-          'Error occured while retrieving role'
+          'value "3000000000" is out of range for type integer'
         );
         done();
       });
@@ -197,7 +197,8 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(400);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('Error updating role');
+        expect(res.body.message).to.eql(
+          'value "3000000000" is out of range for type integer');
         done();
       });
     });
@@ -224,7 +225,8 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('User is unauthorized for this request.');
+        expect(res.body.message).to.eql(
+          'User is unauthorized for this request.');
         done();
       });
     });
@@ -249,7 +251,8 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(400);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('Error deleting Role.');
+        expect(res.body.message).to.eql(
+          'value "3000000000" is out of range for type integer');
         done();
       });
     });

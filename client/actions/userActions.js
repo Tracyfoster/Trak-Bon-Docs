@@ -14,6 +14,7 @@ export const registerUser = user => (dispatch) => {
     })
     .catch((error) => {
       dispatch(eventAction(types.USER_REGISTRATION_FAIL));
+      throw (error);
     });
 };
 
@@ -22,9 +23,7 @@ export const createUser = user => (dispatch) => {
     .then((res) => {
       dispatch(eventAction(types.NEW_USER));
     })
-    .catch((error) => {
-      throw (error);
-    });
+    .catch(error => {throw error});
 };
 
 export const userLogin = user => (dispatch) => {
@@ -40,6 +39,7 @@ export const userLogin = user => (dispatch) => {
     })
     .catch((error) => {
       dispatch(eventAction(types.USER_LOGIN_FAIL));
+      throw (error);
     });
 };
 
@@ -48,5 +48,6 @@ export const logoutUser = () => dispatch =>
     .then((res) => {
       localStorage.removeItem('jwtToken');
       setAuthorizationToken(false);
-      dispatch(eventAction(types.SET_CURRENT_USER, {}));
+      dispatch(eventAction(types.SET_CURRENT_USER, {}))
+    .catch(error => {throw error});
     });

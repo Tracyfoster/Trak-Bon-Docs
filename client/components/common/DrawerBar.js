@@ -20,6 +20,7 @@ class DrawerBar extends Component {
   render () {
     return (
       <Drawer title="Trak-Bon Docs">
+        {this.props.auth.isAuthenticated ?
           <Navigation>
               <Link to="/dashboard">
                 <IconButton colored name="home" />
@@ -60,6 +61,8 @@ class DrawerBar extends Component {
                 <span> Sign Out </span>
               </a>
           </Navigation>
+          : <h4> Please log in </h4>
+        }
       </Drawer>
     );
   }
@@ -73,4 +76,10 @@ DrawerBar.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect()(DrawerBar);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
+
+export default connect(mapStateToProps)(DrawerBar);

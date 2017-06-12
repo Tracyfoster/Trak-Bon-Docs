@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Header, HeaderRow, Navigation, Textfield, IconButton } from 'react-mdl';
 import { connect } from 'react-redux';
+import toastr from 'toastr';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
 import UserUpdate from '../userComponents/UserUpdate'
 
@@ -25,8 +26,11 @@ class NavBar extends Component {
     event.preventDefault();
     const term = this.state.searchTerm;
     this.props.dispatch(searchUsers(term));
-    this.props.dispatch(searchDocuments(term));
-    this.context.router.push(`/search/${term}`);
+    this.props.dispatch(searchDocuments(term))
+    .then(() => this.context.router.push(`/search/${term}`))
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render () {

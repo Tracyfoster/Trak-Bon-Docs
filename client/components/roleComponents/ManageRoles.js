@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Grid, Cell,  } from 'react-mdl';
+import toastr from 'toastr';
 import * as roleActions from '../../actions/roleActions';
 import RoleList from './RoleList';
 import isAdmin from '../../utils/Utils';
@@ -11,13 +12,20 @@ import RoleModal from './RoleModal';
 
 class RolePage extends Component {
   componentWillMount() {
-    this.props.actions.fetchRoles();
+    this.props.actions.fetchRoles()
+    .then(() => toastr.success('Successful'))
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {
     return (
       <Grid>
         {/*{isAdmin ?*/}
+        <Cell col={2}>
+          <span />
+        </Cell>
         <Cell col={12}>
           <RoleModal />
           <p />
@@ -39,7 +47,6 @@ RolePage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     roles: state.roles || [],
     auth: state.auth
