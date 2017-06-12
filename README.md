@@ -1,8 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/andela-tezebuike/Trak-Bon-Docs/badge.svg)](https://coveralls.io/github/andela-tezebuike/Trak-Bon-Docs)
-
-[![Code Climate](https://codeclimate.com/github/andela-tezebuike/Trak-Bon-Docs/badges/gpa.svg)](https://codeclimate.com/andela-tezebuike/Trak-Bon-Docs)
-
-[![Build Status](https://travis-ci.org/andela-tezebuike/Trak-Bon-Docs.svg?branch=develop)](https://travis-ci.org/andela-tezebuike/Trak-Bon-Docs)
+[![Coverage Status](https://coveralls.io/repos/github/andela-tezebuike/Trak-Bon-Docs/badge.svg)](https://coveralls.io/github/andela-tezebuike/Trak-Bon-Docs) [![Code Climate](https://codeclimate.com/github/andela-tezebuike/Trak-Bon-Docs/badges/gpa.svg)](https://codeclimate.com/andela-tezebuike/Trak-Bon-Docs) [![Build Status](https://travis-ci.org/andela-tezebuike/Trak-Bon-Docs.svg?branch=develop)](https://travis-ci.org/andela-tezebuike/Trak-Bon-Docs)
 
 # Trak-Bon-Docs
 Trak-Bon-Docs is a fullstack document management system built on react with redux. It utilizes RESTFUL API architecture for managing documents, users and roles. Also, authentication is done using JWT.
@@ -16,10 +12,10 @@ This application was developed using the following frameworks.
 *   [Sequelize](https://sequelizejs.org) as [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping)
 
 ## Application Features
-###### User Authentication
+#### User Authentication
 Users are authenticated and validated using JWT web token. Generating tokens on signup and login ensures documents and API endpoints are protected.
 
-###### User Activities
+#### User Activities
 *   Create an account
 *   Login with credentials
 *   Create new document with specifying document title, content and document access
@@ -57,53 +53,22 @@ Users are authenticated and validated using JWT web token. Generating tokens on 
 ## API Documentation
 -----
 The API has routes, each dedicated to a single task that uses HTTP response codes to indicate API status and errors.
-#### API Features
+### API Features
 
 The following features make up the Trak-Bon-Docs API:
 
-###### Authentication
--   It uses JSON Web Token (JWT) for authentication.
--   It generates a token on successful login or account creation and returns it to the consumer.
--   It verifies the token to ensures a user is authenticated to access protected endpoints.
-
-###### Users
-
+#### Users
 -   It allows users to be created.
 -   It allows users to login and obtain a token
 -   It allows authenticated users to retrieve and update their information.
 -   It allows the admin to manage users.
-
-###### Roles
-
--   It ensures roles can be created, retrieved, updated and deleted by an admin user.
--   A non-admin user cannot create, retrieve, modify, or delete roles.
--   it allows for assignment of roles to users
-
-###### Documents
-
--   It allows new documents to be created by authenticated users.
--   It ensures all documents are accessible based on the permission specified.
--   It allows admin users to retrieve all documents.
--   It ensures users can delete, edit and update documents that they own.
--   It allows users to retrieve all documents assigned to their role as well as public documents.
-
-###### Folders
-
--   It ensures folders can be created, retrieved, updated and deleted by a user.
--   Users can only create, retrieve, modify, or delete their own folders.
--   it allows for assignment of documents to folders
-
-###### Search
-
--   It allows users to search documents they have access to for a specified search term.
--   It allows admin to retrieve all documents that matches search term.
 -   It allows admin to search users based on a specified search term
 
-#### Available API Endpoints and their Functionality
+##### Authentication
+-   It uses JSON Web Token (JWT) for authentication.
+-   It generates a token on successful login or account creation and returns it to the consumer.
+-   It verifies the token to ensures a user is authenticated to access protected endpoints.
 
-View full API documentation here
-
-###### Users
 EndPoint                    |   Functionality
 ----------------------------|------------------------
 POST /users/login           |   Logs a user in.
@@ -116,7 +81,11 @@ DELETE /users/<id>          |   Delete user.
 GET /users/<id>/documents   |   Find all documents belonging to the user.
 GET /search/users/?q=${query}   |   Gets all users with username contain the search term
 
-###### Roles
+#### Roles
+-   It ensures roles can be created, retrieved, updated and deleted by an admin user.
+-   A non-admin user cannot create, retrieve, modify, or delete roles.
+-   it allows for assignment of roles to users
+
 EndPoint                    |   Functionality
 ----------------------------|------------------------
 POST /roles/                |   Creates a new role instance.
@@ -125,7 +94,15 @@ GET /roles/<id>             |   Find role.
 PUT /roles/<id>             |   Update role attributes.
 DELETE /roles/<id>          |   Delete role.
 
-###### Documents
+#### Documents
+-   It allows new documents to be created by authenticated users.
+-   It ensures all documents are accessible based on the permission specified.
+-   It allows admin users to retrieve all documents.
+-   It ensures users can delete, edit and update documents that they own.
+-   It allows users to retrieve all documents assigned to their role as well as public documents.
+-   It allows users to search documents they have access to for a specified search term.
+-   It allows admin to retrieve all documents that matches search term.
+
 EndPoint                    |   Functionality
 ----------------------------|------------------------
 POST /documents/            |   Creates a new document instance.
@@ -135,7 +112,11 @@ PUT /documents/<id>         |   Update document attributes.
 DELETE /documents/<id>      |   Delete document.
 GET /search/documents/?q={query}| Get all documents with title containing the search query
 
-###### Folders
+#### Folders
+-   It ensures folders can be created, retrieved, updated and deleted by a user.
+-   Users can only create, retrieve, modify, or delete their own folders.
+-   it allows for assignment of documents to folders
+
 EndPoint                    |   Functionality
 ----------------------------|------------------------
 POST /folders/              |   Creates a new folder instance.
@@ -144,12 +125,13 @@ GET /folders/<id>           |   Find folder.
 PUT /folders/<id>           |   Update folder attributes.
 DELETE /folders/<id>        |   Delete folder.
 
-#### Contribution
-### Prerequisites includes
+
+## Contribution
+#### Prerequisites includes
 -   [Postgresql](https://www.postgresql.org/) and
 -   [Node.js](http://nodejs.org/) >= v7.9.0.
 
-### Procedure
+#### Procedure
 1.  Clone this repository from a terminal `git clone https://github.com/andela-tezebuike/Trak-Bon-Docs.git`.
 2.  Move into the project directory `cd TrakBon Docs`
 3.  Install project dependencies `npm install`
@@ -160,8 +142,8 @@ DELETE /folders/<id>        |   Delete folder.
 8.  Make changes and commit your changes
 9.  Git push and make a pull request to my repo
 
-#### Limitations
+## Limitations
 Currently, we can't say our API can handle larger requests, this may be a problem when our user base grows to over million.
 
-#### License
+## License
 MIT

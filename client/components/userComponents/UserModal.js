@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { createUser } from '../../actions/userActions';
@@ -30,7 +31,9 @@ class UserModal extends Component {
     event.preventDefault();
     this.props.dispatch(createUser(this.state.user))
     .then(() => this.handleCloseDialog())
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   handleOpenDialog() {

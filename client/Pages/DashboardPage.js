@@ -12,11 +12,23 @@ class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      documents: Object.assign({}, props.allDocuments)
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.search !== this.props.search ||
+      this.props.allDocuments !== nextProps.allDocuments) {
+        const documents = nextProps.search.totalItems > 0 ?
+          nextProps.search : nextProps.allDocuments;
+
+      this.setState({ documents: Object.assign({}, documents) });
+    }
   }
 
   onChange(event) {
@@ -29,18 +41,27 @@ class DashboardPage extends Component {
     this.props.actions.searchDocuments(term);
   }
 
+  clearSearch() {
+    this.setState({
+      searchTerm: '',
+      documents: Object.assign({}, this.props.allDocuments)
+    });
+  }
+
   componentWillMount() {
     this.props.actions.fetchDocuments();
   }
 
   render() {
-    const searchResult = this.props.search;
-    const documents = searchResult.totalItems > 0 ? searchResult : this.props.allDocuments;
+    const documents = this.state.documents;
     return (
       <div>
         {this.props.auth.isAuthenticated ?
         <Grid>
-          <Cell col={11}>
+          <Cell col={2}>
+            <span />
+          </Cell>
+          <Cell col={9}>
             {/*{isAdmin ?*/}
             <div>
               <form method="post" onSubmit={this.onSubmit}>
@@ -53,7 +74,7 @@ class DashboardPage extends Component {
                   value={this.state.searchTerm}
                   style={{ width: '500px' }}
                 />
-                <IconButton raised colored name="close"
+                <Icon name="close"
                 onClick={this.clearSearch} />
                 </span>
               </form>

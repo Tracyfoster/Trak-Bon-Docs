@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { updateUser } from '../../actions/userActions';
@@ -39,7 +40,9 @@ class UserUpdate extends Component {
     console.log('usertoupdate', this.state.user);
     this.props.dispatch(updateUser(this.state.user))
     .then(() => this.handleCloseDialog())
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   handleOpenDialog() {
