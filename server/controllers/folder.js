@@ -1,4 +1,5 @@
 import model from '../models/';
+import Helpers from '../helper/Helpers';
 
 const Folder = model.Folder;
 const User = model.User;
@@ -15,10 +16,7 @@ export default {
         folder,
         message: 'Folder created succesfully'
       }))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error creating new folder'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   list(req, res) {
@@ -37,12 +35,7 @@ export default {
         }
         return res.status(200).send({ folder });
       })
-      .catch((error) => {
-        return res.status(400).send({
-          error,
-          message: error.parent.detail
-        });
-      });
+      .catch(error => Helpers.handleError(error, res));
   },
 
   retrieve(req, res) {
@@ -61,10 +54,7 @@ export default {
         }
         return res.status(200).send({ folder });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occured while retrieving folder'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   update(req, res) {
@@ -84,15 +74,9 @@ export default {
             folder,
             message: 'Folder updated successfully.'
           }))
-          .catch(error => res.status(400).send({
-            error,
-            message: 'Folder did not update successfully.'
-          }));
+          .catch(error => Helpers.handleError(error, res));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error updating folder'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   destroy(req, res) {
@@ -110,9 +94,6 @@ export default {
             message: 'Folder deleted successfully.'
           }));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error deleting Folder.'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 };

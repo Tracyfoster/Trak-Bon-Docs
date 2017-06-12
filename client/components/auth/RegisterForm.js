@@ -47,6 +47,7 @@ class RegisterForm extends Component {
             floatingLabel
             name="firstName"
             value={this.state.user.firstname}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -55,6 +56,7 @@ class RegisterForm extends Component {
             name="lastName"
             floatingLabel
             value={this.state.lasttname}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -64,6 +66,7 @@ class RegisterForm extends Component {
             name="email"
             floatingLabel
             value={this.state.email}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -73,6 +76,7 @@ class RegisterForm extends Component {
             label="Password"
             floatingLabel
             value={this.state.password}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -80,6 +84,7 @@ class RegisterForm extends Component {
             type="password"
             label="Confirm Password"
             floatingLabel
+            required
             style={{ width: '200px' }}
           />
           <div style={{ textAlign: 'center' }}>

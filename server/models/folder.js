@@ -3,13 +3,11 @@ module.exports = (sequelize, DataTypes) => {
     folderName: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      unique: { args: true, msg: 'Role already exist' },
+      validate: { notEmpty: { args: true, msg: 'Name cannot be empty' } }
     },
   }, {
     classMethods: {
-      // Associations defined here
       associate: (models) => {
         Folder.belongsTo(models.Users, {
           foreignKey: 'userId',

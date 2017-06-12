@@ -1,4 +1,5 @@
 import model from '../models/';
+import Helpers from '../helper/Helpers';
 
 const Role = model.Role;
 const Users = model.Users;
@@ -22,10 +23,7 @@ export default {
           role,
           message: 'Role created succesfully'
         }))
-        .catch(error => res.status(400).send({
-          error,
-          message: 'Error occured while retrieving role'
-        }));
+        .catch(error => Helpers.handleError(error, res));
       });
   },
 
@@ -45,12 +43,7 @@ export default {
         }
         return res.status(200).send({ role });
       })
-      .catch((error) => {
-        res.status(400).send({
-          error,
-          message: 'Error occured while retrieving role'
-        });
-      });
+      .catch(error => Helpers.handleError(error, res));
   },
 
   retrieve(req, res) {
@@ -69,10 +62,7 @@ export default {
         }
         return res.status(200).send({ role });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occured while retrieving role'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   update(req, res) {
@@ -92,15 +82,9 @@ export default {
             role,
             message: 'Role updated successfully.'
           }))
-          .catch(error => res.status(400).send({
-            error,
-            message: 'Role did not update successfully.'
-          }));
+          .catch(error => Helpers.handleError(error, res));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error updating role'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   destroy(req, res) {
@@ -118,9 +102,6 @@ export default {
             message: 'Role deleted successfully.'
           }));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error deleting Role.'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 };
