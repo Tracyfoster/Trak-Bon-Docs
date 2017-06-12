@@ -4,6 +4,7 @@
   "description": "Full stack document management system, complete with roles and privileges.",
   "main": "index.js",
   "scripts": {
+    "prestart": "db:setup",
     "start:dev": "nodemon --exec babel-node -- ./bin/www.js",
     "mocha": "mocha",
     "start": "npm run start:dev",
