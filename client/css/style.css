@@ -27,12 +27,10 @@ body {
   display: block;
 }
 
-#editor {
-  color: #000;
-}
 
 .ql-container.ql-snow {
-  height: 200px
+  height: 200px;
+  background: #eee;
 }
 
 footer {

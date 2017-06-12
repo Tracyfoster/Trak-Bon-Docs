@@ -64,7 +64,7 @@ describe('User API', () => {
         .post('/api/users')
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.message).to.eql('Error creating undefined');
+          expect(res.body.message).to.eql('firstName cannot be null');
           done();
       });
     });
@@ -148,7 +148,8 @@ describe('User API', () => {
         .send({ roleId: 100 })
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.message).to.eql('Error updating user');
+          expect(res.body.message).to.eql(
+            'invalid input syntax for integer: "price"');
           done();
         });
     });
@@ -172,7 +173,7 @@ describe('User API', () => {
         .send({ email: 10 })
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.message).to.eql('Error updating user');
+          expect(res.body.message).to.eql('Use a valid email');
           done();
         });
     });
@@ -198,7 +199,8 @@ describe('User API', () => {
         .set('x-access-token', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.message).to.eql(`${userData.newUser.firstName} deleted successfully`);
+          expect(res.body.message).to.eql(
+            `${userData.newUser.firstName} deleted successfully`);
           done();
         });
     });
@@ -221,7 +223,8 @@ describe('User API', () => {
         .set('x-access-token', regularToken)
         .end((err, res) => {
           expect(res.status).to.equal(403);
-          expect(res.body.message).to.eql('User is unauthorized for this request.');
+          expect(res.body.message).to.eql(
+            'User is unauthorized for this request.');
           done();
         });
     });
@@ -232,7 +235,7 @@ describe('User API', () => {
         .set('x-access-token', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.message).to.eql('Error deleting user');
+          expect(res.body.message).to.eql('invalid input syntax for integer: "bliss"');
           done();
         });
     });

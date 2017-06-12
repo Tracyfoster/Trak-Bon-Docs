@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { createRole, updateRole } from '../../actions/roleActions';
@@ -44,11 +45,15 @@ class RoleModal extends Component {
     if (this.state.role.id) {
       this.props.dispatch(updateRole(this.state.role))
       .then(() => this.handleCloseDialog())
-      .catch(error => console.log('Getting better', error));
+      .catch(error => {
+        toastr.error(error);
+      });
     } else {
       this.props.dispatch(createRole(this.state.role))
       .then(() => this.handleCloseDialog())
-      .catch(error => console.log('Getting better', error));
+      .catch(error => {
+        toastr.error(error);
+      });
     }
   }
 
@@ -93,6 +98,7 @@ class RoleModal extends Component {
                 floatingLabel
                 name="roleName"
                 value={this.state.role.roleName}
+                required
                 style={{ width: '200px' }}
               />
               <div />

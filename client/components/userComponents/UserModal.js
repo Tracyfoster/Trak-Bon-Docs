@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { createUser } from '../../actions/userActions';
@@ -30,7 +31,9 @@ class UserModal extends Component {
     event.preventDefault();
     this.props.dispatch(createUser(this.state.user))
     .then(() => this.handleCloseDialog())
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   handleOpenDialog() {
@@ -64,6 +67,7 @@ class UserModal extends Component {
                 floatingLabel
                 name="firstName"
                 value={this.state.user.firstname}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -71,7 +75,8 @@ class UserModal extends Component {
                 label="Lastname"
                 name="lastName"
                 floatingLabel
-                value={this.state.lasttname}
+                value={this.state.user.lasttname}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -80,7 +85,8 @@ class UserModal extends Component {
                 label="Email"
                 name="email"
                 floatingLabel
-                value={this.state.email}
+                value={this.state.user.email}
+                required
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -89,12 +95,15 @@ class UserModal extends Component {
                 name="password"
                 label="Password"
                 floatingLabel
-                value={this.state.password}
+                value={this.state.user.password}
+                required
                 style={{ width: '250px' }}
               />
               <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
                     style={{ width: '250px' }} >
-                <select className="mdl-textfield__input" id="roleId" name="roleId">
+                <select className="mdl-textfield__input" id="roleId" name="roleId" required
+                  onChange={this.onChange}
+                  value={this.state.user.roleId}>
                   <option value="1">Admin</option>
                   <option value="2">Reviewers</option>
                   <option value="3">Writers</option>

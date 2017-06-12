@@ -62,12 +62,7 @@ export default {
           token
         });
       })
-      .catch((error) => {
-        return res.status(400).send({
-          error,
-          message: `Error creating ${req.body.firstName}`
-        });
-      });
+      .catch(error => Helpers.handleError(error, res));
     });
   },
 
@@ -100,10 +95,7 @@ export default {
           token
         });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occurred while authenticating user'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   logout(req, res) {
@@ -127,10 +119,7 @@ export default {
         }
         return res.status(200).send(users);
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error retrieving users'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   retrieve(req, res) {
@@ -147,10 +136,7 @@ export default {
         }
         return res.status(200).send({ user });
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occurred while retrieving user'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   update(req, res) {
@@ -170,8 +156,7 @@ export default {
                 .status(200).send({ updatedUser,
                   message: 'User updated successfully',
                 }));
-          }).catch(error => res.status(400).send({
-            error, message: 'Error updating user' }));
+          }).catch(error => Helpers.handleError(error, res));
       }
       return (res.status(403)
          .send({ message: 'Unauthorized Access' }));
@@ -195,8 +180,7 @@ export default {
             userId: req.params.id,
             message: `${user.firstName} deleted successfully` }));
       })
-      .catch(error => res.status(400).send({
-        error, message: 'Error deleting user' }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   findUserDocuments(req, res) {
@@ -218,11 +202,7 @@ export default {
         }
         return res.status(200).send({ user, status: true });
       })
-      .catch((error) => {
-        return res.status(400).send({
-        error, message: 'Error occurred while retrieving user document'
-      })
-    });
+      .catch(error => Helpers.handleError(error, res));
   },
 
   findUserFolders(req, res) {
@@ -243,7 +223,6 @@ export default {
         }
         return res.status(200).send({ doc: user.userFolders, status: true });
       })
-      .catch(error => res.status(400).send({
-        error, message: 'Error occurred while retrieving user document' }));
+      .catch(error => Helpers.handleError(error, res));
   },
 };

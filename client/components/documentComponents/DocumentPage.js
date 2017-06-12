@@ -4,19 +4,33 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import * as documentActions from '../../actions/documentActions'
 import UserDocuments from '../documentComponents/UserDocuments';
 import { isAdmin } from '../../utils/Utils';
 
-class DashboardPage extends Component {
+class DocumentPage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      documents: Object.assign({}, props.userDocuments)
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.search !== this.props.search ||
+      this.props.userDocuments !== nextProps.userDocuments) {
+        const documents = nextProps.search.totalItems > 0 ?
+          nextProps.search : nextProps.userDocuments;
+
+      this.setState({ documents: Object.assign({}, documents) });
+    }
   }
 
   onChange(event) {
@@ -26,22 +40,42 @@ class DashboardPage extends Component {
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
-    this.props.actions.searchDocuments(term);
+    this.props.actions.searchDocuments(term)
+    .then(() => {
+      toastr.success('Successful')
+    })
+    .catch(error => {
+      toastr.error(error);
+    });
+  }
+
+  clearSearch() {
+    this.setState({
+      searchTerm: '',
+      documents: Object.assign({}, this.props.userDocuments)
+    });
   }
 
   componentWillMount() {
     const userId = this.props.auth.user.id;
-    this.props.actions.fetchUserDocuments(userId);
+    this.props.actions.fetchUserDocuments(userId)
+    .then(() => toastr.success('Successful'))
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {
-    const searchResult = this.props.search;
-    const documents = searchResult.totalItems > 0 ? searchResult : this.props.allDocuments;
+    const documents = this.state.documents;
+    console.log('docs', documents)
     return (
       <div>
         {this.props.auth.isAuthenticated ?
         <Grid>
-          <Cell col={11}>
+          <Cell col={2}>
+            <span />
+          </Cell>
+          <Cell col={9}>
             <div>
               <form method="post" onSubmit={this.onSubmit}>
                 <span>
@@ -53,14 +87,14 @@ class DashboardPage extends Component {
                   value={this.state.searchTerm}
                   style={{ width: '500px' }}
                 />
-                <IconButton raised colored name="close"
+                <Icon name="close"
                 onClick={this.clearSearch} />
                 </span>
               </form>
 
-               { this.props.userDocuments ?
+               {documents ?
               <UserDocuments
-              userDocuments={this.props.userDocuments}
+              userDocuments={documents}
               auth={this.props.auth}
               actions={this.props.actions}
               />
@@ -83,7 +117,7 @@ class DashboardPage extends Component {
   }
 }
 
-DashboardPage.propTypes = {
+DocumentPage.propTypes = {
   actions: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   userDocuments: PropTypes.object.isRequired,
@@ -104,4 +138,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentPage);

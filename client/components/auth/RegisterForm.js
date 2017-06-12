@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
+import toastr from 'toastr';
 import { registerUser } from '../../actions/userActions';
 
 
@@ -30,7 +31,9 @@ class RegisterForm extends Component {
     event.preventDefault();
     this.props.dispatch(registerUser(this.state.user))
     .then(() => this.context.router.push('/dashboard'))
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {
@@ -47,6 +50,7 @@ class RegisterForm extends Component {
             floatingLabel
             name="firstName"
             value={this.state.user.firstname}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -55,6 +59,7 @@ class RegisterForm extends Component {
             name="lastName"
             floatingLabel
             value={this.state.lasttname}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -64,6 +69,7 @@ class RegisterForm extends Component {
             name="email"
             floatingLabel
             value={this.state.email}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -73,6 +79,7 @@ class RegisterForm extends Component {
             label="Password"
             floatingLabel
             value={this.state.password}
+            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -80,6 +87,7 @@ class RegisterForm extends Component {
             type="password"
             label="Confirm Password"
             floatingLabel
+            required
             style={{ width: '200px' }}
           />
           <div style={{ textAlign: 'center' }}>

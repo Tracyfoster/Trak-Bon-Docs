@@ -28,12 +28,12 @@ class HomePage extends Component {
   render() {
     return (
         <Grid>
-        <Cell col={8}>
+        <Cell col={9}>
           <div>
             <img src={docimage} />
           </div>
         </Cell>
-        <Cell col={4}>
+        <Cell col={3}>
           <div>
             <Tabs
               ripple

@@ -63,7 +63,7 @@ describe('Document API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.eql(
-            'An error occured while creating document');
+            'title cannot be null');
           done();
         });
     });
@@ -163,7 +163,7 @@ describe('Document API', () => {
         });
     });
 
-    it('should return Error occurred while retrieving invalid user document',
+    it('should return invalid input syntax for integer: "beni" for wrong id',
     (done) => {
       chai.request(server)
         .get('/api/users/beni/documents')
@@ -171,7 +171,7 @@ describe('Document API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.eql(
-            'Error occurred while retrieving user document');
+            'invalid input syntax for integer: "beni"');
         done();
       });
     });
@@ -183,7 +183,7 @@ describe('Document API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.eql(
-            'Error occurred while retrieving documents');
+            'invalid input syntax for integer: "beni"');
         done();
       });
     });
@@ -269,7 +269,7 @@ describe('Document API', () => {
         .set('x-access-token', writerData.token)
         .end((err, res) => {
           expect(res.status).to.equal(400);
-          expect(res.body.message).to.eql('Error deleting document');
+          expect(res.body.message).to.eql('invalid input syntax for integer: "beni"');
           done();
         });
     });

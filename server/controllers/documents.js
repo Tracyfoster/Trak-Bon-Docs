@@ -1,5 +1,6 @@
 import model from '../models/';
 import Helpers from '../helper/Helpers';
+import authentication from '../helper/authentication';
 
 const Documents = model.Documents;
 const Users = model.Users;
@@ -18,10 +19,7 @@ export default {
         document,
         message: 'Document created successfully'
       }))
-      .catch(error =>res.status(400).send({
-          error,
-          message: 'An error occured while creating document'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   list(req, res) {
@@ -34,10 +32,7 @@ export default {
         limit: req.query.limit || 10,
       })
       .then(document => res.status(200).send(document))
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error retrieving documents'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   retrieve(req, res) {
@@ -53,10 +48,7 @@ export default {
         }
         return res.status(200).send(document);
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error occurred while retrieving documents'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
 
   update(req, res) {
@@ -81,10 +73,9 @@ export default {
           return (res.status(403)
             .send({ message: 'Unauthorized Access' }));
         })
-        .catch(error => res.status(400).send({
-          error,
-          message: 'Error updating document'
-        })));
+        .catch(error => Helpers.handleError(error, res))
+    )
+    .catch(error => Helpers.handleError(error, res));
   },
 
   destroy(req, res) {
@@ -106,9 +97,35 @@ export default {
           return (res.status(403)
             .send({ message: 'Unauthorized Access' }));
       })
-      .catch(error => res.status(400).send({
-        error,
-        message: 'Error deleting document'
-      }));
+      .catch(error => Helpers.handleError(error, res));
   },
+
+  documentSearch(req, res) {
+    console.log('query', req.query);
+
+    const searchTerm = req.query.q;
+    return Documents
+      .findAndCountAll({
+        where: { title: { $iLike: `%${searchTerm}%` } },
+        include: { model: Users }
+      })
+      .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({
+            message: 'No document found',
+          });
+        }
+        return res.status(200).send({
+          documents,
+          message: 'Search Successful'
+        });
+      })
+      .catch((error) => {
+        res.status(400)
+        .send({
+          error,
+          message: 'Error occurred while searching documents'
+        });
+      });
+  }
 };

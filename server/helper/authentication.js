@@ -5,10 +5,10 @@ const Role = models.Role;
 
 const secret = process.env.SECRET || 'thisisademosecret';
 
-export default {
+const authentication = {
   verifyToken(req, res, next) {
     const token = req.headers.authorization ||
-      req.headers['x-access-token'];
+      req.headers['x-access-token'] || req.body.token;
     if (!token) {
       return res.status(401)
         .send({ message: 'Not Authorized' });
@@ -41,4 +41,13 @@ export default {
       })
     });
   },
+
+  getUserRole(decoded, res) {
+    Role.findById(decoded.roleId)
+      .then((foundRole) => {
+        return foundRole.roleName.toLowerCase()
+      });
+  },
 };
+
+export default authentication;

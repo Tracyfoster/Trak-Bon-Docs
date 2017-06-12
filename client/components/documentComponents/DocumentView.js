@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
+import toastr from 'toastr';
 import { deleteDocument } from '../../actions/documentActions';
 import Editor from './Editor';
 
@@ -32,7 +33,11 @@ class DocumentView extends Component {
 
   onDelete() {
     alert('Are you sure you want to delete this?');
-    this.props.dispatch(deleteDocument(this.props.document.id));
+    this.props.dispatch(deleteDocument(this.props.document.id))
+    .then(() => toastr.success('Document has been deleted'))
+    .catch(error => {
+      toastr.error(error);
+    });
     this.handleCloseDialog();
   }
 
