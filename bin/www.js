@@ -31,11 +31,11 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use('/api', router);
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join( __dirname, '../client/index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.listen(port, function(err) {
+app.listen(port, (err) => {
   if (err) {
     console.log(err);
   } else {
