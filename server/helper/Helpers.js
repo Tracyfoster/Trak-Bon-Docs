@@ -24,8 +24,7 @@ const Helpers = {
 
   /**
    * Define the required user attributes
-   * @param {Object} req Request object
-   * @param {Object} res Response object
+   * @param {Object} user Request object
    * @returns {Object} returns an object
    */
   requiredAttributes(user) {

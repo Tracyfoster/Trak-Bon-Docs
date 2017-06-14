@@ -30,5 +30,5 @@ export const updateFolder = data => dispatch =>
       .catch((error) => { throw error; });
 export const deleteFolder = id => dispatch =>
   axios.delete(`/api/folders/${id}`)
-      .then(res => dispatch(eventAction(types.FOLDER_DELETED, { id })))
+      .then(() => dispatch(eventAction(types.FOLDER_DELETED, { id })))
       .catch((error) => { throw error; });

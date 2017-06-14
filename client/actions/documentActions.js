@@ -30,7 +30,7 @@ export const updateDocument = data => dispatch =>
       .catch((error) => { throw error; });
 export const deleteDocument = id => dispatch =>
   axios.delete(`/api/documents/${id}`)
-      .then(res => dispatch(eventAction(types.DOCUMENT_DELETED, { id })))
+      .then(() => dispatch(eventAction(types.DOCUMENT_DELETED, { id })))
       .catch((error) => { throw error; });
 
 export const fetchUserDocuments = id => dispatch =>

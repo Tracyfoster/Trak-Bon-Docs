@@ -29,5 +29,5 @@ export const updateRole = data => dispatch =>
       .catch((error) => { throw error; });
 export const deleteRole = id => dispatch =>
   axios.delete(`/api/roles/${id}`)
-      .then(res => dispatch(eventAction(types.ROLE_DELETED, { id })))
+      .then(() => dispatch(eventAction(types.ROLE_DELETED, { id })))
       .catch((error) => { throw error; });

@@ -21,7 +21,7 @@ export const updateUser = user => dispatch =>
 
 export const deleteUser = id => dispatch =>
   axios.delete(`/api/users/${id}`)
-    .then(res => dispatch(eventAction(types.USER_DELETED, { id })))
+    .then(() => dispatch(eventAction(types.USER_DELETED, { id })))
     .catch((error) => { throw error; });
 
 export const searchUsers = searchTerm => dispatch =>
