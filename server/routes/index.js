@@ -16,7 +16,7 @@ const Routes = (router) => {
   router
     .route('/roles')
     .post(verify, adminAccess, roles.create)
-    .get(verify, adminAccess, roles.list);
+    .get(verify, adminAccess, roles.getAllRoles);
   router
     .route('/roles/:id')
     .get(verify, adminAccess, roles.retrieve)
@@ -29,12 +29,15 @@ const Routes = (router) => {
   router
     .route('/folders')
     .post(verify, folder.create)
-    .get(verify, folder.list);
+    .get(verify, folder.getAllFolders);
   router
     .route('/folders/:id')
     .get(verify, folder.retrieve)
     .put(verify, folder.update)
     .delete(verify, folder.destroy);
+  router
+    .route('/users/:id/folders')
+    .get(verify, folder.findUserFolders);
 
   /**
    * crud api for document model
@@ -42,12 +45,15 @@ const Routes = (router) => {
   router
     .route('/documents')
     .post(verify, documents.create)
-    .get(verify, documents.list);
+    .get(verify, documents.getAllDocuments);
   router
     .route('/documents/:id')
     .get(verify, documents.retrieve)
     .put(verify, documents.update)
     .delete(verify, documents.destroy);
+  router
+    .route('/users/:id/documents')
+    .get(verify, documents.findUserDocuments);
   router
     .route('/search/documents/')
     .get(documents.documentSearch);
@@ -56,29 +62,23 @@ const Routes = (router) => {
    * crud api for user model
    */
   router
+    .route('/users/login')
+    .post(users.login);
+  router
+    .route('/users/logout')
+    .post(verify, users.logout);
+  router
     .route('/users')
     .post(users.create)
-    .get(verify, adminAccess, users.list);
+    .get(verify, adminAccess, users.getAllUsers);
   router
     .route('/users/:id')
     .get(users.retrieve)
     .put(verify, users.update)
     .delete(verify, adminAccess, users.destroy);
   router
-    .route('/users/:id/documents')
-    .get(users.findUserDocuments);
-  router
     .route('/search/users/')
     .get(search.userSearch);
-  router
-    .route('/users/:id/folders')
-    .get(users.findUserFolders);
-  router
-    .route('/users/login')
-    .post(users.login);
-  router
-    .route('/users/logout')
-    .post(users.logout);
 };
 
 export default Routes;

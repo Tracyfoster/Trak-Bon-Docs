@@ -6,12 +6,19 @@ const Role = models.Role;
 const secret = process.env.SECRET || 'thisisademosecret';
 
 const authentication = {
+  /**
+   * Verify user token
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Object} decoded user
+   */
   verifyToken(req, res, next) {
     const token = req.headers.authorization ||
       req.headers['x-access-token'] || req.body.token;
     if (!token) {
       return res.status(401)
-        .send({ message: 'Not Authorized' });
+        .send({ message: 'Unauthorized Access' });
     }
 
     jwt.verify(token, secret, (error, decoded) => {
@@ -24,6 +31,13 @@ const authentication = {
     });
   },
 
+  /**
+   * Verify if user is Admin
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void} no returns
+   */
   adminAccess(req, res, next) {
     Role.findById(req.decoded.roleId)
       .then((foundRole) => {
@@ -31,7 +45,7 @@ const authentication = {
           next();
         } else {
           return res.status(403)
-            .send({ message: 'User is unauthorized for this request.' });
+            .send({ message: 'Admin access is required for this action' });
         }
       })
       .catch(error => {
