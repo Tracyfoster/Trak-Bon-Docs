@@ -30,7 +30,7 @@ class LoginForm extends Component {
     event.preventDefault();
     this.props.dispatch(userLogin(this.state.user))
     .then(() => this.context.router.push('/documents'))
-    .catch(error => {
+    .catch((error) => {
       toastr.error(error);
     });
   }
@@ -67,8 +67,11 @@ class LoginForm extends Component {
 
           <div style={{ textAlign: 'center' }}>
             <Button
-              ripple raised colored
-              type="submit">
+              ripple
+              raised
+              colored
+              type="submit"
+            >
               Sign In</Button>
           </div>
         </form>
