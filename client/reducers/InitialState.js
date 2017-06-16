@@ -1,8 +1,7 @@
 export default {
   admin: {
     users: [],
-    totalUsers: 0,
-    user: {}
+    totalUsers: 0
   },
   documents: {
     data: [],
@@ -27,7 +26,7 @@ export default {
     user: {}
   },
   users: {
-    loading: false
+    created: false
   },
   roles: [],
   folders: [],

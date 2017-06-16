@@ -5,18 +5,25 @@ const Role = model.Role;
 const Users = model.Users;
 
 export default {
+  /**
+   * Create a role
+   * Route: POST: /roles
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} no returns
+   */
   create(req, res) {
     return Role
-     .findOne({
+      .findOne({
         where: {
           roleName: req.body.roleName
         }
       })
-      .then((role) => {
-        if (role) {
+      .then((existingRole) => {
+        if (existingRole) {
           return res.status(409).send({ message: 'Role Already Exists' });
         }
-        Role.create({
+        return Role.create({
           roleName: req.body.roleName,
         })
         .then(role => res.status(201).send({
@@ -27,14 +34,16 @@ export default {
       });
   },
 
-  list(req, res) {
+  /**
+   * Get all roles
+   * Route: GET: /roles
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} no returns
+   */
+  getAllRoles(req, res) {
     return Role
-      .findAll({
-        include: {
-          model: Users,
-          as: 'Users'
-        }
-      })
+      .findAll()
       .then((role) => {
         if (!role) {
           return res.status(404).send({
@@ -46,6 +55,13 @@ export default {
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Get a particular role
+   * Route: GET: /roles/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} response object or void
+   */
   retrieve(req, res) {
     return Role
       .findById(req.params.id, {
@@ -65,6 +81,13 @@ export default {
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Update a particular role
+   * Route: PUT: /roles/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   update(req, res) {
     return Role
       .findById(req.params.id)
@@ -87,6 +110,13 @@ export default {
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Delete a particular role
+   * Route: DELETE: /roles/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   destroy(req, res) {
     return Role
       .findById(req.params.id)

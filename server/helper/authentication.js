@@ -47,10 +47,9 @@ const authentication = {
       .then((foundRole) => {
         if (foundRole.roleName.toLowerCase() === 'admin') {
           next();
-        } else {
-          return res.status(403)
-            .send({ message: 'User is unauthorized for this request.' });
         }
+        return res.status(403)
+          .send({ message: 'Admin access is required for this action' });
       })
       .catch((error) => {
         res.status(400).send({
@@ -58,6 +57,46 @@ const authentication = {
           message: 'Error authenticating'
         });
       });
+<<<<<<< HEAD
+=======
+  },
+
+  /**
+   * Verify user token
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Function} next next function to execute
+   * @returns {Response} response object
+   */
+  verifyToken(req, res, next) { // eslint-disable-line
+    const token = req.headers.authorization
+      || req.headers['x-access-token']
+      || req.body.token;
+
+    if (!token) {
+      return res.status(401)
+        .send({ message: 'Please sign in to access this page' });
+    }
+    jwt.verify(token, secret, (error, decoded) => {
+      if (error) {
+        req.decoded = decoded;
+        next();
+      }
+      res.status(401).send({ message: 'Authentication failed' });
+    });
+  },
+
+  /**
+   * Get the user's role name
+   *
+   * @param {Object} req request object
+   * @returns {Response} response object
+   */
+  getUserRole(req) {
+    Role.findById(req.decoded.roleId)
+      .then(foundRole => foundRole.roleName.toLowerCase());
+>>>>>>> 27285219311d44bb62357eeb86696b3b057a2e72
   },
 };
 

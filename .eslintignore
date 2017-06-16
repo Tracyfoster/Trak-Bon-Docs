@@ -3,6 +3,7 @@
 lib/**
 server/seeders/*
 server/tests/*
-client/test/**
+/client/__tests__
 webpack.config.dev.js
 api_docs/**
+coverage

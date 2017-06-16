@@ -1,30 +1,27 @@
 /** jsx */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, Dialog, DialogTitle, Textfield,
-  DialogContent, DialogActions, IconButton } from 'react-mdl';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions,
+  IconButton } from 'react-mdl';
+import toastr from 'toastr';
 import { deleteDocument } from '../../actions/documentActions';
-import Editor from './Editor';
 
 class DocumentView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       content: document.content,
-      title: document.title
+      title: document.title,
+      openDialog: false
     };
-    this.onChange = this.onChange.bind(this);
+
     this.onUpdate = this.onUpdate.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.handleOpenDialog = this.handleOpenDialog.bind(this);
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
-  onChange(event) {
-    const field = event.target.name;
-  }
 
   onUpdate() {
     this.context.router.push(`/editor/${this.props.document.id}`);
@@ -32,8 +29,16 @@ class DocumentView extends Component {
 
   onDelete() {
     alert('Are you sure you want to delete this?');
-    this.props.dispatch(deleteDocument(this.props.document.id));
+    this.props.deleteDocument(this.props.document.id)
+    .then(() => toastr.success('Document has been deleted'))
+    .catch((error) => {
+      toastr.error(error);
+    });
     this.handleCloseDialog();
+  }
+
+  getContent() {
+    return { __html: this.props.document.content };
   }
 
   handleOpenDialog() {
@@ -48,38 +53,54 @@ class DocumentView extends Component {
     });
   }
 
-  getContent() {
-    return {__html: this.props.document.content}
-  }
-
   render() {
     return (
       <div>
-        <Button onClick={this.handleOpenDialog} ripple colored raised
-          style={{ color: '#fff' }}>Read</Button>
+        <Button
+          onClick={this.handleOpenDialog}
+          ripple
+          className="read-button"
+          colored
+          raised
+          style={{ color: '#fff' }}
+        > Read </Button>
         <Dialog
           open={this.state.openDialog}
           onCancel={this.handleCloseDialog}
-          style={{ width: '750px' }}>
-          <IconButton raised colored name="close"
-            onClick={this.handleCloseDialog} />
+          style={{ width: '750px' }}
+        >
+          <IconButton
+            raised
+            colored
+            className="close-read-button"
+            name="close"
+            onClick={this.handleCloseDialog}
+          />
           <DialogTitle
-            style={{ fontSize: '25px' }} >
+            style={{ fontSize: '25px' }}
+          >
             {this.props.document.title}</DialogTitle>
           <DialogContent>
-            <p dangerouslySetInnerHTML = {this.getContent()} />
+            <p dangerouslySetInnerHTML={this.getContent()} />
           </DialogContent>
           <DialogActions>
             <Button
-              ripple raised colored
+              ripple
+              className="update-button"
+              raised
+              colored
               type="submit"
-              onClick={this.onUpdate}>
-              Update</Button>
+              onClick={() => this.onUpdate()}
+            >
+            Update</Button>
             <Button
-              ripple raised colored
-              type="submit"
-              onClick={this.onDelete}>
-              Delete</Button>
+              ripple
+              className="delete-button"
+              raised
+              colored
+              onClick={() => this.onDelete()}
+            >
+            Delete</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -92,8 +113,12 @@ DocumentView.contextTypes = {
 };
 
 DocumentView.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
   document: PropTypes.object.isRequired
 };
 
-export default connect()(DocumentView);
+export default connect(null, { deleteDocument })(DocumentView);
+
+export {
+  DocumentView as DocumentViewComponent
+};

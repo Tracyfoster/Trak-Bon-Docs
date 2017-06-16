@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { updateUser } from '../../actions/userActions';
@@ -18,8 +19,8 @@ class UserUpdate extends Component {
         lastName: this.props.user.lastName,
         email: this.props.user.email,
         roleId: this.props.user.roleId,
-        password: this.props.user.password,
-      }
+      },
+      openDialog : false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -36,10 +37,11 @@ class UserUpdate extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log('usertoupdate', this.state.user);
-    this.props.dispatch(updateUser(this.state.user))
+    this.props.updateUser(this.state.user)
     .then(() => this.handleCloseDialog())
-    .catch(error => console.log('Getting better', error));
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   handleOpenDialog() {
@@ -77,6 +79,7 @@ class UserUpdate extends Component {
                 floatingLabel
                 name="firstName"
                 value={this.state.user.firstName}
+                className="form-input-firstname"
                 required
                 style={{ width: '200px' }}
               />
@@ -100,6 +103,7 @@ class UserUpdate extends Component {
                 name="email"
                 floatingLabel
                 value={this.state.user.email}
+                className="form-input-email"
                 required
                 style={{ width: '200px' }}
               />
@@ -134,6 +138,7 @@ class UserUpdate extends Component {
             <Button
               ripple raised colored
               type="submit"
+              className="update-button"
               onClick={this.onSubmit}>
               Update</Button>
           </DialogActions>
@@ -144,8 +149,14 @@ class UserUpdate extends Component {
  }
 
 UserUpdate.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
 };
 
-export default connect()(UserUpdate);
+export default connect(null, {
+  updateUser
+})(UserUpdate);
+
+export {
+  UserUpdate as UserUpdateComponent
+};

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { Button, Dialog, DialogTitle, Textfield,
   DialogContent, DialogActions, IconButton } from 'react-mdl';
 import { createUser } from '../../actions/userActions';
@@ -11,7 +12,8 @@ class UserModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {},
+      openDialog: false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -28,9 +30,11 @@ class UserModal extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.dispatch(createUser(this.state.user))
-    .then(() => this.handleCloseDialog())
-    .catch(error => console.log('Getting better', error));
+    this.props.createUser(this.state.user)
+      .then(() => this.handleCloseDialog())
+      .catch(error => {
+        toastr.error(error);
+      });
   }
 
   handleOpenDialog() {
@@ -63,8 +67,9 @@ class UserModal extends Component {
                 label="Firstname"
                 floatingLabel
                 name="firstName"
-                value={this.state.user.firstname}
+                value={this.state.user.firstName}
                 required
+                className="form-input-firstname"
                 style={{ width: '250px' }}
               />
               <Textfield
@@ -72,7 +77,7 @@ class UserModal extends Component {
                 label="Lastname"
                 name="lastName"
                 floatingLabel
-                value={this.state.user.lasttname}
+                value={this.state.user.lastName}
                 required
                 style={{ width: '250px' }}
               />
@@ -81,6 +86,7 @@ class UserModal extends Component {
                 type="email"
                 label="Email"
                 name="email"
+                className="form-input-email"
                 floatingLabel
                 value={this.state.user.email}
                 required
@@ -112,9 +118,10 @@ class UserModal extends Component {
           </DialogContent>
           <DialogActions>
             <Button
+              className='registration-button'
               ripple raised colored
               type="submit"
-              onClick={this.onSubmit}>
+              onClick={(e) => this.onSubmit(e)}>
               Create</Button>
           </DialogActions>
         </Dialog>
@@ -128,7 +135,13 @@ UserModal.contextTypes = {
 };
 
 UserModal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
 };
 
-export default connect()(UserModal);
+export default connect(null, {
+  createUser
+})(UserModal);
+
+export {
+  UserModal as UserModalComponent
+}

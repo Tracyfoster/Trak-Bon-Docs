@@ -11,6 +11,7 @@ import rootReducer from '../reducers';
 import { eventAction, setAuthorizationToken, isAdmin } from '../utils/Utils';
 import { SET_CURRENT_USER } from '../actions/types';
 import '../css/style.css';
+import '../../node_modules/toastr/build/toastr.min.css';
 
 const store = createStore(
     rootReducer,
@@ -23,11 +24,17 @@ const store = createStore(
 if (localStorage.jwtToken) {
   const user = jwtDecode(localStorage.jwtToken);
   setAuthorizationToken(localStorage.jwtToken);
+  isAdmin(user.roleId);
   axios.defaults.headers.common.Authorization = localStorage.jwtToken;
   store.dispatch(eventAction(SET_CURRENT_USER, (user)));
 }
 
-
+/**
+ * Top level application wrapper
+ *
+ * @class App
+ * @extends {React.Component}
+ */
 class App extends Component {
   render() {
     return (

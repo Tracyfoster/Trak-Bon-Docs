@@ -4,29 +4,33 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Grid, Cell,  } from 'react-mdl';
-import * as roleActions from '../../actions/roleActions';
+import toastr from 'toastr';
+import { fetchRoles, deleteRole, updateRole } from '../../actions/roleActions';
 import RoleList from './RoleList';
-import isAdmin from '../../utils/Utils';
 import RoleModal from './RoleModal';
 
 class RolePage extends Component {
   componentWillMount() {
-    this.props.actions.fetchRoles();
+    this.props.fetchRoles()
+    .then()
+    .catch(error => {
+      toastr.error(error);
+    });
   }
 
   render() {
     return (
       <Grid>
-        {/*{isAdmin ?*/}
+        <Cell col={2}>
+          <span />
+        </Cell>
         <Cell col={12}>
           <RoleModal />
           <p />
           <RoleList roles={this.props.roles}
-          actions={this.props.actions}
+          deleteRole={this.props.deleteRole}
           auth={this.props.auth}/>
         </Cell>
-        {/*:  <h4> You are not authorized to view this page </h4>
-        }*/}
       </Grid>
     );
   }
@@ -34,21 +38,19 @@ class RolePage extends Component {
 
 RolePage.propTypes = {
   roles: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired,
+  deleteRole: PropTypes.func.isRequired,
+  fetchRoles: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => {
-  console.log(state);
-  return {
-    roles: state.roles || [],
-    auth: state.auth
-  };
-};
+const mapStateToProps = state => ({
+  roles: state.roles || [],
+  auth: state.auth
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(roleActions, dispatch)
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(RolePage);
+export default connect(mapStateToProps,
+{ fetchRoles, deleteRole })(RolePage);
+
+export {
+  RolePage as RolePageComponent
+};

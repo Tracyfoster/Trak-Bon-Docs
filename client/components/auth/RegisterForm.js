@@ -1,10 +1,11 @@
 /** jsx */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
+import toastr from 'toastr';
 import { registerUser } from '../../actions/userActions';
+import Validator from '../../utils/Validator';
 
 
 class RegisterForm extends Component {
@@ -28,36 +29,46 @@ class RegisterForm extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.dispatch(registerUser(this.state.user))
-    .then(() => this.context.router.push('/dashboard'))
-    .catch(error => console.log('Getting better', error));
+
+    const isValid = Validator.signUp(this.state.user);
+
+    if (isValid === true) {
+      this.props.dispatch(registerUser(this.state.user))
+      .then((token) => {
+        localStorage.setItem('jwtToken', token);
+        this.context.router.push('/documents')
+      })
+      .catch((error) => {
+        toastr.error(error);
+      });
+    } else {
+      toastr.error(isValid, 'Error', { timeOut: 10000000 });
+    }
   }
 
   render() {
     return (
       <div>
         <div>
-          <p> Create an Account { this.props.loading ? 'loading' : '' } </p>
+          <p> Create an Account </p>
         </div>
 
-        <form method="post" onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit}>
           <Textfield
             onChange={this.onChange}
             label="Firstname"
             floatingLabel
             name="firstName"
-            value={this.state.user.firstname}
-            required
-            style={{ width: '200px' }}
+            value={this.state.user.firstName}
+            style={{ width: '150px' }}
           />
           <Textfield
             onChange={this.onChange}
             label="Lastname"
             name="lastName"
             floatingLabel
-            value={this.state.lasttname}
-            required
-            style={{ width: '200px' }}
+            value={this.state.lastName}
+            style={{ width: '150px' }}
           />
           <Textfield
             onChange={this.onChange}
@@ -66,8 +77,7 @@ class RegisterForm extends Component {
             name="email"
             floatingLabel
             value={this.state.email}
-            required
-            style={{ width: '200px' }}
+            style={{ width: '150px' }}
           />
           <Textfield
             onChange={this.onChange}
@@ -76,21 +86,26 @@ class RegisterForm extends Component {
             label="Password"
             floatingLabel
             value={this.state.password}
-            required
-            style={{ width: '200px' }}
+            style={{ width: '150px' }}
           />
           <Textfield
             onChange={this.onChange}
             type="password"
             label="Confirm Password"
+            name="confirmPassword"
             floatingLabel
-            required
-            style={{ width: '200px' }}
+            value={this.state.password}
+            style={{ width: '150px' }}
           />
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', display: 'block' }}>
             <Button
-              ripple raised colored
-              type="submit">
+              ripple
+              className="signup-button"
+              raised
+              colored
+              type="submit"
+              style={{ display: 'block', visibility: 'visible' }}
+            >
               Sign Up</Button>
           </div>
         </form>

@@ -2,20 +2,41 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Grid, Cell, Button, Textfield, IconButton } from 'react-mdl';
+import toastr from 'toastr';
+import { Grid, Cell, Button, Textfield, Icon } from 'react-mdl';
 import UsersList from './UsersList';
 import UserModal from './UserModal';
-import { fetchUsers, deleteUser, updateUser } from '../../actions/adminActions';
+import { fetchUsers, deleteUser, updateUser, searchUsers } from '../../actions/adminActions';
 
 class UsersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      users: [...props.allUsers]
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchUsers()
+    .then()
+    .catch((error) => {
+      toastr.error(error);
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.search !== this.props.search ||
+      this.props.allUsers !== nextProps.allUsers) {
+        const users = nextProps.search.totalItems > 0 ?
+          nextProps.search.data : nextProps.allUsers;
+
+      this.setState({ users: [...users] });
+    }
   }
 
   onChange(event) {
@@ -25,24 +46,26 @@ class UsersPage extends Component {
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
-    this.props.actions.searchDocuments(term);
+    this.props.searchUsers(term)
   }
 
-  componentDidMount() {
-    this.props.fetchUsers();
+  clearSearch() {
+    this.setState({
+      searchTerm: '',
+      users: [...this.props.allUsers]
+    });
   }
 
   render() {
-    const searchResult = this.props.search;
-    const documents = searchResult.totalItems > 0 ? searchResult : this.props.allDocuments;
+    const users = this.state.users;
     return (
       <Grid>
-        {/*<Cell col={0}>
+        <Cell col={2}>
           <span />
-        </Cell>*/}
-        <Cell col={12}>
+        </Cell>
+        <Cell col={10}>
           <UserModal />
-          <form method="post" onSubmit={this.onSubmit}>
+          <form method="post" onSubmit={e=> this.onSubmit(e)}>
             <span>
             <Textfield
               onChange={this.onChange}
@@ -52,16 +75,15 @@ class UsersPage extends Component {
               value={this.state.searchTerm}
               style={{ width: '500px' }}
             />
-            <IconButton raised colored name="close"
+            <Icon name="close"
             onClick={this.clearSearch} />
             </span>
           </form>
           <h3>Users List</h3>
           <UsersList
-            allUsers={this.props.allUsers}
+            allUsers={users}
             deleteUser={this.props.deleteUser}
             auth={this.props.auth}
-            context={this.context.router}
           />
         </Cell>
       </Grid>
@@ -69,25 +91,23 @@ class UsersPage extends Component {
   }
 }
 
-UsersPage.contextTypes = {
-  router: PropTypes.object
-};
-
 UsersPage.propTypes = {
   allUsers: PropTypes.array.isRequired,
+  searchUsers: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  console.log('userpage', state);
-  return {
-    allUsers: state.admin.users,
-    auth: state.auth,
-    search : state.search.users || []
-  };
-}
+const mapStateToProps = state => ({
+  allUsers: state.admin.users,
+  auth: state.auth,
+  search : state.search.users || []
+});
 
 export default connect(mapStateToProps,
-  { fetchUsers, deleteUser, updateUser })(UsersPage);
+  { fetchUsers, deleteUser, updateUser, searchUsers })(UsersPage);
+
+export {
+  UsersPage as UsersPageComponent
+};
