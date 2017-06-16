@@ -1,7 +1,7 @@
 import controllers from '../controllers';
 import authentication from '../helper/authentication';
 
-const { roles, users, folder, documents, search } = controllers;
+const { roles, users, folder, documents } = controllers;
 const verify = authentication.verifyToken;
 const adminAccess = authentication.adminAccess;
 
@@ -60,7 +60,7 @@ const Routes = (router) => {
     .route('/users/:id')
     .get(users.retrieve)
     .put(verify, users.update)
-    .delete(verify, adminAccess, users.destroy);
+    .delete(verify, users.destroy);
   router
     .route('/users/:id/documents')
     .get(users.findUserDocuments);
@@ -78,10 +78,7 @@ const Routes = (router) => {
    */
   router
     .route('/search/users/')
-    .get(search.userSearch);
-  router
-    .route('/search/documents/')
-    .get(search.documentSearch);
+    .get(users.userSearch);
 };
 
 export default Routes;

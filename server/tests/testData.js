@@ -46,6 +46,15 @@ export default {
     title: 'check role document',
     content: 'check role document1',
     access: 'reviewers',
+    userId: 3,
+  },
+  simpleDocument: {
+    title: faker.lorem.words(),
+    content: faker.lorem.paragraph(),
+    access: 'public',
+    userId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
   invalidUserDetails: {
     firstName: faker.name.firstName(),
@@ -55,6 +64,9 @@ export default {
     roleId: 2
   },
   invalidToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZUlkIjoyLCJpYXQiOjE0OTM2MjQ5MTcsImV4cCI6MTQ5MzcxMTMxN30.A3dy4bPUEa3QsML03UKDjqC9wcmAjV0ub8aWu1niaL',
+  folderOne: {
+    folderName: 'archives',
+  },
   roleOne: {
     roleName: 'newrole',
   },

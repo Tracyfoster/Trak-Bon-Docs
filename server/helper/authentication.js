@@ -6,25 +6,42 @@ const Role = models.Role;
 const secret = process.env.SECRET || 'thisisademosecret';
 
 const authentication = {
-  verifyToken(req, res, next) {
-    const token = req.body.token ||
-      req.headers.authorization ||
-      req.headers['x-access-token'];
-    if (!token) {
-      return res.status(401)
-        .send({ message: 'Not Authorized' });
-    }
+  /**
+   * Verify user token
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Function} next next function to execute
+   * @returns {Response} response object
+   */
+  verifyToken(req, res, next) { // eslint-disable-line
+    const token = req.headers.authorization
+      || req.headers['x-access-token']
+      || req.body.token;
 
-    jwt.verify(token, secret, (error, decoded) => {
-      if (error) {
-        return res.status(401)
-          .send({ message: 'Invalid Token' });
-      }
-      req.decoded = decoded;
-      next();
-    });
+    if (token) {
+      jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+          return res.status(403).send({ message: 'Authentication failed' });
+        }
+        req.decoded = decoded;
+        return next();
+      });
+    } else {
+      return res.status(403).send({
+        message: 'Please sign in to access this page'
+      });
+    }
   },
 
+  /**
+   * Verify if user is Admin
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {func} next next function to execute
+   * @returns {Response} response object
+   */
   adminAccess(req, res, next) {
     Role.findById(req.decoded.roleId)
       .then((foundRole) => {
@@ -35,18 +52,11 @@ const authentication = {
             .send({ message: 'User is unauthorized for this request.' });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         res.status(400).send({
-        err: error,
-        message: 'Error authenticating'
-      })
-    });
-  },
-
-  getUserRole(decoded, res) {
-    Role.findById(decoded.roleId)
-      .then((foundRole) => {
-        return foundRole.roleName.toLowerCase()
+          err: error,
+          message: 'Error authenticating'
+        });
       });
   },
 };

@@ -36,6 +36,16 @@ const Helpers = {
   },
 
   /**
+   * Get the user's role name
+   *
+   * @param {Object} req request object
+   * @returns {Response} response object
+   */
+  getUserRole(req) {
+    return req.decoded.roleId;
+  },
+
+  /**
    * Handle promise errors
    *
    * @param {Object} error error object

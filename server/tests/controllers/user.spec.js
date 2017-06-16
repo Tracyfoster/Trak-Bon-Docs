@@ -40,7 +40,7 @@ describe('User API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(201);
           expect(res.body).to.have.keys(
-            ['newUser', 'message', 'token']
+            ['data', 'message', 'token']
           );
           expect(res.body.message).to.eql('User created successfully');
           userData = res.body;
@@ -83,11 +83,11 @@ describe('User API', () => {
 
     it('should return user with specified id', (done) => {
       chai.request(server)
-        .get(`/api/users/${userData.newUser.id}`)
+        .get(`/api/users/${userData.data.id}`)
         .set('x-access-token', userData.token)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.user.email).to.eql(userData.newUser.email);
+          expect(res.body.firstName).to.eql(userData.data.firstName);
           done();
         });
     });
@@ -194,11 +194,12 @@ describe('User API', () => {
   describe('/DELETE user data', () => {
     it('should allow admin delete user data ', (done) => {
       chai.request(server)
-        .delete(`/api/users/${userData.newUser.id}`)
+        .delete(`/api/users/${userData.data.id}`)
         .set('x-access-token', adminToken)
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.message).to.eql(`${userData.newUser.firstName} deleted successfully`);
+          expect(res.body.message).to.eql(
+            `${userData.data.firstName} deleted successfully`);
           done();
         });
     });
@@ -221,7 +222,8 @@ describe('User API', () => {
         .set('x-access-token', regularToken)
         .end((err, res) => {
           expect(res.status).to.equal(403);
-          expect(res.body.message).to.eql('User is unauthorized for this request.');
+          expect(res.body.message).to.eql(
+            'Admin access is required for this action');
           done();
         });
     });

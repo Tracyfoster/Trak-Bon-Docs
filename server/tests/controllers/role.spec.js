@@ -72,7 +72,7 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('User is unauthorized for this request.');
+        expect(res.body.message).to.eql('Admin access is required for this action');
         done();
       });
     });
@@ -99,7 +99,7 @@ describe('Role', () => {
         .end((err, res) => {
           expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('User is unauthorized for this request.');
+        expect(res.body.message).to.eql('Admin access is required for this action');
           done();
       });
     });
@@ -170,7 +170,7 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('User is unauthorized for this request.');
+        expect(res.body.message).to.eql('Admin access is required for this action');
         done();
       });
     });
@@ -224,7 +224,8 @@ describe('Role', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
-        expect(res.body.message).to.eql('User is unauthorized for this request.');
+        expect(res.body.message).to.eql(
+          'Admin access is required for this action');
         done();
       });
     });

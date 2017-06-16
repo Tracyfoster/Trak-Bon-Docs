@@ -72,20 +72,20 @@ describe('Document API', () => {
       chai.request(server)
         .post('/api/documents')
         .end((err, res) => {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(403);
           expect(res.body).to.be.a('object');
-          expect(res.body.message).to.eql('Not Authorized');
+          expect(res.body.message).to.eql('Please sign in to access this page');
           done();
         });
     });
   });
 
   describe('/GET Documents', () => {
-    it('should 401 for unauthorized user without token', (done) => {
+    it('should return 403 for unauthorized user without token', (done) => {
       chai.request(server)
         .get('/api/documents/?limit=10&offset=1')
         .end((err, res) => {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(403);
           done();
         });
     });
@@ -134,31 +134,21 @@ describe('Document API', () => {
 
     it('should return documents for a specified user', (done) => {
       chai.request(server)
-        .get(`/api/users/${writerData.user.id}/documents`)
-        .set('x-access-token', writerData.token)
+        .get(`/api/users/${writerData.data.id}/documents`)
+        .set('x-access-token', adminData.token)
         .end((err, res) => {
           expect(res.status).to.equal(200);
           done();
         });
     });
 
-    it('should return users documents with public and same role ', (done) => {
-      chai.request(server)
-        .get(`/api/users/${reviewerData.user.id}/alldocuments`)
-        .set('x-access-token', reviewerData.token)
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          done();
-        });
-    });
-
-    it('should return user not found', (done) => {
+    it('should return No Document Found', (done) => {
       chai.request(server)
         .get('/api/users/1090/documents')
         .set('x-access-token', adminData.token)
         .end((err, res) => {
           expect(res.status).to.equal(404);
-          expect(res.body.message).to.eql('User Not Found');
+          expect(res.body.message).to.eql('No Document Found');
           done();
         });
     });

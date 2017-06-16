@@ -6,6 +6,13 @@ const Users = model.Users;
 const Role = model.Role;
 
 export default {
+  /**
+   * Create a document
+   * Route: POST: /documents
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} no returns
+   */
   create(req, res) {
     return Documents
       .create({
@@ -87,14 +94,41 @@ export default {
           });
         }
         if (Helpers.isOwner(req, res, document)) {
-        return document
-          .destroy()
-          .then(() => res.status(200).send({
-            message: `${document.title}, was successfully deleted`
-          }));
-          }
-          return (res.status(403)
-            .send({ message: 'Unauthorized Access' }));
+          return document
+            .destroy()
+            .then(() => res.status(200).send({
+              message: `${document.title}, was successfully deleted`
+            }));
+        }
+        return (res.status(403)
+          .send({ message: 'Unauthorized Access' }));
+      })
+      .catch(error => Helpers.handleError(error, res));
+  },
+
+  /**
+   * Get all documents that belongs to a user
+   * Route: GET: /users/:id/documents
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void} no returns
+   */
+  findUserDocuments(req, res) {
+    return Documents
+      .findAndCountAll({
+        where: { userId: req.params.id },
+        subQuery: false,
+        attributes: [
+          'id', 'access', 'title', 'content', 'createdAt', 'userId' ],
+        order: [['createdAt', 'DESC']],
+        offset: req.query.offset || 0,
+        limit: req.query.limit || 20,
+      })
+      .then((documents) => {
+        if (!documents || documents.count < 1) {
+          return res.status(404).send({ message: 'No Document Found' });
+        }
+        return res.status(200).send({ documents, status: true });
       })
       .catch(error => Helpers.handleError(error, res));
   },
