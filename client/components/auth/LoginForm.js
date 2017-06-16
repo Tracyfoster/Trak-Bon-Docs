@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Textfield, Button } from 'react-mdl';
 import toastr from 'toastr';
 import { userLogin } from '../../actions/userActions';
+import Validator from '../../utils/Validator';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -22,17 +23,26 @@ class LoginForm extends Component {
     const field = event.target.name;
     const user = this.state.user;
     user[field] = event.target.value;
-    user.roleId = 2;
     this.setState({ user });
   }
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.dispatch(userLogin(this.state.user))
-    .then(() => this.context.router.push('/documents'))
-    .catch((error) => {
-      toastr.error(error);
-    });
+
+    const isValid = Validator.signIn(this.state.user);
+
+    if (isValid === true) {
+      this.props.dispatch(userLogin(this.state.user))
+      .then((token) => {
+        localStorage.setItem('jwtToken', token);
+        this.context.router.push('/documents')
+      })
+      .catch((error) => {
+        toastr.error(error);
+      });
+    } else {
+      toastr.error(isValid, 'Error', { timeOut: 3000 });
+    }
   }
 
   render() {
@@ -42,8 +52,7 @@ class LoginForm extends Component {
           <span />
         </div>
 
-        <form method="post" onSubmit={this.onSubmit}>
-
+        <form onSubmit={this.onSubmit}>
           <Textfield
             onChange={this.onChange}
             type="email"
@@ -51,7 +60,6 @@ class LoginForm extends Component {
             name="email"
             floatingLabel
             value={this.state.email}
-            required
             style={{ width: '200px' }}
           />
           <Textfield
@@ -61,13 +69,13 @@ class LoginForm extends Component {
             label="Password"
             floatingLabel
             value={this.state.password}
-            required
             style={{ width: '200px' }}
           />
 
           <div style={{ textAlign: 'center' }}>
             <Button
               ripple
+              className="signin-button"
               raised
               colored
               type="submit"
