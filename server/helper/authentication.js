@@ -7,6 +7,34 @@ const secret = process.env.SECRET || 'thisisademosecret';
 
 const authentication = {
   /**
+   * Verify user token
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Function} next next function to execute
+   * @returns {Response} response object
+   */
+  verifyToken(req, res, next) { // eslint-disable-line
+    const token = req.headers.authorization
+      || req.headers['x-access-token']
+      || req.body.token;
+
+    if (token) {
+      jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+          return res.status(403).send({ message: 'Authentication failed' });
+        }
+        req.decoded = decoded;
+        return next();
+      });
+    } else {
+      return res.status(403).send({
+        message: 'Please sign in to access this page'
+      });
+    }
+  },
+
+  /**
    * Verify if user is Admin
    *
    * @param {Object} req request object
@@ -29,6 +57,8 @@ const authentication = {
           message: 'Error authenticating'
         });
       });
+<<<<<<< HEAD
+=======
   },
 
   /**
@@ -66,6 +96,7 @@ const authentication = {
   getUserRole(req) {
     Role.findById(req.decoded.roleId)
       .then(foundRole => foundRole.roleName.toLowerCase());
+>>>>>>> 27285219311d44bb62357eeb86696b3b057a2e72
   },
 };
 
