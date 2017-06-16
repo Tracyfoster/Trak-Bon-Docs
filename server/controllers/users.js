@@ -1,45 +1,28 @@
 import jwt from 'jsonwebtoken';
-import util from 'util';
 import model from '../models/';
 import Helpers from '../helper/Helpers';
 
 const Users = model.Users;
-const Documents = model.Documents;
 const Role = model.Role;
-const Folder = model.Folder;
 
 const secret = process.env.SECRET || 'thisisademosecret';
 
 export default {
-  isAuthenticated(req, res, next) {
-    const usertoken = req.headers['x-access-token'];
-    jwt.verify(usertoken, process.env.SECRETKEY, (error, decoded) => {
-      if (error) {
-        res.status(401)
-            .json({
-              success: false,
-              message: 'user not authenticated'
-            });
-      } else {
-        req.decodedUser = decoded;
-        next();
-      }
-    });
-  },
-
+  /**
+   * Create a user
+   * Route: POST: /users
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} no returns
+   */
   create(req, res) {
     return Users
-    .findOne({
-      where: {
-        email: req.body.email
-      }
-    })
+    .findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (user) {
         return res.status(409).send({ message: 'User Already Exists' });
       }
-      Users
-      .create({
+      return Users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -47,17 +30,15 @@ export default {
         roleId: req.body.roleId
       })
       .then((newUser) => {
-        const token = jwt.sign({
-          id: newUser.id,
+        const data = { id: newUser.id,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
-          email: newUser.email,
-          password: newUser.password,
           roleId: newUser.roleId
-        }, secret, {
+        };
+        const token = jwt.sign(data, secret, {
           expiresIn: 60 * 60 * 24 });
         return res.status(201).send({
-          newUser,
+          data,
           message: 'User created successfully',
           token
         });
@@ -66,6 +47,13 @@ export default {
     });
   },
 
+  /**
+   * Login user
+   * Route: POST: /users/login
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   login(req, res) {
     return Users
       .findOne({ where: { email: req.body.email } })
@@ -80,17 +68,15 @@ export default {
             message: 'Authentication failed. Wrong password.'
           });
         }
-        const token = jwt.sign({
-          id: user.id,
+        const data = { id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
-          email: user.email,
-          password: user.password,
           roleId: user.roleId
-        }, secret, {
+        };
+        const token = jwt.sign(data, secret, {
           expiresIn: 60 * 60 * 24 });
         return res.status(200).send({
-          user,
+          data,
           message: 'User authenticated successfully',
           token
         });
@@ -98,13 +84,27 @@ export default {
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Logout user
+   * Route: POST: /users/logout
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   logout(req, res) {
     return res.status(200).send({
       message: 'You have successfully logged out'
     });
   },
 
-  list(req, res) {
+  /**
+   * Get all users
+   * Route: GET: /users
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} no returns
+   */
+  getAllUsers(req, res) {
     return Users
       .findAndCountAll({
         subQuery: false,
@@ -112,33 +112,44 @@ export default {
         offset: req.query.offset || 0,
         limit: req.query.limit || 5,
       })
-      .then((users) => {
-        if (!users) {
+      .then((allUsers) => {
+        if (!allUsers || allUsers.count < 1) {
           return res.status(404).send({
             message: 'No User Found' });
         }
+        const users = allUsers.rows.map(user =>
+          Helpers.requiredAttributes(user));
         return res.status(200).send(users);
       })
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Get a particular user
+   * Route: GET: /users/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void|Response} response object or void
+   */
   retrieve(req, res) {
     return Users
-      .findById(req.params.id, {
-        include: [{
-          model: Documents,
-          as: 'userDocuments',
-        }],
-      })
+      .findById(req.params.id)
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User Not Found' });
         }
-        return res.status(200).send({ user });
+        return res.status(200).send(Helpers.requiredAttributes(user));
       })
       .catch(error => Helpers.handleError(error, res));
   },
 
+  /**
+   * Update a particular user
+   * Route: PUT: /users/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   update(req, res) {
     Role.findById(req.decoded.roleId)
     .then(() => {
@@ -152,10 +163,13 @@ export default {
             }
             return user
             .update(req.body, { fields: Object.keys(req.body) })
-              .then(updatedUser => res
-                .status(200).send({ updatedUser,
+              .then((updatedUser) => {
+                updatedUser = Helpers.requiredAttributes(updatedUser);
+                res.status(200).send({
+                  updatedUser,
                   message: 'User updated successfully',
-                }));
+                });
+              });
           }).catch(error => Helpers.handleError(error, res));
       }
       return (res.status(403)
@@ -163,6 +177,13 @@ export default {
     });
   },
 
+  /**
+   * Delete a particular user
+   * Route: DELETE: /users/:id
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Response|void} response object or void
+   */
   destroy(req, res) {
     return Users
       .find({
@@ -183,46 +204,30 @@ export default {
       .catch(error => Helpers.handleError(error, res));
   },
 
-  findUserDocuments(req, res) {
-    return Users
-      .findAndCountAll({
-        where: { id: req.params.id },
-        subQuery: false,
-        include: [{
-          model: Documents,
-          as: 'userDocuments',
-        }],
-        order: [['createdAt', 'DESC']],
-        offset: req.query.offset || 0,
-        limit: req.query.limit || 10,
-      })
-      .then((user) => {
-        if (!user || user.count < 1) {
-          return res.status(404).send({ message: 'User Not Found' });
-        }
-        return res.status(200).send({ user, status: true });
-      })
-      .catch(error => Helpers.handleError(error, res));
-  },
-
-  findUserFolders(req, res) {
-    return Users
-      .findById(req.params.id, {
-        include: [{
-          model: Folder,
-          as: 'userFolders',
-          include: [{
-            model: Documents,
-            as: 'folderDocuments'
-          }]
-        }]
-      })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).send({ message: 'User Not Found' });
-        }
-        return res.status(200).send({ doc: user.userFolders, status: true });
-      })
-      .catch(error => Helpers.handleError(error, res));
+  /**
+   * Search for a user
+   * Route: GET: /search/users?q={queryParam}
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {void} no returns
+   */
+  userSearch(req, res) {
+    const searchTerm = req.query.q;
+    Users.findAndCountAll({
+      where: {
+        $or: [{ firstName: { $iLike: `%${searchTerm}%` } },
+          { lastName: { $iLike: `%${searchTerm}%` } },
+          { email: { $iLike: `%${searchTerm}%` } }]
+      }
+    }).then((users) => {
+      if (!users || users.count < 1) {
+        return res.status(404).send({ message: 'No user found' });
+      }
+      return res.status(200).send({
+        users,
+        message: 'Search Successful'
+      });
+    })
+    .catch(error => Helpers.handleError(error, res));
   },
 };

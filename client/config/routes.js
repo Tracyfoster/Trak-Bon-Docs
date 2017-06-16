@@ -1,18 +1,14 @@
 /** jsx */
 import React from 'react';
-import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router';
-import App from '../components/App';
-import MainLayout from '../Pages/MainLayout';
-import HomePage from '../Pages/HomePage';
-import DashboardPage from '../Pages/DashboardPage';
-import DocumentEditor from '../Pages/DocumentEditor';
+import { Route, IndexRoute } from 'react-router';
+import MainLayout from '../components/common/MainLayout';
+import HomePage from '../components/common/HomePage';
+import DashboardPage from '../components/documentComponents/DashboardPage';
+import DocumentEditor from '../components/documentComponents/DocumentEditor';
 import HelpPage from '../components/common/HelpPage';
 import UsersPage from '../components/userComponents/UsersPage';
-import UserUpdate from '../components/userComponents/UserUpdate';
-import ManageRoles from '../components/roleComponents/ManageRoles';
+import RolePage from '../components/roleComponents/RolePage';
 import DocumentPage from '../components/documentComponents/DocumentPage';
-import FolderPage from '../components/folderComponents/FolderPage';
-import SearchPage from '../components/search/SearchPage';
 
 export default (
   <Route path="/" component={MainLayout}>
@@ -22,8 +18,7 @@ export default (
     <Route path="documents" component={DocumentPage} />
     <Route path="dashboard" component={DashboardPage} />
     <Route path="manageusers" component={UsersPage} />
-    <Route path="manageroles" component={ManageRoles} />
-    <Route path="search/:searchTerm" component={SearchPage} />
+    <Route path="manageroles" component={RolePage} />
     <Route path="help" component={HelpPage} />
   </Route>
 );

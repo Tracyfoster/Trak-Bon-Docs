@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
-import { Textfield, Button, RadioGroup, Radio } from 'react-mdl';
+import { Textfield, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { saveDocument, updateDocument } from '../../actions/documentActions';
@@ -11,16 +11,26 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        title: '',
-        access: ''
+      title: '',
+      access: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(html) {
-    this.setState({ content: html });
+  componentWillMount() {
+    if (this.props.params.id) {
+      const docId = parseInt(this.props.params.id);
+      const userDoc = this.props.documents.data.filter(document => document.id === docId)[0]
+      this.setState({
+        id: docId,
+        title: userDoc.title,
+        content: userDoc.content,
+        access: userDoc.access,
+        userId: userDoc.userId
+      });
+    }
   }
 
   onChange(event) {
@@ -31,27 +41,12 @@ class Editor extends Component {
     });
   }
 
-  componentWillMount() {
-    if (this.props.params.id) {
-      const docId = parseInt(this.props.params.id);
-      const userDoc = this.props.documents.data.filter(document => document.id === docId)[0]
-      this.setState({
-        title: userDoc.title,
-        content: userDoc.content,
-        access: userDoc.access,
-        userId: userDoc.userId
-      });
-    }
-  }
-
   onSubmit(event) {
     event.preventDefault();
     if (this.state.userId) {
       this.props.dispatch(updateDocument(this.state))
       .then(() => this.context.router.push('/documents'))
-      .catch(error => {
-        toastr.error(error);
-      });
+      .catch(error => toastr.error(error));
     } else {
       const { title, content, access } = this.state;
       const userId = this.props.auth.id
@@ -63,10 +58,12 @@ class Editor extends Component {
       };
       this.props.dispatch(saveDocument(data))
       .then(() => this.context.router.push('/documents'))
-      .catch(error => {
-        toastr.error(error);
-      });
+      .catch(error => toastr.error(error));
     }
+  }
+
+  handleChange(html) {
+    this.setState({ content: html });
   }
 
   render() {
@@ -117,7 +114,12 @@ class Editor extends Component {
         />
       </div>
       <span />
-       <Button raised colored>Save</Button>
+        <Button
+          raised
+          colored
+          className="save-document-button"
+        >
+        Save </Button>
       </form>
     </div>
     );

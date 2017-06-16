@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import { Grid, Cell, Button, Textfield, Icon } from 'react-mdl';
 import UsersList from './UsersList';
 import UserModal from './UserModal';
-import { fetchUsers, deleteUser, updateUser } from '../../actions/adminActions';
+import { fetchUsers, deleteUser, updateUser, searchUsers } from '../../actions/adminActions';
 
 class UsersPage extends Component {
   constructor(props) {
@@ -19,6 +19,14 @@ class UsersPage extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchUsers()
+    .then()
+    .catch((error) => {
+      toastr.error(error);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,21 +46,13 @@ class UsersPage extends Component {
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
-    this.props.actions.searchUsers(term)
+    this.props.searchUsers(term)
   }
 
   clearSearch() {
     this.setState({
       searchTerm: '',
       users: [...this.props.allUsers]
-    });
-  }
-
-  componentDidMount() {
-    this.props.fetchUsers()
-    .then(() => toastr.success('Successful'))
-    .catch(error => {
-      toastr.error(error);
     });
   }
 
@@ -65,7 +65,7 @@ class UsersPage extends Component {
         </Cell>
         <Cell col={10}>
           <UserModal />
-          <form method="post" onSubmit={this.onSubmit}>
+          <form method="post" onSubmit={e=> this.onSubmit(e)}>
             <span>
             <Textfield
               onChange={this.onChange}
@@ -84,7 +84,6 @@ class UsersPage extends Component {
             allUsers={users}
             deleteUser={this.props.deleteUser}
             auth={this.props.auth}
-            context={this.context.router}
           />
         </Cell>
       </Grid>
@@ -92,25 +91,23 @@ class UsersPage extends Component {
   }
 }
 
-UsersPage.contextTypes = {
-  router: PropTypes.object
-};
-
 UsersPage.propTypes = {
   allUsers: PropTypes.array.isRequired,
+  searchUsers: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  console.log('userpage', state);
-  return {
-    allUsers: state.admin.users,
-    auth: state.auth,
-    search : state.search.users || []
-  };
-}
+const mapStateToProps = state => ({
+  allUsers: state.admin.users,
+  auth: state.auth,
+  search : state.search.users || []
+});
 
 export default connect(mapStateToProps,
-  { fetchUsers, deleteUser, updateUser })(UsersPage);
+  { fetchUsers, deleteUser, updateUser, searchUsers })(UsersPage);
+
+export {
+  UsersPage as UsersPageComponent
+};

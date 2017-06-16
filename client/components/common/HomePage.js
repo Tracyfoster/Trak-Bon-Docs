@@ -3,10 +3,10 @@ import { Grid, Cell, Tabs, Tab } from 'react-mdl';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import docimage from '../images/docman.jpg';
-import RegisterForm from '../components/auth/RegisterForm';
-import LoginForm from '../components/auth/LoginForm';
-import * as userActions from '../actions/userActions';
+import docimage from '../../images/docman.jpg';
+import RegisterForm from '../auth/RegisterForm';
+import LoginForm from '../auth/LoginForm';
+import * as userActions from '../../actions/userActions';
 
 class HomePage extends Component {
   constructor(props) {
@@ -28,20 +28,20 @@ class HomePage extends Component {
   render() {
     return (
         <Grid>
-        <Cell col={9}>
+        <Cell col={8}>
           <div>
             <img src={docimage} />
           </div>
         </Cell>
-        <Cell col={3}>
+        <Cell col={4}>
           <div>
             <Tabs
               ripple
               activeTab={this.state.activeTab}
               onChange={this.setActiveTab}>
-              <Tab>
+              <Tab className="signin-tab">
                 Sign In</Tab>
-              <Tab>
+              <Tab className="signup-tab">
                 Sign Up</Tab>
             </Tabs>
             {this.state.user ?

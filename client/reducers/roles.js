@@ -1,7 +1,7 @@
 import * as types from '../actions/types';
 import InitialState from './InitialState';
 
-export default function roles(state = InitialState.roles, action = {}) {
+export default (state = InitialState.roles, action = {}) => {
   switch (action.type) {
   case types.ADD_ROLE:
     return [
@@ -26,4 +26,4 @@ export default function roles(state = InitialState.roles, action = {}) {
 
   default: return state;
   }
-}
+};

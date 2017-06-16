@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Cell } from 'react-mdl';
-import Editor from '../components/documentComponents/Editor';
+import Editor from './Editor';
 
 class DocumentEditor extends Component {
   render() {
@@ -11,10 +11,11 @@ class DocumentEditor extends Component {
             <span />
           </Cell>
           <Cell col={9}>
-            <Editor placeholder={'Write something...'}
-            style={{ height: '200px' }}
-            params={this.props.params}
-              />
+            <Editor
+              placeholder={'Write something...'}
+              style={{ height: '200px' }}
+              params={this.props.params}
+            />
           </Cell>
         </Grid>
       </div>

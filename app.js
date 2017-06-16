@@ -1,1 +1,0 @@
-nodemon --watch server --exec 
