@@ -12,9 +12,9 @@ export const createFolder = data => dispatch =>
 export const fetchFolders = () => dispatch =>
   axios.get('/api/folders')
       .then((res) => {
-        dispatch(eventAction(types.SET_FOLDERS, res.data.folder))
+        dispatch(eventAction(types.SET_FOLDERS, res.data.folder));
+      })
       .catch((error) => { throw error; });
-      });
 
 export const fetchFolder = id => dispatch =>
   axios.get(`/api/folders/${id}`)

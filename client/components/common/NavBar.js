@@ -1,37 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Header, HeaderRow, Navigation, IconButton } from 'react-mdl';
+import { Header, HeaderRow, Navigation, Button } from 'react-mdl';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
-import { searchUsers, searchDocuments } from '../../actions/searchActions';
+import { logoutUser } from '../../actions/userActions';
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      searchTerm: ''
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.signout = this.signout.bind(this);
   }
 
-  onChange(event) {
-    this.setState({ searchTerm: event.target.value });
-  }
-
-  onSubmit(event) {
+  signout(event) {
     event.preventDefault();
-    const term = this.state.searchTerm;
-    this.props.dispatch(searchUsers(term));
-    this.props.dispatch(searchDocuments(term))
-    .then(() => this.context.router.push(`/search/${term}`))
-    .catch((error) => {
-      toastr.error(error);
-    });
+    this.props.logoutUser()
+      .then(() => localStorage.removeItem('jwtToken'));
+    this.context.router.push('/');
   }
-
   render() {
     return (
       <Header transparent>
@@ -39,10 +25,13 @@ class NavBar extends Component {
           <Navigation>
             <Link href="#"> API Docs </Link>
             {this.props.auth.isAuthenticated ?
-              <a id="signout" href={this.signout}>
-                <IconButton colored name="verified_user" />
-                <span> Sign Out </span>
-              </a>
+              <Button
+              ripple
+              raised
+              colored
+              onClick={this.signout}
+            >
+              Sign Out</Button>
             :
               <span />
             }
@@ -58,7 +47,7 @@ NavBar.contextTypes = {
 };
 
 NavBar.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -66,4 +55,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(mapStateToProps, {
+  logoutUser
+})(NavBar);

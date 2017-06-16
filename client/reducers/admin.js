@@ -11,7 +11,8 @@ export default (state = InitialState.admin, action = {}) => {
   case types.USER_FETCHED:
     return Object.assign({}, state, {
       users: [...state.users
-      .filter(user => user.id !== action.payload.id), action.payload]
+      .filter(user => user.id !== action.payload.id), action.payload],
+      totalUsers: state.totalUsers + 1
     });
   case types.USER_UPDATED:
     return Object.assign({}, state, {

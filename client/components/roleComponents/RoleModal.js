@@ -15,7 +15,8 @@ class RoleModal extends Component {
     this.state = {
       role: {
         roleName: ''
-      }
+      },
+      openDialog: false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -43,13 +44,13 @@ class RoleModal extends Component {
   onSubmit(event) {
     event.preventDefault();
     if (this.state.role.id) {
-      this.props.dispatch(updateRole(this.state.role))
+      this.props.updateRole(this.state.role)
       .then(() => this.handleCloseDialog())
       .catch(error => {
         toastr.error(error);
       });
     } else {
-      this.props.dispatch(createRole(this.state.role))
+      this.props.createRole(this.state.role)
       .then(() => this.handleCloseDialog())
       .catch(error => {
         toastr.error(error);
@@ -79,8 +80,12 @@ class RoleModal extends Component {
           Edit Role
           </IconButton>
         :
-        <Button onClick={this.handleOpenDialog} ripple colored raised
-          style={{ color: '#fff' }}>Add New Role </Button>
+        <Button
+        onClick={this.handleOpenDialog}
+        ripple
+        colored
+        raised
+        style={{ color: '#fff' }}>Add New Role </Button>
         }
 
         <Dialog
@@ -97,18 +102,20 @@ class RoleModal extends Component {
                 label="Rolename"
                 floatingLabel
                 name="roleName"
+                className="form-input-roleName"
                 value={this.state.role.roleName}
                 required
                 style={{ width: '200px' }}
               />
               <div />
-
-
             </form>
           </DialogContent>
           <DialogActions>
             <Button
-              ripple raised colored
+              ripple
+              raised
+              colored
+              className='role-button'
               type="submit"
               onClick={this.onSubmit}>
               Save</Button>
@@ -120,8 +127,16 @@ class RoleModal extends Component {
  }
 
 RoleModal.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  role: PropTypes.object
-}
+  createRole: PropTypes.func.isRequired,
+  updateRole: PropTypes.func.isRequired,
+  role: PropTypes.object.isRequired
+};
 
-export default connect()(RoleModal);
+export default connect(null, {
+  createRole,
+  updateRole
+})(RoleModal);
+
+export {
+  RoleModal as RoleModalComponent
+};

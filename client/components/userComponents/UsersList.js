@@ -3,7 +3,7 @@ import { Table, TableHeader, IconButton } from 'react-mdl';
 import PropTypes from 'prop-types';
 import UserUpdate from './UserUpdate';
 
-export default function UsersList({ allUsers, deleteUser, auth, context }) {
+const UsersList = ({ allUsers, deleteUser, auth }) => {
   const users = allUsers;
   const rowData = users.map(user => ({
     firstName: user.firstName,
@@ -53,5 +53,6 @@ UsersList.propTypes = {
   allUsers: PropTypes.array.isRequired,
   auth: PropTypes.object.isRequired,
   deleteUser: PropTypes.func.isRequired,
-  context: PropTypes.object.isRequired
 };
+
+export default UsersList;

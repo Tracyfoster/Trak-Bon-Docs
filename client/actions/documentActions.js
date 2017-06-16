@@ -2,19 +2,17 @@ import axios from 'axios';
 import * as types from './types';
 import { eventAction } from '../utils/Utils';
 
-export const saveDocument = data => (dispatch) => {
+export const saveDocument = data => (dispatch) =>
   axios.post('/api/documents', data)
     .then(res =>
       dispatch(eventAction(types.ADD_DOCUMENT, res.data)))
     .catch((error) => { throw error; });
-};
 
-export const fetchDocuments = () => (dispatch) => {
+export const fetchDocuments = () => (dispatch) =>
   axios.get('/api/documents')
       .then(res =>
         dispatch(eventAction(types.SET_DOCUMENTS, res.data)))
       .catch((error) => { throw error; });
-};
 
 export const fetchDocument = id => dispatch =>
   axios.get(`/api/documents/${id}`)
