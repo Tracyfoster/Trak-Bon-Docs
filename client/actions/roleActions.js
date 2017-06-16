@@ -2,47 +2,32 @@ import axios from 'axios';
 import * as types from './types';
 import { eventAction } from '../utils/Utils';
 
-export function createRole(data) {
-  return (dispatch) => {
-    return axios.post('/api/roles', data)
+export const createRole = data => dispatch =>
+  axios.post('/api/roles', data)
        .then((response) => {
          dispatch(eventAction(types.ADD_ROLE, response.data.role));
        })
-      .catch(error => {throw error});
-  };
-}
+      .catch((error) => { throw error; });
 
-export function fetchRoles() {
-  return (dispatch) => {
-    return axios.get('/api/roles')
+export const fetchRoles = () => dispatch =>
+  axios.get('/api/roles')
       .then((res) => {
         dispatch(eventAction(types.SET_ROLES, res.data.role))
-      .catch(error => {throw error});
-    });
-  };
-}
+      .catch((error) => { throw error; });
+      });
 
-export function fetchRole(id) {
-  return (dispatch) => {
-    return axios.get(`/api/roles/${id}`)
-      .then(res => dispatch(eventAction(types.ROLE_FETCHED, data.role)))
-      .catch(error => {throw error});
-  };
-}
+export const fetchRole = id => dispatch =>
+  axios.get(`/api/roles/${id}`)
+      .then(res => dispatch(eventAction(types.ROLE_FETCHED, res.data.role)))
+      .catch((error) => { throw error; });
 
-export function updateRole(data) {
-  return (dispatch) => {
-    return axios.put(`/api/roles/${data.id}`, data)
+export const updateRole = data => dispatch =>
+  axios.put(`/api/roles/${data.id}`, data)
       .then((res) => {
         dispatch(eventAction(types.ROLE_UPDATED, res.data.role));
       })
-      .catch(error => {throw error});
-  };
-}
-export function deleteRole(id) {
-  return (dispatch) => {
-    return axios.delete(`/api/roles/${id}`)
-      .then(res => dispatch(eventAction(types.ROLE_DELETED, { id })))
-      .catch(error => {throw error});
-  };
-}
+      .catch((error) => { throw error; });
+export const deleteRole = id => dispatch =>
+  axios.delete(`/api/roles/${id}`)
+      .then(() => dispatch(eventAction(types.ROLE_DELETED, { id })))
+      .catch((error) => { throw error; });

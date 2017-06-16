@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
-import { Textfield, Button, RadioGroup, Radio } from 'react-mdl';
+import { Textfield, Button } from 'react-mdl';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { saveDocument, updateDocument } from '../../actions/documentActions';
@@ -11,24 +11,12 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        title: '',
-        access: ''
+      title: '',
+      access: ''
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(html) {
-    this.setState({ content: html });
-  }
-
-  onChange(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
   }
 
   componentWillMount() {
@@ -44,12 +32,20 @@ class Editor extends Component {
     }
   }
 
+  onChange(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [name]: value
+    });
+  }
+
   onSubmit(event) {
     event.preventDefault();
     if (this.state.userId) {
       this.props.dispatch(updateDocument(this.state))
       .then(() => this.context.router.push('/documents'))
-      .catch(error => {
+      .catch((error) => {
         toastr.error(error);
       });
     } else {
@@ -63,10 +59,14 @@ class Editor extends Component {
       };
       this.props.dispatch(saveDocument(data))
       .then(() => this.context.router.push('/documents'))
-      .catch(error => {
+      .catch((error) => {
         toastr.error(error);
       });
     }
+  }
+
+  handleChange(html) {
+    this.setState({ content: html });
   }
 
   render() {

@@ -31,7 +31,7 @@ class RegisterForm extends Component {
     event.preventDefault();
     this.props.dispatch(registerUser(this.state.user))
     .then(() => this.context.router.push('/dashboard'))
-    .catch(error => {
+    .catch((error) => {
       toastr.error(error);
     });
   }
@@ -40,7 +40,7 @@ class RegisterForm extends Component {
     return (
       <div>
         <div>
-          <p> Create an Account { this.props.loading ? 'loading' : '' } </p>
+          <p> Create an Account </p>
         </div>
 
         <form method="post" onSubmit={this.onSubmit}>
@@ -92,8 +92,11 @@ class RegisterForm extends Component {
           />
           <div style={{ textAlign: 'center' }}>
             <Button
-              ripple raised colored
-              type="submit">
+              ripple
+              raised
+              colored
+              type="submit"
+            >
               Sign Up</Button>
           </div>
         </form>

@@ -17,4 +17,5 @@ export const isAdmin = (roleId) => {
   if (roleId === 1) {
     return true;
   }
+  return false;
 };

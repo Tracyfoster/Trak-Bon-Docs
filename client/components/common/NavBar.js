@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Header, HeaderRow, Navigation, Textfield, IconButton } from 'react-mdl';
+import { Header, HeaderRow, Navigation, IconButton } from 'react-mdl';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { searchUsers, searchDocuments } from '../../actions/searchActions';
-import UserUpdate from '../userComponents/UserUpdate'
 
 class NavBar extends Component {
   constructor(props) {
@@ -28,17 +27,25 @@ class NavBar extends Component {
     this.props.dispatch(searchUsers(term));
     this.props.dispatch(searchDocuments(term))
     .then(() => this.context.router.push(`/search/${term}`))
-    .catch(error => {
+    .catch((error) => {
       toastr.error(error);
     });
   }
 
-  render () {
+  render() {
     return (
       <Header transparent>
         <HeaderRow title="Trak-Bon Docs">
           <Navigation>
-            <a href="#"> API Docs </a>
+            <Link href="#"> API Docs </Link>
+            {this.props.auth.isAuthenticated ?
+              <a id="signout" href={this.signout}>
+                <IconButton colored name="verified_user" />
+                <span> Sign Out </span>
+              </a>
+            :
+              <span />
+            }
           </Navigation>
         </HeaderRow>
       </Header>
@@ -55,10 +62,8 @@ NavBar.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth
-  };
-};
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(mapStateToProps)(NavBar);

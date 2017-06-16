@@ -1,7 +1,7 @@
 import * as types from '../actions/types';
 import InitialState from './InitialState';
 
-export default function users(state = InitialState.admin, action = {}) {
+export default (state = InitialState.admin, action = {}) => {
   switch (action.type) {
   case types.FETCH_USERS_SUCCESS:
     return Object.assign({}, state, {
@@ -9,7 +9,7 @@ export default function users(state = InitialState.admin, action = {}) {
       totalUsers: action.payload.count
     });
   case types.USER_FETCHED:
-    return  Object.assign({}, state, {
+    return Object.assign({}, state, {
       users: [...state.users
       .filter(user => user.id !== action.payload.id), action.payload]
     });
@@ -25,4 +25,4 @@ export default function users(state = InitialState.admin, action = {}) {
     });
   default: return state;
   }
-}
+};
