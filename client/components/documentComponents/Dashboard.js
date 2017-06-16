@@ -6,15 +6,19 @@ import DocumentList from '../../components/documentComponents/DocumentList';
 
 const Dashboard = ({ allDocuments }) => {
   const documents = allDocuments.data;
-  const publicCount = (documents.filter(document => document.access === 'public')).length;
-  const privateCount = (documents.filter(document => document.access === 'private')).length;
-  const roleCount = (documents.filter(document => document.access === 'role')).length;
+  const publicCount = (documents.filter(document =>
+    document.access === 'public')).length;
+  const privateCount = (documents.filter(document =>
+    document.access === 'private')).length;
+  const roleCount = (documents.filter(document =>
+    document.access === 'role')).length;
   return (
     <div>
       <div>
         <span>
           <Button
             raised
+            className="button"
             colored
             style={{
               width: '150px',
@@ -28,6 +32,7 @@ const Dashboard = ({ allDocuments }) => {
           <Button
             raised
             colored
+            className="button"
             style={{
               width: '150px',
               marginRight: '10px' }}
@@ -40,6 +45,7 @@ const Dashboard = ({ allDocuments }) => {
           <Button
             raised
             colored
+            className="button"
             style={{
               width: '150px',
               marginRight: '10px' }}
@@ -54,11 +60,11 @@ const Dashboard = ({ allDocuments }) => {
         <div>
           <h4>All Documents</h4>
         </div>
-        { documents ?
+        { documents.length > 0 ?
           <DocumentList
             documents={documents}
           />
-          : <span />
+          : <p className="no-document-p">No documents yet</p>
           }
       </div>
     </div>

@@ -24,6 +24,7 @@ class Editor extends Component {
       const docId = parseInt(this.props.params.id);
       const userDoc = this.props.documents.data.filter(document => document.id === docId)[0]
       this.setState({
+        id: docId,
         title: userDoc.title,
         content: userDoc.content,
         access: userDoc.access,
@@ -45,9 +46,7 @@ class Editor extends Component {
     if (this.state.userId) {
       this.props.dispatch(updateDocument(this.state))
       .then(() => this.context.router.push('/documents'))
-      .catch((error) => {
-        toastr.error(error);
-      });
+      .catch(error => toastr.error(error));
     } else {
       const { title, content, access } = this.state;
       const userId = this.props.auth.id
@@ -59,9 +58,7 @@ class Editor extends Component {
       };
       this.props.dispatch(saveDocument(data))
       .then(() => this.context.router.push('/documents'))
-      .catch((error) => {
-        toastr.error(error);
-      });
+      .catch(error => toastr.error(error));
     }
   }
 
@@ -117,7 +114,12 @@ class Editor extends Component {
         />
       </div>
       <span />
-       <Button raised colored>Save</Button>
+        <Button
+          raised
+          colored
+          className="save-document-button"
+        >
+        Save </Button>
       </form>
     </div>
     );

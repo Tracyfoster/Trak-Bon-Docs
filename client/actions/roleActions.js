@@ -12,9 +12,8 @@ export const createRole = data => dispatch =>
 export const fetchRoles = () => dispatch =>
   axios.get('/api/roles')
       .then((res) => {
-        dispatch(eventAction(types.SET_ROLES, res.data.role))
-      .catch((error) => { throw error; });
-      });
+        dispatch(eventAction(types.SET_ROLES, res.data.role));
+      }).catch((error) => { throw error; });
 
 export const fetchRole = id => dispatch =>
   axios.get(`/api/roles/${id}`)

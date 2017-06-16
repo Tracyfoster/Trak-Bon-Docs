@@ -26,7 +26,7 @@ export default {
     user: {}
   },
   users: {
-    loading: false
+    created: false
   },
   roles: [],
   folders: [],

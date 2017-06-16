@@ -12,8 +12,10 @@ class DocumentView extends Component {
     super(props);
     this.state = {
       content: document.content,
-      title: document.title
+      title: document.title,
+      openDialog: false
     };
+
     this.onUpdate = this.onUpdate.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.handleOpenDialog = this.handleOpenDialog.bind(this);
@@ -27,7 +29,7 @@ class DocumentView extends Component {
 
   onDelete() {
     alert('Are you sure you want to delete this?');
-    this.props.dispatch(deleteDocument(this.props.document.id))
+    this.props.deleteDocument(this.props.document.id)
     .then(() => toastr.success('Document has been deleted'))
     .catch((error) => {
       toastr.error(error);
@@ -57,6 +59,7 @@ class DocumentView extends Component {
         <Button
           onClick={this.handleOpenDialog}
           ripple
+          className="read-button"
           colored
           raised
           style={{ color: '#fff' }}
@@ -69,6 +72,7 @@ class DocumentView extends Component {
           <IconButton
             raised
             colored
+            className="close-read-button"
             name="close"
             onClick={this.handleCloseDialog}
           />
@@ -82,18 +86,19 @@ class DocumentView extends Component {
           <DialogActions>
             <Button
               ripple
+              className="update-button"
               raised
               colored
               type="submit"
-              onClick={this.onUpdate}
+              onClick={() => this.onUpdate()}
             >
             Update</Button>
             <Button
               ripple
+              className="delete-button"
               raised
               colored
-              type="submit"
-              onClick={this.onDelete}
+              onClick={() => this.onDelete()}
             >
             Delete</Button>
           </DialogActions>
@@ -108,8 +113,12 @@ DocumentView.contextTypes = {
 };
 
 DocumentView.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
   document: PropTypes.object.isRequired
 };
 
-export default connect()(DocumentView);
+export default connect(null, { deleteDocument })(DocumentView);
+
+export {
+  DocumentView as DocumentViewComponent
+};

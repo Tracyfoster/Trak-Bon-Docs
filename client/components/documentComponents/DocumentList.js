@@ -24,6 +24,7 @@ const DocumentList = ({ documents }) => {
         sortable
         shadow={0}
         rows={rowData}
+        className="dashboard-table"
       >
         <TableHeader
           name="title"

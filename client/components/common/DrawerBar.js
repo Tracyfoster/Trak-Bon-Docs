@@ -2,22 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { IconButton, Navigation, Drawer } from 'react-mdl';
-import { logoutUser } from '../../actions/userActions';
+import { Drawer, IconButton, Navigation } from 'react-mdl';
 import isAdmin from '../../utils/Utils';
 
 class DrawerBar extends Component {
-  constructor(props) {
-    super(props);
-    this.signout = this.signout.bind(this);
-  }
-
-  signout(event) {
-    event.preventDefault();
-    this.props.dispatch(logoutUser());
-    this.context.router.push('/');
-  }
-
   render() {
     return (
       <Drawer title="Trak-Bon Docs">
@@ -70,12 +58,7 @@ class DrawerBar extends Component {
   }
 }
 
-DrawerBar.contextTypes = {
-  router: PropTypes.object
-};
-
 DrawerBar.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
