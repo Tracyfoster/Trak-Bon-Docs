@@ -8,8 +8,8 @@ export const saveDocument = data => (dispatch) =>
       dispatch(eventAction(types.ADD_DOCUMENT, res.data)))
     .catch((error) => { throw error; });
 
-export const fetchDocuments = () => (dispatch) =>
-  axios.get('/api/documents')
+export const fetchDocuments = (offset = 0) => (dispatch) =>
+  axios.get(`/api/documents/?offset=${offset}`)
       .then(res =>
         dispatch(eventAction(types.SET_DOCUMENTS, res.data)))
       .catch((error) => { throw error; });
@@ -31,12 +31,11 @@ export const deleteDocument = id => dispatch =>
       .then(() => dispatch(eventAction(types.DOCUMENT_DELETED, { id })))
       .catch((error) => { throw error; });
 
-export const fetchUserDocuments = id => dispatch =>
-    axios.get(`/api/users/${id}/documents`)
-      .then((res) => {
-        dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data));
-      })
-      .catch((error) => { throw error; });
+export const fetchUserDocuments = (id, offset = 0) => dispatch =>
+    axios.get(`/api/users/${id}/documents/?offset=${offset}`)
+      .then(res =>
+        dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data)))
+      .catch(error => error.response.data.message );
 
 export const searchDocuments = searchTerm => dispatch =>
   axios.get(`/api/search/documents/?q=${searchTerm}`)

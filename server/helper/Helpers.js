@@ -61,6 +61,17 @@ const Helpers = {
     return error.errors ?
       res.status(400).send({ message: error.errors[0].message }) :
       res.status(400).send({ message: error.message });
+  },
+
+  pagination(containerObject, offset, limit) {
+    return {
+      metaData: {
+        totalCount: containerObject.count,
+        pages: Math.ceil(containerObject.count / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+        pageSize: containerObject.rows.length,
+      } || null
+    } 
   }
 };
 
