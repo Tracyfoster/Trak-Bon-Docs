@@ -4,7 +4,7 @@ import path from 'path';
 export default {
   entry: [
     'webpack-hot-middleware/client',
-    path.resolve(__dirname, 'client/index')
+    path.resolve(__dirname, 'client/index.jsx')
   ],
   target: 'web',
   output: {
@@ -21,18 +21,19 @@ export default {
   },
   module: {
     rules: [
-      { test: /\.js$/,
-        exclude: /node_modules/,
+      {
+        test: /\.jsx?$/,
         include: [
-          path.join(__dirname, 'client'),
-          path.join(__dirname, 'server')],
-        loaders: ['babel-loader']
+          path.resolve(__dirname, 'client')
+        ],
+        exclude: /node_modules/,
+        use: ['react-hot-loader', 'babel-loader'],
       },
       {
         test: /\.(css|scss)?$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
-      { test: /\.(png|jpg)$/,
+      { test: /\.(png|jpg)?$/,
         loader: 'url-loader?limit=8192' },
     ]
   },
@@ -41,4 +42,7 @@ export default {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
+  resolve: {
+    extensions: ['.js', '.json', '.jsx', '.scss'],
+  },
 };
