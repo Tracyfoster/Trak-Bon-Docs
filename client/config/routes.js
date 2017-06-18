@@ -9,16 +9,18 @@ import HelpPage from '../components/common/HelpPage';
 import UsersPage from '../components/userComponents/UsersPage';
 import RolePage from '../components/roleComponents/RolePage';
 import DocumentPage from '../components/documentComponents/DocumentPage';
+import IsAuthenticated from '../components/common/IsAuthenticated';
+import IsNotAuthenticated from '../components/common/IsNotAuthenticated';
 
 export default (
   <Route path="/" component={MainLayout}>
-    <IndexRoute component={HomePage} />
-    <Route path="editor" component={DocumentEditor} />
+    <IndexRoute component={IsNotAuthenticated(HomePage)} />
+    <Route path="editor" component={IsAuthenticated(DocumentEditor)} />
     <Route path="editor/:id" component={DocumentEditor} />
-    <Route path="documents" component={DocumentPage} />
-    <Route path="dashboard" component={DashboardPage} />
-    <Route path="manageusers" component={UsersPage} />
-    <Route path="manageroles" component={RolePage} />
+    <Route path="documents" component={IsAuthenticated(DocumentPage)} />
+    <Route path="dashboard" component={IsAuthenticated(DashboardPage)} />
+    <Route path="manageusers" component={IsAuthenticated(UsersPage)} />
+    <Route path="manageroles" component={IsAuthenticated(RolePage)} />
     <Route path="help" component={HelpPage} />
   </Route>
 );
