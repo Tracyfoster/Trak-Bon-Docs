@@ -41,7 +41,7 @@ export const userLogin = user =>
         resolve(token);
       })
       .catch((error) => {
-        throw (error);
+        reject(error.response.data.message);
       });
   });
 
@@ -54,6 +54,6 @@ export const logoutUser = () =>
         resolve(true);
       })
       .catch((error) => {
-        reject(error);
+        reject(error.response.data.message);
       });
     });
