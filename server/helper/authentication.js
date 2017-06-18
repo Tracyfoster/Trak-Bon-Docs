@@ -50,10 +50,10 @@ const authentication = {
     }
     jwt.verify(token, secret, (error, decoded) => {
       if (error) {
-        req.decoded = decoded;
-        next();
-      }
-      res.status(401).send({ message: 'Authentication failed' });
+        return res.status(401).send({ message: 'Authentication failed' });
+      } 
+      req.decoded = decoded;
+      return next();
     });
   },
 
@@ -67,6 +67,87 @@ const authentication = {
     Role.findById(req.decoded.roleId)
       .then(foundRole => foundRole.roleName.toLowerCase());
   },
+
+  /**
+   * Validate Access
+   * @param {Object} req req object
+   * @param {Object} res response object
+   * @param {Object} next Move to next controller handler
+   * @returns {void|Object} response object or void
+   *
+   */
+  validateAccess(req, res, next) {
+    const query = {};
+    const limit = req.query.limit > 0 ? req.query.limit : 10;
+    const offset = req.query.offset > 0 ? req.query.offset : 0;
+    if (typeof limit !== number || typeof offset !== number) {
+      return res.status(400).send({
+          message: 'Only positive number is allowed for limit value'
+        });
+    }
+    query.limit = limit;
+    query.offset = offset;
+    query.order = [['createdAt', 'DESC']];
+    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
+      query.include = [
+        {
+          model: models.User,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'roleId'
+          ]
+        }
+      ];
+      const roleId = req.decoded.roleId;
+      const userRole = getUserRole();
+      if (roleId === 1) {
+        query.where = {};
+      } else {
+        query.where = {
+          $or: [
+            { access: 'public' },
+            { access: 'userRole',
+              $and: {
+                '$User.roleId$': roleId
+              }
+            },
+            { access: 'private',
+              $and: {
+                userId: req.decoded.id
+              }
+            }
+          ]
+        };
+      }
+    }
+    if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+      const roleId = req.decoded.roleId;
+      const id = req.decoded.id;
+      const userRole = getUserRole();
+      query.where = {
+        $and: [{
+          $or: [
+            { title: { $iLike: `%${req.query.term}%` } },
+            { content: { $iLike: `%${req.query.term}%` } }
+          ]
+        }, {
+          $or: [
+            { userId: id },
+            { access: 'public' },
+            { $and: [
+              { '$User.roleId$': roleId },
+              { access: 'userRole' }
+            ] }
+          ]
+        }]
+      };
+    }
+    req.queryFilter = query;
+    next();
+},
+
 };
 
 export default authentication;

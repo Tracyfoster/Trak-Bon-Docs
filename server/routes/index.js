@@ -4,6 +4,7 @@ import authentication from '../helper/authentication';
 const { roles, users, folder, documents, search } = controllers;
 const verify = authentication.verifyToken;
 const adminAccess = authentication.adminAccess;
+const validateAccess = authentication.validateAccess;
 
 const Routes = (router) => {
   router.get('/', (req, res) => res.status(200).send({
@@ -45,7 +46,7 @@ const Routes = (router) => {
   router
     .route('/documents')
     .post(verify, documents.create)
-    .get(verify, documents.getAllDocuments);
+    .get(verify, validateAccess, documents.getAllDocuments);
   router
     .route('/documents/:id')
     .get(verify, documents.retrieve)
@@ -56,7 +57,7 @@ const Routes = (router) => {
     .get(verify, documents.findUserDocuments);
   router
     .route('/search/documents/')
-    .get(documents.documentSearch);
+    .get(validateAccess, documents.documentSearch);
 
   /**
    * crud api for user model
@@ -78,7 +79,7 @@ const Routes = (router) => {
     .delete(verify, adminAccess, users.destroy);
   router
     .route('/search/users/')
-    .get(search.userSearch);
+    .get(users.userSearch);
 };
 
 export default Routes;
