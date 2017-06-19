@@ -1,7 +1,7 @@
 import expect from 'expect';
 import folders from '../../reducers/folders';
 import * as types from '../../actions/types';
-import initialState from '../../reducers/initialState';
+import initialState from '../../reducers/InitialState;
 
 describe('Folders Reducer', () => {
 
