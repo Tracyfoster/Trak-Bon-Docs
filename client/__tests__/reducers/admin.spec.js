@@ -1,7 +1,7 @@
 import expect from 'expect';
 import admin from '../../reducers/admin';
 import * as types from '../../actions/types';
-import initialState from '../../reducers/InitialState;
+import initialState from '../../reducers/InitialState';
 
 describe('Admin Reducer', () => {
 

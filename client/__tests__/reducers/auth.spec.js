@@ -1,7 +1,7 @@
 import expect from 'expect';
 import auth from '../../reducers/auth';
 import * as types from '../../actions/types';
-import initialState from '../../reducers/InitialState;
+import initialState from '../../reducers/InitialState';
 
 describe('Auth Reducer', () => {
   it ('should return initialState', () => {

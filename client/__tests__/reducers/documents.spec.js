@@ -1,7 +1,7 @@
 import expect from 'expect';
 import documents from '../../reducers/documents';
 import * as types from '../../actions/types';
-import initialState from '../../reducers/InitialState;
+import initialState from '../../reducers/InitialState';
 
 describe('Documents Reducer', () => {
 
