@@ -125,31 +125,33 @@ const authentication = {
       }
     }
     if (`${req.baseUrl}${req.route.path}` === '/api/search/documents/') {
-      
       const roleId = req.decoded.roleId;
       const id = req.decoded.id;
       const userRole = authentication.getUserRole(req);
 
-      query.where = {
-        $and: [{
-          $or: [
-            { title: { $iLike: `%${req.query.term}%` } },
-            { content: { $iLike: `%${req.query.term}%` } }
-          ]
-        }, {
-          $or: [
-            { userId: id },
-            { access: 'public' },
-            { $and: [
-              { '$User.roleId$': roleId },
-              { access: 'userRole' }
-            ] }
-          ]
-        }]
-      };
+      if (roleId === 1) {
+        query.where = {};
+      } else {
+        query.where = {
+          $and: [{
+            $or: [
+              { title: { $iLike: `%${req.query.term}%` } },
+              { content: { $iLike: `%${req.query.term}%` } }
+            ]
+          }, {
+            $or: [
+              { userId: id },
+              { access: 'public' },
+              { $and: [
+                { '$User.roleId$': roleId },
+                { access: 'userRole' }
+              ] }
+            ]
+          }]
+        };
+      }
     }
     req.queryFilter = query;
-    console.log(query)
     next();
 },
 

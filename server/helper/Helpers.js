@@ -40,17 +40,6 @@ const Helpers = {
   },
 
   /**
-   *Get items to paginate
-   *@param {object} items  Users | Documents
-   *@param {number} offset Number to offset
-   *@param {number} limit Number to return
-   *@returns {object} returns an object is not empty
-   */
-  getPaginatedItems(items, offset, limit) {
-    return items.slice(offset, offset + limit);
-  },
-
-  /**
    * Handle promise errors
    *
    * @param {Object} error error object

@@ -185,15 +185,9 @@ export default {
   documentSearch(req, res) {
     const searchTerm = req.query.q;
     return Documents
-      .findAndCountAll({
-        where: { title: { $iLike: `%${searchTerm}%` } },
-        include: {
-          model: Users,
-          attributes: ['id', 'roleId', 'firstName', 'lastName']
-        } 
-      })
+      .findAndCountAll(req.queryFilter)
       .then((documents) => {
-        if (!documents || documents.count < 1) {
+        if (documents.count < 1) {
           return res.status(404).send({
             message: 'No document found',
           });

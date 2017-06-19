@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../../bin/www';
+import server from '../../www.js';
 import models from '../../models';
 import testData from './../testData';
 
@@ -39,9 +39,6 @@ describe('User API', () => {
         .send(newAdmin)
         .end((err, res) => {
           expect(res.status).to.equal(201);
-          expect(res.body).to.have.keys(
-            ['data', 'message', 'token']
-          );
           expect(res.body.message).to.eql('User created successfully');
           userData = res.body;
           done();
@@ -237,6 +234,40 @@ describe('User API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.eql('invalid input syntax for integer: "bliss"');
+          done();
+        });
+    });
+  });
+
+  describe('User Search', () => {
+    it('Should return a list of users based on search criteria', (done) => {
+      chai.request(server)
+        .get('/api/search/users/?q=mercy')
+        .set('x-access-token', adminToken)
+        .end((err, res) => {
+          expect(res.body.users.rows[0].firstName).to.eql('Mercy');
+          done();
+        });
+    });
+
+    it('Should return users not found', (done) => {
+      chai.request(server)
+        .get('/api/search/users/?q=Qwen')
+        .set('x-access-token', adminToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.eql('No user found');
+          done();
+        });
+    });
+
+    it('Should return error for non-admin search', (done) => {
+      chai.request(server)
+        .get('/api/search/users/?q=r')
+        .set({ 'x-access-token': regularToken })
+        .end((err, res) => {
+          expect(res.body.message)
+          .to.eql('Admin access is required for this action');
           done();
         });
     });

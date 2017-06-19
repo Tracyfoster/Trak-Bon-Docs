@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     folderName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: { args: true, msg: 'Role already exist' },
+      unique: { args: true, msg: 'Folder already exist' },
       validate: { notEmpty: { args: true, msg: 'Name cannot be empty' } }
     },
   }, {

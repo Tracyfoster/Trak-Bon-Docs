@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../../bin/www';
+import server from '../../www.js';
 import models from '../../models';
 import testData from './../testData';
 
@@ -44,7 +44,7 @@ describe('Role', () => {
         expect(res.body).to.have.keys(
           ['role', 'message']
         );
-        expect(res.body.role.roleName).to.eql('newrole');
+        expect(res.body.role.roleName).to.eql('Advocate');
         expect(res.body.message).to.eql('Role created succesfully');
         roleOne.roleId = res.body.role.id;
         done();
