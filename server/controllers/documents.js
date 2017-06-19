@@ -43,16 +43,7 @@ export default {
     } = req.query;
 
     return Documents
-      .findAndCountAll({
-        subQuery: false,
-        order: [['createdAt', 'DESC']],
-        offset,
-        limit,
-        include: {
-          model: Users,
-          attributes: ['id', 'roleId', 'firstName', 'lastName']
-        } 
-      })
+      .findAndCountAll(req.queryFilter)
       .then((documents) => {
         const pagination = Helpers.pagination(documents, offset, limit);
         const result = Object.assign(documents, pagination);

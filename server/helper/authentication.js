@@ -18,13 +18,13 @@ const authentication = {
     Role.findById(req.decoded.roleId)
       .then((foundRole) => {
         if (foundRole.roleName.toLowerCase() === 'admin') {
-          next();
+          return next();
         }
         return res.status(403)
           .send({ message: 'Admin access is required for this action' });
       })
       .catch((error) => {
-        res.status(400).send({
+        return res.status(400).send({
           err: error,
           message: 'Error authenticating'
         });
@@ -80,7 +80,7 @@ const authentication = {
     const query = {};
     const limit = req.query.limit > 0 ? req.query.limit : 10;
     const offset = req.query.offset > 0 ? req.query.offset : 0;
-    if (typeof limit !== number || typeof offset !== number) {
+    if (limit && !parseInt(limit, 10) || offset && !parseInt(offset, 10)) {
       return res.status(400).send({
           message: 'Only positive number is allowed for limit value'
         });
@@ -88,10 +88,11 @@ const authentication = {
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', 'DESC']];
+
     if (`${req.baseUrl}${req.route.path}` === '/documents/') {
       query.include = [
         {
-          model: models.User,
+          model: models.Users,
           attributes: [
             'id',
             'firstName',
@@ -126,6 +127,17 @@ const authentication = {
       const roleId = req.decoded.roleId;
       const id = req.decoded.id;
       const userRole = getUserRole();
+      query.include = [
+        {
+          model: models.Users,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'roleId'
+          ]
+        }
+      ];
       query.where = {
         $and: [{
           $or: [

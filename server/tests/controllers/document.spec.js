@@ -74,7 +74,7 @@ describe('Document API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(401);
           expect(res.body).to.be.a('object');
-          expect(res.body.message).to.eql('Not Authorized');
+          expect(res.body.message).to.eql('Please sign in to access this page');
           done();
         });
     });
@@ -134,7 +134,7 @@ describe('Document API', () => {
 
     it('should return documents for a specified user', (done) => {
       chai.request(server)
-        .get(`/api/users/${writerData.user.id}/documents`)
+        .get(`/api/users/${writerData.data.id}/documents`)
         .set('x-access-token', writerData.token)
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -144,7 +144,7 @@ describe('Document API', () => {
 
     it('should return users documents with public and same role ', (done) => {
       chai.request(server)
-        .get(`/api/users/${reviewerData.user.id}/alldocuments`)
+        .get(`/api/users/${reviewerData.data.id}/alldocuments`)
         .set('x-access-token', reviewerData.token)
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -158,7 +158,7 @@ describe('Document API', () => {
         .set('x-access-token', adminData.token)
         .end((err, res) => {
           expect(res.status).to.equal(404);
-          expect(res.body.message).to.eql('User Not Found');
+          expect(res.body.message).to.eql('No Document Found');
           done();
         });
     });

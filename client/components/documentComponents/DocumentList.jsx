@@ -65,4 +65,7 @@ DocumentList.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
+DocumentList.defaultProps = {
+  auth: {}
+}
 export default DocumentList;
