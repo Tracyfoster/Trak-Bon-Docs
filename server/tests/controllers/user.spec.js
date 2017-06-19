@@ -83,7 +83,6 @@ describe('User API', () => {
         .get(`/api/users/${userData.data.id}`)
         .set('x-access-token', userData.token)
         .end((err, res) => {
-          console.log(res.body)
           expect(res.status).to.equal(200);
           expect(res.body.firstName).to.eql(userData.data.firstName);
           done();

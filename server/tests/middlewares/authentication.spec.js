@@ -42,7 +42,6 @@ describe('Authentication', () => {
       chai.request(server)
         .post('/api/')
         .end((err, res) => {
-          console.log(res)
           expect(res.status).to.equal(200);
           done();
         });

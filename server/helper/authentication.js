@@ -99,8 +99,6 @@ const authentication = {
           ]
         }
       ];
-      // console.log(req.route.path)
-      console.log('=====', req.decoded)
     if (`${req.baseUrl}${req.route.path}` === '/api/documents') {
       const roleId = req.decoded.roleId;
       const userRole = authentication.getUserRole(req);
@@ -110,7 +108,7 @@ const authentication = {
         query.where = {
           $or: [
             { access: 'public' },
-            { access: 'userRole',
+            { access: userRole,
               $and: {
                 '$User.roleId$': roleId
               }
@@ -144,7 +142,7 @@ const authentication = {
               { access: 'public' },
               { $and: [
                 { '$User.roleId$': roleId },
-                { access: 'userRole' }
+                { access: userRole }
               ] }
             ]
           }]

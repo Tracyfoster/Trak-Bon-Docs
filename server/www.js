@@ -43,7 +43,7 @@ app.listen(port, (err) => {
   if (err) {
     winston.error(err);
   } else {
-    winston.info(`Trakbon starts on port ${port}`)
+    winston.info(`Trakbon starts on port ${port}`);
   }
 });
 

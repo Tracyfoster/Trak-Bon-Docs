@@ -44,7 +44,6 @@ describe('RoleList component', () => {
   //   const component = shallow(
   //     <RoleList {...props} />
   //   );
-  //   console.log(component);
   //   // expect(props.deleteRole.calledOnce).toEqual(true);
   //   // expect(props.deleteRole.callCount).toEqual(1);
   //   // expect(typeof props.deleteRole.args[0]).toEqual('object');
