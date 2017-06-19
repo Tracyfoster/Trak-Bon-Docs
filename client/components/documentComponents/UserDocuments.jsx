@@ -75,4 +75,8 @@ UserDocuments.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
+UserDocuments.defaultProps = {
+  auth: {}
+}
+
 export default UserDocuments;

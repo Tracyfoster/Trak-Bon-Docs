@@ -27,7 +27,7 @@ freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       access: 'public',
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 1
+      userId: 3
     }, {
       title: 'Can this be it?',
       content: `Went to Bahamas and these are the stuff I bought
@@ -38,7 +38,7 @@ freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       access: 'public',
       createdAt: new Date(),
       updatedAt: new Date(),
-      userId: 1
+      userId: 2
     }], {}),
   down: (queryInterface, Sequelize) =>
   queryInterface.bulkDelete('Documents', null, {})
