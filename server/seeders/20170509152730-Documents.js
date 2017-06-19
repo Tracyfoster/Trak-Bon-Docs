@@ -9,7 +9,8 @@ password: alpine
 Please login and change the default root password.`,
       access: 'public',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      userId: 1
     }, {
       title: 'A Song of Ice and Fire III',
       content: `The day was grey and bitter cold, and the dogs would not
@@ -25,7 +26,8 @@ that from him, him and his fat friend Sam Tarly. It was their fault he was here,
 freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       access: 'public',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      userId: 3
     }, {
       title: 'Can this be it?',
       content: `Went to Bahamas and these are the stuff I bought
@@ -35,7 +37,8 @@ freezing his bloody balls off with packs of hounds deep in the haunted forest.`,
       Can this be it?`,
       access: 'public',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      userId: 2
     }], {}),
   down: (queryInterface, Sequelize) =>
   queryInterface.bulkDelete('Documents', null, {})

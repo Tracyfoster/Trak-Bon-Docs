@@ -3,6 +3,7 @@ import Helpers from '../helper/Helpers';
 
 const Documents = model.Documents;
 const Role = model.Role;
+const Users = model.Users;
 
 export default {
 
@@ -36,14 +37,18 @@ export default {
    * @returns {void|Response} no returns
    */
   getAllDocuments(req, res) {
+    const {
+      offset = 0,
+      limit = 5,
+    } = req.query;
+
     return Documents
-      .findAndCountAll({
-        subQuery: false,
-        order: [['createdAt', 'DESC']],
-        offset: req.query.offset || 0,
-        limit: req.query.limit || 10,
+      .findAndCountAll(req.queryFilter)
+      .then((documents) => {
+        const pagination = Helpers.pagination(documents, offset, limit);
+        const result = Object.assign(documents, pagination);
+        return res.status(200).send(result);
       })
-      .then(document => res.status(200).send(document))
       .catch(error => Helpers.handleError(error, res));
   },
 
@@ -138,21 +143,34 @@ export default {
    * @returns {void} no returns
    */
   findUserDocuments(req, res) {
+    const {
+      offset = 0,
+      limit = 5
+    } = req.query;
+
     return Documents
       .findAndCountAll({
         where: { userId: req.params.id },
         subQuery: false,
         attributes: [
-          'id', 'access', 'title', 'content', 'createdAt'],
+          'id', 'access', 'title', 'content', 'createdAt', 'userId'],
         order: [['createdAt', 'DESC']],
-        offset: req.query.offset || 0,
-        limit: req.query.limit || 10,
+        offset,
+        limit,
+        include: {
+          model: Users,
+          attributes: ['id', 'roleId', 'firstName', 'lastName']
+        } 
       })
       .then((documents) => {
-        if (!documents || documents.count < 1) {
+        if (documents.count < 1) {
           return res.status(404).send({ message: 'No Document Found' });
         }
-        return res.status(200).send({ documents, status: true });
+
+        const pagination = Helpers.pagination(documents, offset, limit);
+        const result = Object.assign(documents, pagination);
+
+        return res.status(200).send(result);
       })
       .catch(error => Helpers.handleError(error, res));
   },
@@ -169,6 +187,10 @@ export default {
     return Documents
       .findAndCountAll({
         where: { title: { $iLike: `%${searchTerm}%` } },
+        include: {
+          model: Users,
+          attributes: ['id', 'roleId', 'firstName', 'lastName']
+        } 
       })
       .then((documents) => {
         if (!documents || documents.count < 1) {

@@ -1,13 +1,14 @@
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
-import open from 'open';
+import morgan from 'morgan';
+import mJson from 'morgan-json';
+import winston from 'winston';
 import config from '../webpack.config.dev';
 import Routes from '../server/routes';
 
-const logger = require('morgan');
 const bodyParser = require('body-parser');
-
+const format = mJson(':method :url :status :res[content-length] bytes :response-time ms');
 /* eslint-disable no-console */
 
 const port = 4050;
@@ -16,8 +17,7 @@ const compiler = webpack(config);
 const router = express.Router();
 Routes(router);
 
-app.use(logger('dev'));
-
+app.use(morgan(format));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -37,9 +37,9 @@ app.get('*', (req, res) => {
 
 app.listen(port, (err) => {
   if (err) {
-    console.log(err);
+    winston.error(err);
   } else {
-    open(`http://localhost:${port}`);
+    winston.info(`Trakbon starts on port ${port}`)
   }
 });
 

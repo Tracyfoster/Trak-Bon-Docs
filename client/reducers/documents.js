@@ -13,13 +13,15 @@ export default (state = InitialState.documents, action = {}) => {
   case types.SET_DOCUMENTS:
     return Object.assign({}, state, {
       data: action.payload.rows,
-      totalItems: action.payload.count
+      totalItems: action.payload.count,
+      metaData: action.payload.metaData
     });
   case types.SET_USER_DOCUMENTS:
     return Object.assign({}, state, {
       userDocuments: {
-        data: action.payload.documents.rows,
-        totalItems: action.payload.documents.count
+        data: action.payload.rows,
+        totalItems: action.payload.count,
+        metaData: action.payload.metaData,
       }
     });
   case types.DOCUMENT_FETCHED:
