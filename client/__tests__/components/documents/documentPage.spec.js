@@ -88,7 +88,6 @@ describe('DocumentPage component', () => {
       searchTerm: 'test'
     });
 
-    console.log(component.state().searchTerm)
     component.instance().onSubmit({ preventDefault: () => {} });
 
     expect(props.searchDocuments.calledOnce).toEqual(true);

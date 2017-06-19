@@ -10,11 +10,11 @@ export default {
     roleId: 1
   },
   userOne: {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    roleId: 3
+    firstName: 'Mocha',
+    lastName: 'Sinon',
+    email: 'jest@email.com',
+    password: 'https',
+    roleId: 1
   },
   userTwo: {
     firstName: faker.name.firstName(),
@@ -46,7 +46,9 @@ export default {
     title: 'check role document',
     content: 'check role document1',
     access: 'reviewers',
+    userId: 3,
   },
+
   invalidUserDetails: {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
@@ -55,8 +57,11 @@ export default {
     roleId: 2
   },
   invalidToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZUlkIjoyLCJpYXQiOjE0OTM2MjQ5MTcsImV4cCI6MTQ5MzcxMTMxN30.A3dy4bPUEa3QsML03UKDjqC9wcmAjV0ub8aWu1niaL',
+  folderOne: {
+    folderName: 'archives',
+  },
   roleOne: {
-    roleName: 'newrole',
+    roleName: 'Advocate',
   },
   roleTwo: {
     roleName: 'tester',

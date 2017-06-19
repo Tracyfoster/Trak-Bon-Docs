@@ -57,7 +57,7 @@ const Routes = (router) => {
     .get(verify, documents.findUserDocuments);
   router
     .route('/search/documents/')
-    .get(validateAccess, documents.documentSearch);
+    .get(verify, validateAccess, documents.documentSearch);
 
   /**
    * crud api for user model
@@ -79,7 +79,7 @@ const Routes = (router) => {
     .delete(verify, adminAccess, users.destroy);
   router
     .route('/search/users/')
-    .get(users.userSearch);
+    .get(verify, adminAccess, users.userSearch);
 };
 
 export default Routes;

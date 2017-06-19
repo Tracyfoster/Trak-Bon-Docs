@@ -88,9 +88,7 @@ const authentication = {
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', 'DESC']];
-
-    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
-      query.include = [
+    query.include = [
         {
           model: models.Users,
           attributes: [
@@ -101,15 +99,16 @@ const authentication = {
           ]
         }
       ];
+    if (`${req.baseUrl}${req.route.path}` === '/api/documents') {
       const roleId = req.decoded.roleId;
-      const userRole = getUserRole();
+      const userRole = authentication.getUserRole(req);
       if (roleId === 1) {
         query.where = {};
       } else {
         query.where = {
           $or: [
             { access: 'public' },
-            { access: 'userRole',
+            { access: userRole,
               $and: {
                 '$User.roleId$': roleId
               }
@@ -123,38 +122,32 @@ const authentication = {
         };
       }
     }
-    if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+    if (`${req.baseUrl}${req.route.path}` === '/api/search/documents/') {
       const roleId = req.decoded.roleId;
       const id = req.decoded.id;
-      const userRole = getUserRole();
-      query.include = [
-        {
-          model: models.Users,
-          attributes: [
-            'id',
-            'firstName',
-            'lastName',
-            'roleId'
-          ]
-        }
-      ];
-      query.where = {
-        $and: [{
-          $or: [
-            { title: { $iLike: `%${req.query.term}%` } },
-            { content: { $iLike: `%${req.query.term}%` } }
-          ]
-        }, {
-          $or: [
-            { userId: id },
-            { access: 'public' },
-            { $and: [
-              { '$User.roleId$': roleId },
-              { access: 'userRole' }
-            ] }
-          ]
-        }]
-      };
+      const userRole = authentication.getUserRole(req);
+
+      if (roleId === 1) {
+        query.where = {};
+      } else {
+        query.where = {
+          $and: [{
+            $or: [
+              { title: { $iLike: `%${req.query.term}%` } },
+              { content: { $iLike: `%${req.query.term}%` } }
+            ]
+          }, {
+            $or: [
+              { userId: id },
+              { access: 'public' },
+              { $and: [
+                { '$User.roleId$': roleId },
+                { access: userRole }
+              ] }
+            ]
+          }]
+        };
+      }
     }
     req.queryFilter = query;
     next();

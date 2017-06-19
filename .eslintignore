@@ -1,9 +1,10 @@
 
 /node_modules/**
-lib/**
+dist/**
+server/www.js
 server/seeders/*
 server/tests/*
 /client/__tests__
 webpack.config.dev.js
-api_docs/**
+docs/**
 coverage

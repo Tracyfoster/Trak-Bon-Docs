@@ -20,7 +20,6 @@ class Editor extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props.documents);
     if (this.props.params) {
       const docId = parseInt(this.props.params.id);
       const userDoc = this.props.documents.data.filter(document => document.id === docId)[0]
@@ -169,7 +168,6 @@ Editor.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.auth.user,
     documents: state.documents.userDocuments

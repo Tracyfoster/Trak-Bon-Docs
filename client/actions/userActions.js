@@ -16,7 +16,7 @@ export const registerUser = user =>
         resolve(token)
       })
       .catch((error) => {
-        reject(error)
+        reject(error.response.data.message);
       });
     });
 

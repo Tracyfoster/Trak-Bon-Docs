@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../../../bin/www';
+import server from '../../www.js';
 import models from '../../models';
 import testData from './../testData';
 
@@ -270,6 +270,41 @@ describe('Document API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.eql('invalid input syntax for integer: "beni"');
+          done();
+        });
+    });
+  });
+
+  describe('Document Search', () => {
+    it('Should return a list of documents based on search criteria', (done) => {
+      chai.request(server)
+        .get('/api/search/documents/?q=this')
+        .set('x-access-token', adminData.token)
+        .end((err, res) => {
+          if (res.body.message) {
+            expect(res.body.message).to.eql('Search Successful');
+          }
+          done();
+        });
+    });
+
+    it('Should return documents not found', (done) => {
+      chai.request(server)
+        .get('/api/search/documents/?q=zupite')
+        .set('x-access-token', reviewerData.token )
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.eql('No document found');
+          done();
+        });
+    });
+
+    it('Should return error for users without token', (done) => {
+      chai.request(server)
+        .get('/api/search/documents/?q=in')
+        .end((err, res) => {
+          expect(res.body.message)
+          .to.eql('Please sign in to access this page');
           done();
         });
     });
