@@ -88,9 +88,7 @@ const authentication = {
     query.limit = limit;
     query.offset = offset;
     query.order = [['createdAt', 'DESC']];
-
-    if (`${req.baseUrl}${req.route.path}` === '/documents/') {
-      query.include = [
+    query.include = [
         {
           model: models.Users,
           attributes: [
@@ -101,8 +99,11 @@ const authentication = {
           ]
         }
       ];
+      // console.log(req.route.path)
+      console.log('=====', req.decoded)
+    if (`${req.baseUrl}${req.route.path}` === '/api/documents') {
       const roleId = req.decoded.roleId;
-      const userRole = getUserRole();
+      const userRole = authentication.getUserRole(req);
       if (roleId === 1) {
         query.where = {};
       } else {
@@ -123,21 +124,12 @@ const authentication = {
         };
       }
     }
-    if (`${req.baseUrl}${req.route.path}` === '/search/documents') {
+    if (`${req.baseUrl}${req.route.path}` === '/api/search/documents/') {
+      
       const roleId = req.decoded.roleId;
       const id = req.decoded.id;
-      const userRole = getUserRole();
-      query.include = [
-        {
-          model: models.Users,
-          attributes: [
-            'id',
-            'firstName',
-            'lastName',
-            'roleId'
-          ]
-        }
-      ];
+      const userRole = authentication.getUserRole(req);
+
       query.where = {
         $and: [{
           $or: [
@@ -157,6 +149,7 @@ const authentication = {
       };
     }
     req.queryFilter = query;
+    console.log(query)
     next();
 },
 
