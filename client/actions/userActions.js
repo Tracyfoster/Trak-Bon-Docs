@@ -8,6 +8,7 @@ export const registerUser = user =>
   dispatch => new Promise((resolve, reject) => {
     axios.post('/api/users', user)
       .then((res) => {
+        console.log(res);
         const token = res.data.token;
         const userDetails = res.data.data;
         dispatch(eventAction(types.SET_CURRENT_USER, userDetails));
@@ -16,7 +17,8 @@ export const registerUser = user =>
         resolve(token)
       })
       .catch((error) => {
-        reject(error)
+        console.log(error.response)
+        reject(error.response.data.message)
       });
     });
 

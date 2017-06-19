@@ -4,9 +4,9 @@
   "description": "Full stack document management system, complete with roles and privileges.",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon --watch server --exec babel-node -- ./bin/www.js",
+    "start:dev": "nodemon --watch server --exec babel-node -- ./server/www.js",
     "mocha": "mocha",
-    "start": "npm run start:dev",
+    "start": "NODE_ENV=production nodemon --watch server --exec babel-node -- ./dist/server/www.js",
     "babel": "babel",
     "webpack": "webpack",
     "clean": "rimraf dist",
@@ -26,6 +26,7 @@
     "db:setup": "npm run db:migrate && npm run db:seed",
     "sequelize": "sequelize",
     "e2e:setup": "selenium-standalone install",
+    "heroku-postbuild": "npm run db:setup && npm run build",
     "document": "rimraf docs/ && jsdoc -r -c ./conf.json --readme ./documentation/README.md --destination docs"
   },
   "jest": {
