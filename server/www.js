@@ -10,9 +10,9 @@ import Routes from '../server/routes';
 const app = express();
 const bodyParser = require('body-parser');
 const format = mJson(':method :url :status :res[content-length] bytes :response-time ms');
-const port = 4050;
+const port = process.env.PORT || 4050;
 const router = express.Router();
-const isDeveloping = process.env.NODE_ENV !== 'production';
+const isDeveloping = process.env.NODE_ENV || 'development';
 
 Routes(router);
 
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', router);
 
-if (isDeveloping) {
+if (isDeveloping === 'development') {
   const config = require('../webpack.config.dev');
   const compiler = webpack(config);
   app.use(require('webpack-dev-middleware')(compiler, {
