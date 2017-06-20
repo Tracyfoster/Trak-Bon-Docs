@@ -21,6 +21,7 @@ class DashboardPage extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.getMoreDocuments = this.getMoreDocuments.bind(this);
+    this.doSearch = this.doSearch.bind(this);
   }
 
   componentWillMount() {
@@ -31,23 +32,36 @@ class DashboardPage extends Component {
     if (nextProps.search !== this.props.search ||
       this.props.allDocuments !== nextProps.allDocuments) {
       let documents = {};
-      documents = nextProps.search.totalItems > 0 ?
+
+      documents = nextProps.search.totalItems > 0 && this.state.searchTerm ?
           nextProps.search : nextProps.allDocuments;
-      documents.pageHeader = nextProps.search.totalItems > 0 ?
-          'Search results' : 'My Documents';
+      documents.pageHeader = nextProps.search.totalItems > 0 && this.state.searchTerm ?
+          'Search results' : 'All Documents';
       this.setState({ documents: Object.assign({}, documents) });
     }
+  }
+
+  componentWillUnMount() {
+    this.props.search = {};
   }
 
   onChange(event) {
     this.setState({ searchTerm: event.target.value });
   }
 
+  doSearch(term, number) {
+    return this.props.searchDocuments(term, number)
+      .then()
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
     if (this.state.searchTerm.length > 0) {
-      return this.props.searchDocuments(term);
+      this.doSearch(term);
     }
     return null;
   }
@@ -60,12 +74,19 @@ class DashboardPage extends Component {
   }
 
   getMoreDocuments(number) {
-    this.props.fetchDocuments(number);
+    if (this.state.searchTerm) {
+      return this.doSearch(this.state.searchTerm, number);
+    }
+    return this.props.fetchDocuments(number);
   }
 
   render() {
     const documents = this.state.documents;
-    const metaData = this.state.documents.metaData;
+    const metaData = this.state.searchTerm
+      ?
+        this.props.search.metaData
+      :
+        this.state.documents.metaData;
   
     return (
       <div>
@@ -105,7 +126,7 @@ class DashboardPage extends Component {
                       <Pagination
                         currentPage={metaData.currentPage}
                         totalPages={metaData.pages}
-                        onPageClick={number => this.getMoreDocuments((number - 1) * 5)}
+                        onPageClick={number => this.getMoreDocuments((number - 1) * 2)}
                       />
                   }
                 </div>

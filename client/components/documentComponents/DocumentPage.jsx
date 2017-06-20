@@ -23,7 +23,7 @@ class DocumentPage extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.getMoreDocuments = this.getMoreDocuments.bind(this);
-
+    this.doSearch = this.doSearch.bind(this);
   }
 
   componentWillMount() {
@@ -38,29 +38,37 @@ class DocumentPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.search !== this.props.search ||
       this.props.userDocuments !== nextProps.userDocuments) {
+
       let documents = {};
-      documents = nextProps.search.totalItems > 0 ?
+      documents = nextProps.search.totalItems > 0  && this.state.searchTerm ?
           nextProps.search : nextProps.userDocuments;
-      documents.pageHeader = nextProps.search.totalItems > 0 ?
+      documents.pageHeader = nextProps.search.totalItems > 0  && this.state.searchTerm ?
           'Search results' : 'My Documents';
       this.setState({ documents: Object.assign({}, documents) });
     }
+  }
+
+  componentWillUnMount() {
+    this.props.search = {};
   }
 
   onChange(event) {
     this.setState({ searchTerm: event.target.value });
   }
 
+  doSearch(term, number) {
+    return this.props.searchDocuments(term, number)
+      .then()
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
-
     if (this.state.searchTerm.length > 0) {
-      return this.props.searchDocuments(term)
-        .then()
-        .catch((error) => {
-          toastr.error(error);
-        });
+      this.doSearch(term);
     }
     return null;
   }
@@ -73,7 +81,10 @@ class DocumentPage extends Component {
   }
 
   getMoreDocuments(number) {
-    this.props.fetchUserDocuments(this.state.currentUserId, number);
+    if (this.state.searchTerm) {
+      return this.doSearch(this.state.searchTerm, number);
+    }
+    return this.props.fetchUserDocuments(this.state.currentUserId, number);
   }
 
   render() {

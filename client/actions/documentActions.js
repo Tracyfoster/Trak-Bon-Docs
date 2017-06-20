@@ -10,8 +10,9 @@ export const saveDocument = data => (dispatch) =>
 
 export const fetchDocuments = (offset = 0) => (dispatch) =>
   axios.get(`/api/documents/?offset=${offset}`)
-      .then(res =>
-        dispatch(eventAction(types.SET_DOCUMENTS, res.data)))
+      .then(res => {
+        dispatch(eventAction(types.SET_DOCUMENTS, res.data))
+      })
       .catch((error) => { throw error; });
 
 export const fetchDocument = id => dispatch =>
@@ -37,8 +38,8 @@ export const fetchUserDocuments = (id, offset = 0) => dispatch =>
         dispatch(eventAction(types.SET_USER_DOCUMENTS, res.data)))
       .catch(error => error.response.data.message );
 
-export const searchDocuments = searchTerm => dispatch =>
-  axios.get(`/api/search/documents/?q=${searchTerm}`)
+export const searchDocuments = (searchTerm, offset) => dispatch =>
+  axios.get(`/api/search/documents/?q=${searchTerm}&offset=${offset}`)
        .then((response) => {
          dispatch(eventAction(types.DOCUMENT_SEARCH_RESULTS, response.data));
        })
