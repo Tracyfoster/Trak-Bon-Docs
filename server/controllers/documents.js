@@ -183,7 +183,6 @@ export default {
    * @returns {void} no returns
    */
   documentSearch(req, res) {
-    const searchTerm = req.query.q;
     return Documents
       .findAndCountAll(req.queryFilter)
       .then((documents) => {

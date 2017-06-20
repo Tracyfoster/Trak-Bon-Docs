@@ -30,9 +30,11 @@ class DashboardPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.search !== this.props.search ||
       this.props.allDocuments !== nextProps.allDocuments) {
-      const documents = nextProps.search.totalItems > 0 ?
+      let documents = {};
+      documents = nextProps.search.totalItems > 0 ?
           nextProps.search : nextProps.allDocuments;
-
+      documents.pageHeader = nextProps.search.totalItems > 0 ?
+          'Search results' : 'My Documents';
       this.setState({ documents: Object.assign({}, documents) });
     }
   }

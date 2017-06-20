@@ -128,13 +128,18 @@ const authentication = {
       const userRole = authentication.getUserRole(req);
 
       if (roleId === 1) {
-        query.where = {};
+        query.where = {
+          $or: [
+              { title: { $iLike: `%${req.query.q}%` } },
+              { content: { $iLike: `%${req.query.q}%` } }
+            ]
+        };
       } else {
         query.where = {
           $and: [{
             $or: [
-              { title: { $iLike: `%${req.query.term}%` } },
-              { content: { $iLike: `%${req.query.term}%` } }
+              { title: { $iLike: `%${req.query.q}%` } },
+              { content: { $iLike: `%${req.query.q}%` } }
             ]
           }, {
             $or: [

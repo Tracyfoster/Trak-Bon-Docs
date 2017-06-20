@@ -16,7 +16,7 @@ class DocumentPage extends Component {
     this.state = {
       searchTerm: '',
       documents: Object.assign({}, props.userDocuments),
-      currentUserId: 0
+      currentUserId: 0,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -38,8 +38,11 @@ class DocumentPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.search !== this.props.search ||
       this.props.userDocuments !== nextProps.userDocuments) {
-      const documents = nextProps.search.totalItems > 0 ?
+      let documents = {};
+      documents = nextProps.search.totalItems > 0 ?
           nextProps.search : nextProps.userDocuments;
+      documents.pageHeader = nextProps.search.totalItems > 0 ?
+          'Search results' : 'My Documents';
       this.setState({ documents: Object.assign({}, documents) });
     }
   }
