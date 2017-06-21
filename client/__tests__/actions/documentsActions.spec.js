@@ -186,7 +186,7 @@ describe('document Actions', () => {
 
   describe('searchDocuments action', () => {
     it('should dispatch DOCUMENT_SEARCH_RESULTS', () => {
-      moxios.stubRequest('/api/search/documents/?q=hello', {
+      moxios.stubRequest('/api/search/documents/?q=hello&offset=0', {
         status: 200,
         response: {
           documents: {
@@ -205,7 +205,7 @@ describe('document Actions', () => {
 
       const store = mockStore();
 
-      return store.dispatch(searchDocuments('hello'))
+      return store.dispatch(searchDocuments('hello', 0))
       .then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });

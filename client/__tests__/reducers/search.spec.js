@@ -22,20 +22,18 @@ describe('Search Reducer', () => {
   it('should set search when passed DOCUMENT_SEARCH_RESULTS', () => {
     // arrange
     const searchResults = {
-      documents: {
-        rows: [
-          { id: '1', title: 'Apata is big' },
-          { id: '2', title: 'I am florishing' },
-          { id: '3', title: 'Kenpachi abichi gana' }],
-        count: 3
-      }
+      rows: [
+        { id: '1', title: 'Apata is big' },
+        { id: '2', title: 'I am florishing' },
+        { id: '3', title: 'Kenpachi abichi gana' }],
+      count: 3
     };
     const action = { type: types.DOCUMENT_SEARCH_RESULTS, payload: searchResults };
 
     // act
     const newState = search(initialState.search, action);
-    expect(newState.documents.data).toEqual(searchResults.documents.rows);
-    expect(newState.documents.totalItems).toEqual(searchResults.documents.count);
+    expect(newState.documents.data).toEqual(searchResults.rows);
+    expect(newState.documents.totalItems).toEqual(searchResults.rows.length);
   });
 
   it('should set search when passed USER_SEARCH_RESULTS', () => {
@@ -52,7 +50,7 @@ describe('Search Reducer', () => {
     // act
     const newState = search(initialState.search, action);
     expect(newState.users.data).toEqual(searchResults.rows);
-    expect(newState.users.totalItems).toEqual(searchResults.count);
+    expect(newState.users.totalItems).toEqual(searchResults.rows.length);
   });
 
   it('should return the state when not affected', () => {

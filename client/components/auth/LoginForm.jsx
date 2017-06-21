@@ -12,7 +12,10 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {
+        email: '',
+        password: ''
+      }
     };
 
     this.onChange = this.onChange.bind(this);
@@ -32,7 +35,7 @@ class LoginForm extends Component {
     const isValid = Validator.signIn(this.state.user);
 
     if (isValid === true) {
-      this.props.dispatch(userLogin(this.state.user))
+      this.props.userLogin(this.state.user)
       .then((token) => {
         (localStorage.setItem('jwtToken', token) &&
           this.context.router.push('/documents'))
@@ -52,15 +55,16 @@ class LoginForm extends Component {
           <span />
         </div>
 
-        <form onSubmit={this.onSubmit} className="auth-form">
+        <form onSubmit={(e) => this.onSubmit(e)} className="auth-form">
           <div>
             <Textfield
               onChange={this.onChange}
               type="email"
               label="Email"
+              className="form-input-email"
               name="email"
               floatingLabel
-              value={this.state.email}
+              value={this.state.user.email}
             />
           </div>
           <Textfield
@@ -68,8 +72,9 @@ class LoginForm extends Component {
             type="password"
             name="password"
             label="Password"
+            className="form-input-password"
             floatingLabel
-            value={this.state.password}
+            value={this.state.user.password}
           />
 
           <div className="button-wrapper">
@@ -92,9 +97,10 @@ LoginForm.contextTypes = {
   router: PropTypes.object
 };
 
-LoginForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+export default connect(null, { 
+ userLogin
+})(LoginForm);
+
+export {
+  LoginForm as LoginFormComponent
 };
-
-export default connect()(LoginForm);
-
