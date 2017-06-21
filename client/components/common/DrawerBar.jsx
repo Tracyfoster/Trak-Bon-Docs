@@ -88,3 +88,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(DrawerBar);
+
+export {
+  DrawerBar as DrawerBarComponent
+}

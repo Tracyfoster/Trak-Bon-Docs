@@ -74,7 +74,7 @@ const Routes = (router) => {
     .get(verify, adminAccess, users.getAllUsers);
   router
     .route('/users/:id')
-    .get(users.retrieve)
+    .get(verify, users.retrieve)
     .put(verify, users.update)
     .delete(verify, adminAccess, users.destroy);
   router

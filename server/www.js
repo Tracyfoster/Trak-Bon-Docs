@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', router);
 
-if (isDeveloping) {
+if (isDeveloping === 'development') {
   const config = require('../webpack.config.dev');
   const compiler = webpack(config);
   app.use(require('webpack-dev-middleware')(compiler, {
