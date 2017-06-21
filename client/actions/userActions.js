@@ -49,9 +49,9 @@ export const logoutUser = () =>
   dispatch => new Promise((resolve, reject) => {
     axios.post('/api/users/logout')
       .then(() => {
+        resolve(true);
         setAuthorizationToken(false);
         dispatch(eventAction(types.SET_CURRENT_USER, {}))
-        resolve(true);
       })
       .catch((error) => {
         reject(error.response.data.message);
