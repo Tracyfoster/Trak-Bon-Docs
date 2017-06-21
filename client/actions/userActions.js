@@ -52,6 +52,7 @@ export const logoutUser = () =>
         resolve(true);
         setAuthorizationToken(false);
         dispatch(eventAction(types.SET_CURRENT_USER, {}))
+        localStorage.removeItem('jwtToken');
       })
       .catch((error) => {
         reject(error.response.data.message);
