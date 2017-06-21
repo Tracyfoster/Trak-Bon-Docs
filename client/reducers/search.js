@@ -12,15 +12,17 @@ export default function documents(state = InitialState.search, action = {}) {
   case types.DOCUMENT_SEARCH_RESULTS:
     return Object.assign({}, state, {
       documents: {
-        data: action.payload.documents.rows,
-        totalItems: action.payload.documents.count
+        data: action.payload.rows,
+        totalItems: action.payload.rows.length,
+        metaData: action.payload.metaData
       }
     });
   case types.USER_SEARCH_RESULTS:
     return Object.assign({}, state, {
       users: {
         data: action.payload.rows,
-        totalItems: action.payload.count
+        totalItems: action.payload.count,
+        metaData: action.payload.metaData
       }
     });
   default: return state;

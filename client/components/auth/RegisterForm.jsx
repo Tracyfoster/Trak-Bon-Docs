@@ -12,7 +12,13 @@ class RegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
     };
 
     this.onChange = this.onChange.bind(this);
@@ -33,7 +39,7 @@ class RegisterForm extends Component {
     const isValid = Validator.signUp(this.state.user);
 
     if (isValid === true) {
-      this.props.dispatch(registerUser(this.state.user))
+      this.props.registerUser(this.state.user)
       .then((token) => {
         (localStorage.setItem('jwtToken', token) &&
           this.context.router.push('/documents'))
@@ -49,12 +55,13 @@ class RegisterForm extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit} className="auth-form">
+        <form onSubmit={(e) => this.onSubmit(e)} className="auth-form">
           <Textfield
             onChange={this.onChange}
             label="Firstname"
             floatingLabel
             name="firstName"
+            className="form-input-firstName"
             value={this.state.user.firstName}
             style={{ width: '150px' }}
           />
@@ -63,7 +70,8 @@ class RegisterForm extends Component {
             label="Lastname"
             name="lastName"
             floatingLabel
-            value={this.state.lastName}
+            className="form-input-lastName"
+            value={this.state.user.lastName}
             style={{ width: '150px' }}
           />
           <Textfield
@@ -72,7 +80,8 @@ class RegisterForm extends Component {
             label="Email"
             name="email"
             floatingLabel
-            value={this.state.email}
+            className="form-input-email"
+            value={this.state.user.email}
             style={{ width: '150px' }}
           />
           <Textfield
@@ -81,7 +90,8 @@ class RegisterForm extends Component {
             name="password"
             label="Password"
             floatingLabel
-            value={this.state.password}
+            className="form-input-password"
+            value={this.state.user.password}
             style={{ width: '150px' }}
           />
           <Textfield
@@ -90,7 +100,8 @@ class RegisterForm extends Component {
             label="Confirm Password"
             name="confirmPassword"
             floatingLabel
-            value={this.state.password}
+            className="form-input-confirmPassword"
+            value={this.state.user.confirmPassword}
             style={{ width: '150px' }}
           />
           <div className="button-wrapper">
@@ -113,8 +124,10 @@ RegisterForm.contextTypes = {
   router: PropTypes.object
 };
 
-RegisterForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+export default connect(null, { 
+  registerUser
+})(RegisterForm);
 
-export default connect()(RegisterForm);
+export {
+  RegisterForm as RegisterFormComponent
+};

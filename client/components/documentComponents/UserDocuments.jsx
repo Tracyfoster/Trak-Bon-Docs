@@ -56,7 +56,7 @@ const UserDocuments = (props) => {
 
       <div>
         <div>
-          <h4 className="my-document-header">My Documents</h4>
+          <h4 className="my-document-header">{ props.userDocuments.pageHeader || 'My Documents' }</h4>
         </div>
         { documents.length > 0 ?
           <DocumentList

@@ -78,7 +78,7 @@ const authentication = {
    */
   validateAccess(req, res, next) {
     const query = {};
-    const limit = req.query.limit > 0 ? req.query.limit : 10;
+    const limit = req.query.limit > 0 ? req.query.limit : 2;
     const offset = req.query.offset > 0 ? req.query.offset : 0;
     if (limit && !parseInt(limit, 10) || offset && !parseInt(offset, 10)) {
       return res.status(400).send({
@@ -128,13 +128,18 @@ const authentication = {
       const userRole = authentication.getUserRole(req);
 
       if (roleId === 1) {
-        query.where = {};
+        query.where = {
+          $or: [
+              { title: { $iLike: `%${req.query.q}%` } },
+              { content: { $iLike: `%${req.query.q}%` } }
+            ]
+        };
       } else {
         query.where = {
           $and: [{
             $or: [
-              { title: { $iLike: `%${req.query.term}%` } },
-              { content: { $iLike: `%${req.query.term}%` } }
+              { title: { $iLike: `%${req.query.q}%` } },
+              { content: { $iLike: `%${req.query.q}%` } }
             ]
           }, {
             $or: [

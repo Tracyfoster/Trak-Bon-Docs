@@ -38,10 +38,9 @@ export default {
    */
   getAllDocuments(req, res) {
     const {
-      offset = 0,
-      limit = 5,
-    } = req.query;
-
+      limit,
+      offset
+    } = req.queryFilter;
     return Documents
       .findAndCountAll(req.queryFilter)
       .then((documents) => {
@@ -183,7 +182,11 @@ export default {
    * @returns {void} no returns
    */
   documentSearch(req, res) {
-    const searchTerm = req.query.q;
+    const {
+      limit = 2,
+      offset = 0
+    } = req.queryFilter;
+
     return Documents
       .findAndCountAll(req.queryFilter)
       .then((documents) => {
@@ -192,10 +195,11 @@ export default {
             message: 'No document found',
           });
         }
-        return res.status(200).send({
-          documents,
-          message: 'Search Successful'
-        });
+
+        const pagination = Helpers.pagination(documents, offset, limit);
+        const result = Object.assign(documents, pagination);
+
+        return res.status(200).send(result);
       })
       .catch((error) => {
         res.status(400)

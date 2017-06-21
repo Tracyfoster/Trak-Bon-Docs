@@ -58,7 +58,7 @@ const Dashboard = (props) => {
       <p />
       <div>
         <div>
-          <h4 className="my-document-header">All Documents</h4>
+          <h4 className="my-document-header">{ props.allDocuments.pageHeader || 'All Documents' }</h4>
         </div>
         { documents.length > 0 ?
           <DocumentList

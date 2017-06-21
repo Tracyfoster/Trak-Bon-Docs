@@ -16,14 +16,14 @@ class DocumentPage extends Component {
     this.state = {
       searchTerm: '',
       documents: Object.assign({}, props.userDocuments),
-      currentUserId: 0
+      currentUserId: 0,
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
     this.getMoreDocuments = this.getMoreDocuments.bind(this);
-
+    this.doSearch = this.doSearch.bind(this);
   }
 
   componentWillMount() {
@@ -38,26 +38,37 @@ class DocumentPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.search !== this.props.search ||
       this.props.userDocuments !== nextProps.userDocuments) {
-      const documents = nextProps.search.totalItems > 0 ?
+
+      let documents = {};
+      documents = nextProps.search.totalItems > 0  && this.state.searchTerm ?
           nextProps.search : nextProps.userDocuments;
+      documents.pageHeader = nextProps.search.totalItems > 0  && this.state.searchTerm ?
+          'Search results' : 'My Documents';
       this.setState({ documents: Object.assign({}, documents) });
     }
+  }
+
+  componentWillUnMount() {
+    this.props.search = {};
   }
 
   onChange(event) {
     this.setState({ searchTerm: event.target.value });
   }
 
+  doSearch(term, number) {
+    return this.props.searchDocuments(term, number)
+      .then()
+      .catch((error) => {
+        toastr.error(error);
+      });
+  }
+
   onSubmit(event) {
     event.preventDefault();
     const term = this.state.searchTerm;
-
     if (this.state.searchTerm.length > 0) {
-      return this.props.searchDocuments(term)
-        .then()
-        .catch((error) => {
-          toastr.error(error);
-        });
+      this.doSearch(term);
     }
     return null;
   }
@@ -70,7 +81,10 @@ class DocumentPage extends Component {
   }
 
   getMoreDocuments(number) {
-    this.props.fetchUserDocuments(this.state.currentUserId, number);
+    if (this.state.searchTerm) {
+      return this.doSearch(this.state.searchTerm, number);
+    }
+    return this.props.fetchUserDocuments(this.state.currentUserId, number);
   }
 
   render() {
